@@ -80,6 +80,30 @@ export default function App() {
     setError(null); setSuccess(null);
   };
 
+  // Auto-logout after 5 minutes of inactivity
+  useEffect(() => {
+    if (!token || !user) return;
+
+    let timeoutId: number;
+
+    const resetTimer = () => {
+      if (timeoutId) window.clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(() => {
+        handleLogout();
+      }, 5 * 60 * 1000); // 5 minutes
+    };
+
+    const events = ['mousemove', 'keydown', 'click', 'scroll'];
+    events.forEach(e => window.addEventListener(e, resetTimer));
+
+    resetTimer(); // Start the timer
+
+    return () => {
+      if (timeoutId) window.clearTimeout(timeoutId);
+      events.forEach(e => window.removeEventListener(e, resetTimer));
+    };
+  }, [token, user]);
+
   const isSuperAdmin = user?.role === 'SUPERADMIN';
   const isAdmin      = user?.role === 'ADMIN';
   const isManagement = isSuperAdmin || isAdmin;
