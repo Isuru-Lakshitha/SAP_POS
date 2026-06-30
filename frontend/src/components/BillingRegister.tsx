@@ -78,7 +78,7 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
       if (walkIn) setSelectedCustomerId(walkIn.id);
       const itemsData = await api.items.list();
       setItems(itemsData);
-      const locRes = await fetch('http://localhost:5000/api/pos/locations', {
+      const locRes = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}` + '/pos/locations', {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('sap_pos_token')}` }
       });
       const locData = await locRes.json();
@@ -96,7 +96,7 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
 
   const fetchLocationStock = async (locId: number) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/pos/locations/${locId}/stock`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/pos/locations/${locId}/stock`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('sap_pos_token')}` }
       });
       const data = await res.json();

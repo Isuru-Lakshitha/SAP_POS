@@ -37,8 +37,8 @@ export default function TechnicianStock({ currentUser }: TechnicianStockProps) {
       setLoading(true); setError(null);
       const h = { 'Authorization': `Bearer ${localStorage.getItem('sap_pos_token')}` };
       const [stockRes, locRes] = await Promise.all([
-        fetch(`http://localhost:5000/api/pos/locations/${locId}/stock`, { headers: h }),
-        fetch('http://localhost:5000/api/pos/locations', { headers: h }),
+        fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/pos/locations/${locId}/stock`, { headers: h }),
+        fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}` + '/pos/locations', { headers: h }),
       ]);
       const data = await stockRes.json();
       if (!stockRes.ok) throw new Error(data.error || 'Failed to load stock.');

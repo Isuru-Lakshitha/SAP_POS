@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 
 const TOKEN = () => localStorage.getItem('sap_pos_token');
-const BASE = 'http://localhost:5000/api';
+const BASE = `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}` + '';
 const auth = () => ({ Authorization: `Bearer ${TOKEN()}` });
 
 const fmt = (n: number) =>

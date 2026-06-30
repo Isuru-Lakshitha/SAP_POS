@@ -65,7 +65,7 @@ export default function LocationManager() {
   const fetchLocations = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:5000/api/pos/locations', { headers: auth() });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}` + '/pos/locations', { headers: auth() });
       const data = await res.json();
       setLocations(data);
       if (data.length > 0 && !selectedLocId) setSelectedLocId(data[0].id);
@@ -75,7 +75,7 @@ export default function LocationManager() {
 
   const fetchLocationStock = async (locId: number) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/pos/locations/${locId}/stock`, { headers: auth() });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/pos/locations/${locId}/stock`, { headers: auth() });
       const data = await res.json();
       setStocks(data.stocks || []); setSerials(data.serials || []);
     } catch (err: any) { console.error(err); }
@@ -83,7 +83,7 @@ export default function LocationManager() {
 
   const fetchSourceStock = async (locId: number) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/pos/locations/${locId}/stock`, { headers: auth() });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/pos/locations/${locId}/stock`, { headers: auth() });
       const data = await res.json();
       setSourceStocks(data.stocks || []); setSourceSerials(data.serials || []);
     } catch (err: any) { console.error(err); }
@@ -94,7 +94,7 @@ export default function LocationManager() {
     if (!newLocName.trim()) { setError('Location name is required.'); return; }
     try {
       setLocLoading(true); setError(null);
-      const res = await fetch('http://localhost:5000/api/pos/locations', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}` + '/pos/locations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...auth() },
         body: JSON.stringify({ name: newLocName.trim(), type: newLocType }),
@@ -114,7 +114,7 @@ export default function LocationManager() {
   const handleDeleteLocation = async (locId: number) => {
     try {
       setLocLoading(true); setError(null);
-      const res = await fetch(`http://localhost:5000/api/pos/locations/${locId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/pos/locations/${locId}`, {
         method: 'DELETE', headers: auth(),
       });
       const data = await res.json();
@@ -149,7 +149,7 @@ export default function LocationManager() {
     }
     try {
       setLoading(true); setError(null);
-      const res = await fetch('http://localhost:5000/api/pos/transfers', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}` + '/pos/transfers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...auth() },
         body: JSON.stringify({

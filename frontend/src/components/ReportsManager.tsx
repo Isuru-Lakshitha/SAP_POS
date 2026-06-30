@@ -53,7 +53,7 @@ export default function ReportsManager() {
 
   const fetchLocations = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/pos/locations', { headers: auth() });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}` + '/pos/locations', { headers: auth() });
       setLocations(await res.json());
     } catch { }
   };
@@ -69,7 +69,7 @@ export default function ReportsManager() {
     try {
       setLoading(true);
       const q = selectedLocId ? `?locationId=${selectedLocId}` : '';
-      const res = await fetch(`http://localhost:5000/api/reports/stock-in-hand${q}`, { headers: auth() });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/reports/stock-in-hand${q}`, { headers: auth() });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       setStockSummary(data.summary); setStockRecords(data.records);
@@ -80,7 +80,7 @@ export default function ReportsManager() {
   const fetchTransfersReport = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/reports/transfers?startDate=${startDate}&endDate=${endDate}`, { headers: auth() });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/reports/transfers?startDate=${startDate}&endDate=${endDate}`, { headers: auth() });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       setTransferRecords(data);
@@ -91,7 +91,7 @@ export default function ReportsManager() {
   const fetchProfitReport = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/reports/profit-viewer?startDate=${startDate}&endDate=${endDate}`, { headers: auth() });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/reports/profit-viewer?startDate=${startDate}&endDate=${endDate}`, { headers: auth() });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       setProfitSummary(data.summary); setProfitRecords(data.records);
@@ -104,7 +104,7 @@ export default function ReportsManager() {
     if (!serialQuery.trim()) return;
     try {
       setLoading(true); setError(null); setWarrantyResult(null);
-      const res = await fetch(`http://localhost:5000/api/reports/warranty-search?serial=${serialQuery}`, { headers: auth() });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/reports/warranty-search?serial=${serialQuery}`, { headers: auth() });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       setWarrantyResult(data);

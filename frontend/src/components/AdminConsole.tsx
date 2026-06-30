@@ -54,7 +54,7 @@ export default function AdminConsole({ currentUser }: AdminConsoleProps) {
 
   const fetchLocations = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/pos/locations', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}` + '/pos/locations', {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('sap_pos_token')}` }
       });
       const data = await res.json();

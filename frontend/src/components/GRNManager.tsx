@@ -77,8 +77,8 @@ export default function GRNManager() {
       const token = localStorage.getItem('sap_pos_token');
       const h = { 'Authorization': `Bearer ${token}` };
       const [supRes, locRes, itemsData] = await Promise.all([
-        fetch('http://localhost:5000/api/pos/suppliers', { headers: h }),
-        fetch('http://localhost:5000/api/pos/locations', { headers: h }),
+        fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}` + '/pos/suppliers', { headers: h }),
+        fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}` + '/pos/locations', { headers: h }),
         api.items.list(),
       ]);
       const supData = await supRes.json();
@@ -97,7 +97,7 @@ export default function GRNManager() {
     if (!supName || !supPhone) { setError('Name and Phone are required.'); return; }
     try {
       setLoading(true); setError(null);
-      const res = await fetch('http://localhost:5000/api/pos/suppliers', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}` + '/pos/suppliers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('sap_pos_token')}` },
         body: JSON.stringify({ name: supName, telephone: supPhone, email: supEmail, address: supAddress }),
@@ -154,7 +154,7 @@ export default function GRNManager() {
     if (grnRows.length === 0) { setError('Add at least one product row.'); return; }
     try {
       setLoading(true); setError(null);
-      const res = await fetch('http://localhost:5000/api/pos/grn', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}` + '/pos/grn', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('sap_pos_token')}` },
         body: JSON.stringify({
