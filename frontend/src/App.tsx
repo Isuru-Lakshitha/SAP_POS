@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   ShoppingCart, Layers, ShieldAlert, LogOut, User, Lock,
-  BarChart3, Users, PlusSquare, ArrowRightLeft, BookOpen, LayoutDashboard,
+  BarChart3, Users, PlusSquare, ArrowRightLeft, BookOpen, LayoutDashboard, Monitor
 } from 'lucide-react';
 import BillingRegister from './components/BillingRegister';
 import CustomerManager from './components/CustomerManager';
@@ -126,9 +126,15 @@ export default function App() {
               onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = 'perspective(800px) rotateY(0deg) scale(1.02)'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = 'perspective(800px) rotateY(-3deg)'; }}
             >
-              <img src="/logo.png" alt="SAP Computers"
-                style={{ maxWidth: 230, maxHeight: 115, objectFit: 'contain', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))' }} />
-              <div style={{ width: '100%', height: 1, background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ background: 'linear-gradient(135deg, #60a5fa, #3b82f6)', padding: 10, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Monitor size={28} color="white" />
+                </div>
+                <h1 style={{ color: 'white', fontSize: 32, fontWeight: 900, margin: 0, letterSpacing: '-0.02em', fontFamily: 'Outfit, sans-serif' }}>
+                  SAP <span style={{ color: '#93c5fd' }}>POS</span>
+                </h1>
+              </div>
+              <div style={{ width: '100%', height: 1, background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)', marginTop: 10 }} />
               <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', margin: 0 }}>
                 Point of Sale System
               </p>
@@ -269,9 +275,13 @@ export default function App() {
       {/* ── LEFT SIDEBAR ────────────────────────────────────── */}
       <aside style={{ width: 220, height: '100%', background: '#191924', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
         {/* Logo */}
-        <div style={{ padding: '18px 20px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src="/logo.png" alt="SAP"
-            style={{ maxHeight: 36, maxWidth: 160, objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
+        <div style={{ padding: '18px 20px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+          <div style={{ background: 'linear-gradient(135deg, #7c3aed, #4f46e5)', padding: 6, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Monitor size={18} color="white" />
+          </div>
+          <h2 style={{ color: 'white', fontSize: 20, fontWeight: 800, margin: 0, letterSpacing: '-0.02em', fontFamily: 'Outfit, sans-serif' }}>
+            SAP <span style={{ color: '#a78bfa' }}>POS</span>
+          </h2>
         </div>
 
         {/* Nav buttons */}
