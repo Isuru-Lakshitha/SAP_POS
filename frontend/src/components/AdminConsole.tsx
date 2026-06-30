@@ -91,7 +91,10 @@ export default function AdminConsole({ currentUser }: AdminConsoleProps) {
       const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/reports/backup`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('sap_pos_token')}` }
       });
-      if (!res.ok) throw new Error('Backup download failed. Ensure you have Superadmin access.');
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`Backup failed: ${errText}`);
+      }
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
