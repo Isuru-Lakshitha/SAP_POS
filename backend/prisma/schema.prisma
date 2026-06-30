@@ -1,0 +1,200 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id             Int             @id @default(autoincrement())
+  username       String          @unique
+  password       String
+  role           String          // "SUPERADMIN", "ADMIN", "USER" (Cashier/Technician)
+  status         String          // "ACTIVE", "PASSWORD_RESET_REQUESTED"
+  locationId     Int?            // Associated location (specifically for Technicians)
+  location       Location?       @relation("UserLocation", fields: [locationId], references: [id])
+  invoices       Invoice[]
+  transfers      StockTransfer[]
+}
+
+model Location {
+  id            Int             @id @default(autoincrement())
+  name          String          @unique
+  type          String          // "MAIN" (Branches), "SUB_TECHNICIAN" (Technicians)
+  users         User[]          @relation("UserLocation")
+  stocks        Stock[]
+  serials       Serial[]
+  grns          GRN[]
+  fromTransfers StockTransfer[] @relation("FromLocation")
+  toTransfers   StockTransfer[] @relation("ToLocation")
+  invoices      Invoice[]
+}
+
+model Supplier {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  telephone String
+  email     String?
+  address   String?
+  grns      GRN[]
+  serials   Serial[]
+}
+
+model Item {
+  id             Int                 @id @default(autoincrement())
+  code           String              @unique
+  name           String
+  cost           Float               @default(0.0) // Purchase cost
+  wholesalePrice Float               @default(0.0) // Wholesale sale price
+  retailPrice    Float               @default(0.0) // Retail sale price (regular price)
+  warrantyPeriod String              // Default warranty period (e.g. "1 Year")
+  requiresSerial Boolean             @default(false)
+  type           String              @default("PRODUCT") // "PRODUCT" or "SERVICE"
+  description    String?
+  cartItems      CartItem[]
+  stocks         Stock[]
+  serials        Serial[]
+  grnItems       GRNItem[]
+  transferItems  StockTransferItem[]
+}
+
+model Stock {
+  id         Int      @id @default(autoincrement())
+  item       Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId     Int
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  locationId Int
+  quantity   Int      @default(0)
+
+  @@unique([itemId, locationId])
+}
+
+model Serial {
+  id           Int       @id @default(autoincrement())
+  serialNumber String    @unique
+  item         Item      @relation(fields: [itemId], references: [id])
+  itemId       Int
+  location     Location  @relation(fields: [locationId], references: [id])
+  locationId   Int
+  status       String    // "IN_STOCK", "SOLD"
+  purchaseDate DateTime  @default(now())
+  soldDate     DateTime?
+  supplier     Supplier? @relation(fields: [supplierId], references: [id])
+  supplierId   Int?
+  invoiceId    Int?      // Link to invoice when sold
+}
+
+model GRN {
+  id           Int       @id @default(autoincrement())
+  grnNumber    String    @unique // e.g. GRN-YYYYMMDD-XXXX
+  receivedDate DateTime
+  billDate     DateTime
+  supplier     Supplier  @relation(fields: [supplierId], references: [id])
+  supplierId   Int
+  location     Location  @relation(fields: [locationId], references: [id])
+  locationId   Int
+  totalAmount  Float
+  notes        String?
+  grnItems     GRNItem[]
+}
+
+model GRNItem {
+  id             Int   @id @default(autoincrement())
+  grn            GRN   @relation(fields: [grnId], references: [id], onDelete: Cascade)
+  grnId          Int
+  item           Item  @relation(fields: [itemId], references: [id])
+  itemId         Int
+  quantity       Int
+  costPrice      Float
+  wholesalePrice Float
+  retailPrice    Float
+}
+
+model Customer {
+  id                Int       @id @default(autoincrement())
+  name              String
+  telephone         String    @unique
+  address           String?
+  isCreditCorporate Boolean   @default(false)
+  balance           Float     @default(0.0)
+  invoices          Invoice[]
+}
+
+model Invoice {
+  id             Int                 @id @default(autoincrement())
+  invoiceNumber  String              @unique
+  date           DateTime            @default(now())
+  customer       Customer?           @relation(fields: [customerId], references: [id])
+  customerId     Int?
+  cashier        User                @relation(fields: [cashierId], references: [id])
+  cashierId      Int
+  location       Location            @relation(fields: [locationId], references: [id])
+  locationId     Int
+  totalAmount    Float
+  discountAmount Float               @default(0.0)
+  finalAmount    Float
+  paymentMethod  String              // "CASH", "CARD", "CHEQUE", "KOKO", "BANK_TRANSFER"
+  paymentDetails String?
+  notes          String?
+  cartItems      CartItem[]
+  transactions   LedgerTransaction[]
+}
+
+model CartItem {
+  id             Int     @id @default(autoincrement())
+  invoice        Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  invoiceId      Int
+  item           Item    @relation(fields: [itemId], references: [id])
+  itemId         Int
+  quantity       Int
+  unitPrice      Float
+  discount       Float   @default(0.0)
+  serialNumber   String?
+  warrantyPeriod String?
+  notes          String?
+}
+
+model StockTransfer {
+  id             Int                 @id @default(autoincrement())
+  date           DateTime            @default(now())
+  fromLocation   Location            @relation("FromLocation", fields: [fromLocationId], references: [id])
+  fromLocationId Int
+  toLocation     Location            @relation("ToLocation", fields: [toLocationId], references: [id])
+  toLocationId   Int
+  reason         String
+  cashier        User                @relation(fields: [cashierId], references: [id])
+  cashierId      Int
+  transferItems  StockTransferItem[]
+}
+
+model StockTransferItem {
+  id            Int           @id @default(autoincrement())
+  transfer      StockTransfer @relation(fields: [transferId], references: [id], onDelete: Cascade)
+  transferId    Int
+  item          Item          @relation(fields: [itemId], references: [id])
+  itemId        Int
+  quantity      Int
+  serialNumbers String?       // Comma-separated list of serials transferred
+}
+
+model LedgerAccount {
+  id           Int                 @id @default(autoincrement())
+  name         String              @unique // "CASH_ACCOUNT", "CARD_ACCOUNT", "CHEQUE_ACCOUNT", "KOKO_ACCOUNT", "BANK_TRANSFER_ACCOUNT"
+  type         String              // "CASH", "CARD", "CHEQUE", "KOKO", "BANK_TRANSFER"
+  balance      Float               @default(0.0)
+  transactions LedgerTransaction[]
+}
+
+model LedgerTransaction {
+  id              Int           @id @default(autoincrement())
+  date            DateTime      @default(now())
+  ledgerAccount   LedgerAccount @relation(fields: [ledgerAccountId], references: [id])
+  ledgerAccountId Int
+  amount          Float
+  type            String        // "DEBIT", "CREDIT"
+  description     String
+  invoice         Invoice?      @relation(fields: [invoiceId], references: [id])
+  invoiceId       Int?
+}
