@@ -254,7 +254,7 @@ export default function App() {
     { tab: 'inventory', icon: <Layers size={16} />,          label: 'Product Registry' },
     { tab: 'locations', icon: <ArrowRightLeft size={16} />,  label: 'Transfers' },
     { tab: 'reports',   icon: <BarChart3 size={16} />,       label: 'Reports & Profit' },
-    ...(isSuperAdmin ? [{ tab: 'ledger', icon: <BookOpen size={16} />, label: 'Ledger Accounts' }] : []),
+    { tab: 'ledger',    icon: <BookOpen size={16} />,        label: 'Ledger Accounts' },
     { tab: 'admin',     icon: <User size={16} />,            label: 'Operators Console' },
   ] : [
     { tab: 'mystock', icon: <Layers size={16} />,       label: 'My Stock Bag' },
