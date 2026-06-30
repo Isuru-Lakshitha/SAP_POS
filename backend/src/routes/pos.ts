@@ -113,7 +113,7 @@ router.get('/items', authenticateToken, async (req: AuthRequest, res: Response) 
 
 router.post('/items', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
-    const { code, name, cost, wholesalePrice, retailPrice, warrantyPeriod, requiresSerial, type, description } = req.body;
+    const { code, name, cost, wholesalePrice, retailPrice, warrantyPeriod, requiresSerial, type, description, minStock } = req.body;
     if (!code || !name || retailPrice === undefined) {
       return res.status(400).json({ error: 'SKU Code, name, and retail price are required' });
     }
@@ -131,7 +131,8 @@ router.post('/items', authenticateToken, async (req: AuthRequest, res: Response)
         warrantyPeriod: warrantyPeriod || 'No Warranty',
         requiresSerial: !!requiresSerial,
         type: type || 'PRODUCT',
-        description
+        description,
+        minStock: minStock !== undefined ? parseInt(minStock) : 5
       }
     });
     res.status(201).json(item);
@@ -142,7 +143,7 @@ router.post('/items', authenticateToken, async (req: AuthRequest, res: Response)
 
 router.put('/items/:id', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
-    const { code, name, cost, wholesalePrice, retailPrice, warrantyPeriod, requiresSerial, type, description } = req.body;
+    const { code, name, cost, wholesalePrice, retailPrice, warrantyPeriod, requiresSerial, type, description, minStock } = req.body;
     const id = parseInt(req.params.id as string);
     const item = await prisma.item.update({
       where: { id },
@@ -155,7 +156,8 @@ router.put('/items/:id', authenticateToken, async (req: AuthRequest, res: Respon
         warrantyPeriod,
         requiresSerial,
         type,
-        description
+        description,
+        minStock: minStock !== undefined ? parseInt(minStock) : undefined
       }
     });
     res.json(item);
@@ -469,7 +471,8 @@ router.post('/invoices', authenticateToken, async (req: AuthRequest, res: Respon
       finalAmount,
       paymentMethod,
       paymentDetails,
-      notes
+      notes,
+      redeemPoints
     } = req.body;
 
     if (!cartItems || cartItems.length === 0) {
@@ -576,13 +579,28 @@ router.post('/invoices', authenticateToken, async (req: AuthRequest, res: Respon
         }
       }
 
-      // Update customer credit balance if applicable
+      // Update customer credit balance and loyalty points if applicable
       if (customerId) {
         const customer = await tx.customer.findUnique({ where: { id: customerId } });
-        if (customer && customer.isCreditCorporate) {
+        if (customer) {
+          const earnedPoints = Math.floor(finalAmount / 100); // 1 point per 100 spent
+          const usedPoints = redeemPoints ? parseInt(redeemPoints) : 0;
+          
+          if (usedPoints > customer.loyaltyPoints) {
+            throw new Error('Customer does not have enough loyalty points to redeem.');
+          }
+
+          let newBalance = customer.balance;
+          if (customer.isCreditCorporate) {
+            newBalance += finalAmount;
+          }
+
           await tx.customer.update({
             where: { id: customerId },
-            data: { balance: customer.balance + finalAmount }
+            data: { 
+              balance: newBalance,
+              loyaltyPoints: customer.loyaltyPoints + earnedPoints - usedPoints
+            }
           });
         }
       }

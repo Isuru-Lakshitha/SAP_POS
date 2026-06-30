@@ -38,6 +38,7 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
   const [itemRequireSerial, setItemRequireSerial] = useState(false);
   const [itemType, setItemType] = useState('PRODUCT');
   const [itemDesc, setItemDesc] = useState('');
+  const [itemMinStock, setItemMinStock] = useState('5');
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -60,7 +61,7 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
     setEditingItem(null);
     setItemCode(''); setItemName(''); setItemCost('0');
     setItemWholesale('0'); setItemRetail(''); setItemWarranty('1 Year');
-    setItemRequireSerial(false); setItemType('PRODUCT'); setItemDesc('');
+    setItemRequireSerial(false); setItemType('PRODUCT'); setItemDesc(''); setItemMinStock('5');
     setIsModalOpen(true);
   };
 
@@ -70,7 +71,7 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
     setItemCost(item.cost.toString()); setItemWholesale(item.wholesalePrice.toString());
     setItemRetail(item.retailPrice.toString()); setItemWarranty(item.warrantyPeriod);
     setItemRequireSerial(item.requiresSerial); setItemType(item.type);
-    setItemDesc(item.description || '');
+    setItemDesc(item.description || ''); setItemMinStock((item.minStock || 5).toString());
     setIsModalOpen(true);
   };
 
@@ -89,6 +90,7 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
         warrantyPeriod: itemWarranty, requiresSerial: itemRequireSerial,
         type: itemType, stock: editingItem ? editingItem.stock : 0,
         description: itemDesc || undefined,
+        minStock: parseInt(itemMinStock) || 5,
       };
       if (editingItem) {
         const updated = await api.items.update(editingItem.id, payload);
@@ -481,12 +483,22 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
                 </select>
               </div>
 
-              {/* Description */}
-              <div>
-                <label style={labelStyle}>Description (Optional)</label>
-                <textarea placeholder="Specs, features, size etc." rows={2} value={itemDesc}
-                  onChange={e => setItemDesc(e.target.value)}
-                  style={{ ...inputStyle, resize: 'none', lineHeight: 1.5 }} />
+              {/* Description + Min Stock */}
+              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 12 }}>
+                <div>
+                  <label style={labelStyle}>Description / Notes</label>
+                  <textarea placeholder="Optional details..." value={itemDesc}
+                    onChange={e => setItemDesc(e.target.value)}
+                    style={{ ...inputStyle, minHeight: 40, resize: 'vertical' }} />
+                </div>
+                {itemType === 'PRODUCT' && (
+                  <div>
+                    <label style={labelStyle}>Min Stock</label>
+                    <input type="number" min="0" value={itemMinStock}
+                      onChange={e => setItemMinStock(e.target.value)}
+                      style={{ ...inputStyle, fontWeight: 700 }} />
+                  </div>
+                )}
               </div>
 
               {/* Serial number toggle */}

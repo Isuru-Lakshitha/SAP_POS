@@ -54,6 +54,7 @@ model Item {
   requiresSerial Boolean             @default(false)
   type           String              @default("PRODUCT") // "PRODUCT" or "SERVICE"
   description    String?
+  minStock       Int                 @default(5)
   cartItems      CartItem[]
   stocks         Stock[]
   serials        Serial[]
@@ -120,6 +121,7 @@ model Customer {
   address           String?
   isCreditCorporate Boolean   @default(false)
   balance           Float     @default(0.0)
+  loyaltyPoints     Float     @default(0.0)
   invoices          Invoice[]
 }
 

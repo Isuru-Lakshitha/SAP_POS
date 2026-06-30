@@ -60,6 +60,8 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
   const [newCustPhone, setNewCustPhone] = useState('');
   const [newCustAddress, setNewCustAddress] = useState('');
   const [newCustIsCredit, setNewCustIsCredit] = useState(false);
+  const [redeemPoints, setRedeemPoints] = useState<number>(0);
+  const [barcodeBuffer, setBarcodeBuffer] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
@@ -93,6 +95,38 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
     } catch (err: any) { setError('Initialization failed: ' + err.message); }
     finally { setLoading(false); }
   };
+
+  // Global Barcode Scanner Listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if currently typing in an input/textarea
+      const activeElement = document.activeElement;
+      if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.tagName === 'SELECT')) {
+        return;
+      }
+      
+      // If it's a character or Enter, handle it
+      if (e.key === 'Enter') {
+        if (barcodeBuffer.trim()) {
+          // Find item by code
+          const found = items.find(i => i.code.toLowerCase() === barcodeBuffer.trim().toLowerCase());
+          if (found) {
+            addToCart(found);
+          }
+          setBarcodeBuffer('');
+        }
+      } else if (e.key.length === 1) { // Normal character
+        setBarcodeBuffer(prev => prev + e.key);
+        // Clear buffer if it gets too old (barcode scanners type very fast)
+        if ((window as any).barcodeTimeout) clearTimeout((window as any).barcodeTimeout);
+        (window as any).barcodeTimeout = setTimeout(() => {
+          setBarcodeBuffer('');
+        }, 100);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [barcodeBuffer, items]);
 
   const fetchLocationStock = async (locId: number) => {
     try {
@@ -146,7 +180,8 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
 
   const getSubtotal = () => cart.reduce((sum, i) => sum + i.unitPrice * i.quantity, 0);
   const getItemDiscountsTotal = () => cart.reduce((sum, i) => sum + i.discount * i.quantity, 0);
-  const getFinalTotal = () => Math.max(0, getSubtotal() - getItemDiscountsTotal() - cartDiscount);
+  const calcTotal = () => getSubtotal() - getItemDiscountsTotal();
+  const getFinalTotal = () => Math.max(0, calcTotal() - cartDiscount - redeemPoints);
 
   const handleRegisterCustomer = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -168,7 +203,7 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
       const cash = parseFloat(cashReceived) || 0;
       setChangeAmount(Math.max(0, cash - getFinalTotal()));
     }
-  }, [cashReceived, paymentMethod, cart, cartDiscount]);
+  }, [cashReceived, paymentMethod, cart, cartDiscount, redeemPoints]);
 
   const handleCheckout = async () => {
     if (cart.length === 0) { setError('Cart is empty.'); return; }
@@ -191,11 +226,12 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
         totalAmount: getSubtotal(), discountAmount: getItemDiscountsTotal() + cartDiscount,
         finalAmount: getFinalTotal(), paymentMethod,
         paymentDetails: paymentMethod === 'CASH' ? `Cash Received: LKR ${cashReceived}` : paymentDetails, notes,
+        redeemPoints: redeemPoints > 0 ? redeemPoints : undefined
       });
       confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 }, colors: ['#06b6d4', '#8b5cf6', '#10b981'] });
       setCompletedInvoice(invoice);
       setIsCheckoutOpen(false);
-      setCart([]); setCartDiscount(0); setNotes(''); setCashReceived(''); setPaymentDetails('');
+      setCart([]); setCartDiscount(0); setNotes(''); setCashReceived(''); setPaymentDetails(''); setRedeemPoints(0);
       if (selectedLocationId) fetchLocationStock(selectedLocationId);
     } catch (err: any) { setError(err.message); }
     finally { setLoading(false); }
@@ -209,7 +245,7 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
   const filteredItems = items.filter(i =>
     i.name.toLowerCase().includes(itemSearch.toLowerCase()) || i.code.toLowerCase().includes(itemSearch.toLowerCase())
   );
-  const selectedCustomer = customers.find(c => c.id === selectedCustomerId);
+  const selectedCustomerData = customers.find(c => c.id === selectedCustomerId);
   const selectedLocation = locations.find(l => l.id === selectedLocationId);
 
   // ── RENDER ──────────────────────────────────────────────────────────────────
@@ -235,7 +271,7 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
                   <div style={{ position: 'absolute', left: 0, right: 0, top: '100%', marginTop: 4, background: '#fff', border: '1.5px solid #e2e8f0', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,0.12)', zIndex: 30, maxHeight: 220, overflowY: 'auto' }}>
                     {filteredCustomers.length > 0 ? filteredCustomers.map(cust => (
                       <button key={cust.id} type="button"
-                        onClick={() => { setSelectedCustomerId(cust.id); setCustomerSearch(''); }}
+                        onClick={() => { setSelectedCustomerId(cust.id); setCustomerSearch(''); setRedeemPoints(0); }}
                         style={{ width: '100%', textAlign: 'left', padding: '9px 14px', border: 'none', background: selectedCustomerId === cust.id ? 'rgba(124,58,237,0.06)' : 'transparent', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #f1f5f9' }}
                         onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(124,58,237,0.06)'; }}
                         onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = selectedCustomerId === cust.id ? 'rgba(124,58,237,0.06)' : 'transparent'; }}
@@ -269,13 +305,14 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
             </div>
 
             {/* Selected customer chip */}
-            {selectedCustomer ? (
+            {selectedCustomerData ? (
               <div style={{ padding: '8px 14px', borderRadius: 10, background: 'rgba(124,58,237,0.06)', border: '1.5px solid rgba(124,58,237,0.2)', minWidth: 130 }}>
                 <p style={{ margin: 0, fontSize: 10, color: '#7c3aed', fontWeight: 600 }}>Customer</p>
                 <p style={{ margin: '2px 0 0', fontSize: 12, fontWeight: 800, color: '#1e293b' }}>
-                  {selectedCustomer.name}
-                  {selectedCustomer.isCreditCorporate && <span style={{ fontSize: 10, color: '#7c3aed', marginLeft: 5 }}>(Credit)</span>}
+                  {selectedCustomerData.name}
+                  {selectedCustomerData.isCreditCorporate && <span style={{ fontSize: 10, color: '#7c3aed', marginLeft: 5 }}>(Credit)</span>}
                 </p>
+                <p style={{ margin: '2px 0 0', fontSize: 10, color: '#6366f1', fontWeight: 700 }}>Points: {selectedCustomerData.loyaltyPoints || 0}</p>
               </div>
             ) : (
               <div style={{ padding: '8px 14px', borderRadius: 10, background: 'rgba(245,158,11,0.06)', border: '1.5px solid rgba(245,158,11,0.25)' }}>
@@ -468,7 +505,7 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
               <div>
                 <h3 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: '#fff' }}>Invoice Summary</h3>
                 <p style={{ margin: 0, fontSize: 11, color: 'rgba(255,255,255,0.55)' }}>
-                  {cart.reduce((s, i) => s + i.quantity, 0)} items · {selectedCustomer?.name || 'Walk-in'}
+                  {cart.reduce((s, i) => s + i.quantity, 0)} items · {selectedCustomerData?.name || 'Walk-in'}
                 </p>
               </div>
             </div>
@@ -492,15 +529,21 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
             )}
 
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: 12, color: '#64748b' }}>Subtotal</span>
-              <span style={{ fontSize: 12, fontWeight: 700, fontFamily: 'monospace', color: '#1e293b' }}>LKR {getSubtotal().toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+              <span style={{ fontSize: 12, color: '#64748b' }}>Gross Total</span>
+              <span style={{ fontSize: 12, fontWeight: 700, fontFamily: 'monospace', color: '#1e293b' }}>LKR {calcTotal().toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
             </div>
-            {getItemDiscountsTotal() > 0 && (
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: 12, color: '#10b981' }}>Item Discounts</span>
-                <span style={{ fontSize: 12, fontWeight: 700, fontFamily: 'monospace', color: '#10b981' }}>- LKR {getItemDiscountsTotal().toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+            
+            {selectedCustomerData && (selectedCustomerData.loyaltyPoints || 0) > 0 && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+                <span style={{ fontSize: 12, color: '#d97706', whiteSpace: 'nowrap', fontWeight: 600 }}>Redeem Points (Max: {selectedCustomerData.loyaltyPoints})</span>
+                <div style={{ position: 'relative', width: 120 }}>
+                  <input type="number" min="0" max={selectedCustomerData.loyaltyPoints} placeholder="0" value={redeemPoints || ''}
+                    onChange={e => setRedeemPoints(Math.min(parseInt(e.target.value) || 0, selectedCustomerData.loyaltyPoints || 0))}
+                    style={{ ...inp, paddingLeft: 8, paddingRight: 8, paddingTop: 6, paddingBottom: 6, fontFamily: 'monospace', fontWeight: 700, textAlign: 'right' }} />
+                </div>
               </div>
             )}
+
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
               <span style={{ fontSize: 12, color: '#64748b', whiteSpace: 'nowrap' }}>Extra Discount</span>
               <div style={{ position: 'relative', width: 120 }}>

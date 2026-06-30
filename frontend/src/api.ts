@@ -184,6 +184,7 @@ export const api = {
       paymentMethod: 'CASH' | 'CARD' | 'CHEQUE' | 'KOKO' | 'BANK_TRANSFER';
       paymentDetails?: string;
       notes?: string;
+      redeemPoints?: number;
     }) {
       const res = await fetch(`${API_BASE_URL}/pos/invoices`, {
         method: 'POST',

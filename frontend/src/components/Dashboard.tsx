@@ -5,7 +5,7 @@ import {
 } from 'recharts';
 import {
   ShoppingCart, Package, TrendingUp, Users, DollarSign,
-  ArrowUpRight, ArrowDownRight, RefreshCw, BarChart2, Layers
+  ArrowUpRight, ArrowDownRight, RefreshCw, BarChart2, Layers, AlertTriangle
 } from 'lucide-react';
 
 const TOKEN = () => localStorage.getItem('sap_pos_token');
@@ -30,6 +30,7 @@ export default function Dashboard() {
   const [stockRecords, setStockRecords] = useState<StockRecord[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [customers, setCustomers] = useState<number>(0);
+  const [lowStock, setLowStock] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => { loadAll(); }, []);
@@ -37,19 +38,21 @@ export default function Dashboard() {
   const loadAll = async () => {
     setLoading(true);
     try {
-      const [profitRes, stockRes, invRes, custRes] = await Promise.all([
+      const [profitRes, stockRes, invRes, custRes, lowStockRes] = await Promise.all([
         fetch(`${BASE}/reports/profit-viewer`, { headers: auth() }),
         fetch(`${BASE}/reports/stock-in-hand`, { headers: auth() }),
         fetch(`${BASE}/pos/invoices`, { headers: auth() }),
         fetch(`${BASE}/pos/customers`, { headers: auth() }),
+        fetch(`${BASE}/reports/low-stock`, { headers: auth() }),
       ]);
-      const [profitData, stockData, invData, custData] = await Promise.all([
-        profitRes.json(), stockRes.json(), invRes.json(), custRes.json()
+      const [profitData, stockData, invData, custData, lowStockData] = await Promise.all([
+        profitRes.json(), stockRes.json(), invRes.json(), custRes.json(), lowStockRes.json()
       ]);
       if (profitData.summary) { setProfit(profitData.summary); setProfitRecords(profitData.records || []); }
       if (stockData.summary) { setStock(stockData.summary); setStockRecords(stockData.records || []); }
       if (Array.isArray(invData)) setInvoices(invData);
       if (Array.isArray(custData)) setCustomers(custData.length);
+      if (Array.isArray(lowStockData)) setLowStock(lowStockData);
     } catch (e) { console.error(e); }
     setLoading(false);
   };
@@ -312,58 +315,99 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* ── Recent Invoices Table ──────────────────────────────────────── */}
-      <div style={{
-        background: 'var(--bg-card)', borderRadius: 18, padding: '22px 24px',
-        boxShadow: '8px 8px 20px #cdd0db, -8px -8px 20px #ffffff',
-        border: '1px solid rgba(255,255,255,0.75)',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-          <div>
-            <h3 style={{ fontSize: 15, fontWeight: 800, color: '#1e293b', margin: 0 }}>Recent Transactions</h3>
-            <p style={{ fontSize: 11, color: '#94a3b8', marginTop: 3 }}>Latest 5 invoices</p>
+      {/* ── Bottom Grid (Invoices & Low Stock) ─────────────────────────── */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        
+        {/* Recent Invoices Table */}
+        <div style={{
+          background: 'var(--bg-card)', borderRadius: 18, padding: '22px 24px',
+          boxShadow: '8px 8px 20px #cdd0db, -8px -8px 20px #ffffff',
+          border: '1px solid rgba(255,255,255,0.75)',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+            <div>
+              <h3 style={{ fontSize: 15, fontWeight: 800, color: '#1e293b', margin: 0 }}>Recent Transactions</h3>
+              <p style={{ fontSize: 11, color: '#94a3b8', marginTop: 3 }}>Latest 5 invoices</p>
+            </div>
+            <Layers size={18} style={{ color: '#94a3b8' }} />
           </div>
-          <Layers size={18} style={{ color: '#94a3b8' }} />
+
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+            <thead>
+              <tr>
+                {['Invoice #', 'Customer', 'Amount'].map(h => (
+                  <th key={h} style={{
+                    textAlign: 'left', padding: '8px 12px', fontSize: 10, fontWeight: 700,
+                    color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em',
+                    borderBottom: '1px solid rgba(0,0,0,0.06)',
+                  }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {recentInvoices.map((inv, i) => (
+                <tr key={inv.id} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(124,58,237,0.03)' }}>
+                  <td style={{ padding: '10px 12px', fontWeight: 700, color: '#7c3aed' }}>{inv.invoiceNumber}</td>
+                  <td style={{ padding: '10px 12px', color: '#475569', fontWeight: 500 }}>
+                    {inv.customer?.name ?? 'Walk-in'}
+                  </td>
+                  <td style={{ padding: '10px 12px', fontWeight: 700, color: '#1e293b' }}>{fmt(inv.finalAmount)}</td>
+                </tr>
+              ))}
+              {recentInvoices.length === 0 && (
+                <tr>
+                  <td colSpan={3} style={{ padding: '24px', textAlign: 'center', color: '#94a3b8' }}>No transactions yet</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
 
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
-          <thead>
-            <tr>
-              {['Invoice #', 'Date', 'Customer', 'Amount', 'Status'].map(h => (
-                <th key={h} style={{
-                  textAlign: 'left', padding: '8px 12px', fontSize: 10, fontWeight: 700,
-                  color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em',
-                  borderBottom: '1px solid rgba(0,0,0,0.06)',
-                }}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {recentInvoices.map((inv, i) => (
-              <tr key={inv.id} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(124,58,237,0.03)' }}>
-                <td style={{ padding: '10px 12px', fontWeight: 700, color: '#7c3aed' }}>{inv.invoiceNumber}</td>
-                <td style={{ padding: '10px 12px', color: '#64748b' }}>
-                  {new Date(inv.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' })}
-                </td>
-                <td style={{ padding: '10px 12px', color: '#475569', fontWeight: 500 }}>
-                  {inv.customer?.name ?? 'Walk-in Customer'}
-                </td>
-                <td style={{ padding: '10px 12px', fontWeight: 700, color: '#1e293b' }}>{fmt(inv.finalAmount)}</td>
-                <td style={{ padding: '10px 12px' }}>
-                  <span style={{
-                    padding: '3px 10px', borderRadius: 20, fontSize: 10, fontWeight: 700,
-                    background: 'rgba(16,185,129,0.12)', color: '#10b981',
-                  }}>Completed</span>
-                </td>
-              </tr>
-            ))}
-            {recentInvoices.length === 0 && (
+        {/* Low Stock Alerts */}
+        <div style={{
+          background: 'var(--bg-card)', borderRadius: 18, padding: '22px 24px',
+          boxShadow: '8px 8px 20px #cdd0db, -8px -8px 20px #ffffff',
+          border: '1px solid rgba(255,255,255,0.75)',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+            <div>
+              <h3 style={{ fontSize: 15, fontWeight: 800, color: '#1e293b', margin: 0 }}>Low Stock Alerts</h3>
+              <p style={{ fontSize: 11, color: '#94a3b8', marginTop: 3 }}>Items at or below minimum threshold</p>
+            </div>
+            <AlertTriangle size={18} style={{ color: '#ef4444' }} />
+          </div>
+
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+            <thead>
               <tr>
-                <td colSpan={5} style={{ padding: '24px', textAlign: 'center', color: '#94a3b8' }}>No transactions yet</td>
+                {['Item', 'Min', 'Current Stock'].map(h => (
+                  <th key={h} style={{
+                    textAlign: 'left', padding: '8px 12px', fontSize: 10, fontWeight: 700,
+                    color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em',
+                    borderBottom: '1px solid rgba(0,0,0,0.06)',
+                  }}>{h}</th>
+                ))}
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {lowStock.map((item, i) => (
+                <tr key={item.id} style={{ background: item.currentStock === 0 ? 'rgba(239,68,68,0.08)' : (i % 2 === 0 ? 'transparent' : 'rgba(245,158,11,0.05)') }}>
+                  <td style={{ padding: '10px 12px', fontWeight: 600, color: '#1e293b' }}>{item.name}</td>
+                  <td style={{ padding: '10px 12px', color: '#64748b' }}>{item.minStock}</td>
+                  <td style={{ padding: '10px 12px', fontWeight: 700, color: item.currentStock === 0 ? '#ef4444' : '#d97706' }}>
+                    {item.currentStock}
+                  </td>
+                </tr>
+              ))}
+              {lowStock.length === 0 && (
+                <tr>
+                  <td colSpan={3} style={{ padding: '24px', textAlign: 'center', color: '#10b981', fontWeight: 600 }}>Stock levels look good!</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
       </div>
 
     </div>

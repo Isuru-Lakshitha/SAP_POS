@@ -10,9 +10,11 @@ export interface Customer {
   id: number;
   name: string;
   telephone: string;
-  address?: string | null;
+  address?: string;
   isCreditCorporate: boolean;
   balance: number;
+  loyaltyPoints?: number;
+  createdAt: string;
 }
 
 export interface Item {
@@ -25,8 +27,9 @@ export interface Item {
   price: number; // legacy pricing support
   warrantyPeriod: string;
   requiresSerial: boolean;
-  stock: number;
   type: 'PRODUCT' | 'SERVICE';
+  stock: number;
+  minStock?: number;
   description?: string | null;
 }
 

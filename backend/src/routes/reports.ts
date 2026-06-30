@@ -363,4 +363,46 @@ router.get('/backup', authenticateToken, requireRole(['SUPERADMIN']), async (req
   }
 });
 
+// 6. Low Stock Alerts
+router.get('/low-stock', authenticateToken, requireRole(['SUPERADMIN', 'ADMIN']), async (req: AuthRequest, res: Response) => {
+  try {
+    const items = await prisma.item.findMany({
+      include: {
+        stocks: {
+          include: { location: true }
+        }
+      }
+    });
+
+    const lowStockAlerts: any[] = [];
+
+    items.forEach(item => {
+      let totalStock = 0;
+      const locationsStock: any[] = [];
+      
+      item.stocks.forEach(stock => {
+        totalStock += stock.quantity;
+        if (stock.quantity > 0) {
+          locationsStock.push({ location: stock.location.name, quantity: stock.quantity });
+        }
+      });
+
+      if (totalStock <= item.minStock) {
+        lowStockAlerts.push({
+          id: item.id,
+          code: item.code,
+          name: item.name,
+          minStock: item.minStock,
+          currentStock: totalStock,
+          locations: locationsStock
+        });
+      }
+    });
+
+    res.json(lowStockAlerts);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export default router;
