@@ -1,6 +1,7 @@
 import { Router, Response } from 'express';
 import prisma from '../db';
 import { authenticateToken, requireRole, AuthRequest } from './auth';
+import ExcelJS from 'exceljs';
 
 const router = Router();
 
@@ -283,6 +284,80 @@ router.get('/profit-viewer', authenticateToken, requireRole(['ADMIN', 'SUPERADMI
       },
       records: invoiceProfits
     });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 5. Database Backup to Excel
+router.get('/backup', authenticateToken, requireRole(['SUPERADMIN']), async (req: AuthRequest, res: Response) => {
+  try {
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = 'SAP POS System';
+    workbook.created = new Date();
+
+    // 1. Items
+    const items = await prisma.item.findMany();
+    const wsItems = workbook.addWorksheet('Products');
+    wsItems.columns = [
+      { header: 'ID', key: 'id', width: 10 },
+      { header: 'Code', key: 'code', width: 20 },
+      { header: 'Name', key: 'name', width: 30 },
+      { header: 'Cost', key: 'cost', width: 15 },
+      { header: 'Wholesale', key: 'wholesalePrice', width: 15 },
+      { header: 'Retail', key: 'retailPrice', width: 15 },
+      { header: 'Type', key: 'type', width: 15 },
+      { header: 'Requires Serial', key: 'requiresSerial', width: 15 }
+    ];
+    items.forEach(i => wsItems.addRow(i));
+
+    // 2. Customers
+    const customers = await prisma.customer.findMany();
+    const wsCustomers = workbook.addWorksheet('Customers');
+    wsCustomers.columns = [
+      { header: 'ID', key: 'id', width: 10 },
+      { header: 'Name', key: 'name', width: 30 },
+      { header: 'Telephone', key: 'telephone', width: 20 },
+      { header: 'Address', key: 'address', width: 30 },
+      { header: 'Type', key: 'isCreditCorporate', width: 15 }
+    ];
+    customers.forEach(c => wsCustomers.addRow({ ...c, isCreditCorporate: c.isCreditCorporate ? 'Corporate' : 'Regular' }));
+
+    // 3. Stock
+    const stocks = await prisma.stock.findMany({ include: { item: true, location: true } });
+    const wsStock = workbook.addWorksheet('Stock');
+    wsStock.columns = [
+      { header: 'Location', key: 'location', width: 20 },
+      { header: 'Item Code', key: 'code', width: 20 },
+      { header: 'Item Name', key: 'name', width: 30 },
+      { header: 'Quantity', key: 'quantity', width: 15 }
+    ];
+    stocks.forEach(s => wsStock.addRow({ location: s.location.name, code: s.item.code, name: s.item.name, quantity: s.quantity }));
+
+    // 4. Invoices
+    const invoices = await prisma.invoice.findMany({ include: { customer: true, location: true, cashier: true } });
+    const wsInvoices = workbook.addWorksheet('Invoices');
+    wsInvoices.columns = [
+      { header: 'Inv No', key: 'invoiceNumber', width: 20 },
+      { header: 'Date', key: 'date', width: 20 },
+      { header: 'Location', key: 'location', width: 20 },
+      { header: 'Customer', key: 'customer', width: 30 },
+      { header: 'Cashier', key: 'cashier', width: 20 },
+      { header: 'Total', key: 'totalAmount', width: 15 },
+      { header: 'Final', key: 'finalAmount', width: 15 },
+      { header: 'Payment', key: 'paymentMethod', width: 15 }
+    ];
+    invoices.forEach(inv => wsInvoices.addRow({ 
+      invoiceNumber: inv.invoiceNumber, date: inv.date, location: inv.location.name,
+      customer: inv.customer?.name || 'Walk-in', cashier: inv.cashier.username,
+      totalAmount: inv.totalAmount, finalAmount: inv.finalAmount, paymentMethod: inv.paymentMethod
+    }));
+
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=sappos_backup.xlsx');
+    
+    await workbook.xlsx.write(res);
+    res.end();
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UserCheck, ShieldAlert, Key, Trash2, X, Plus, Shield, User, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { UserCheck, ShieldAlert, Key, Trash2, X, Plus, Shield, User, RefreshCw, CheckCircle2, Download } from 'lucide-react';
 import { api } from '../api';
 import type { User as UserType } from '../types';
 
@@ -82,6 +82,31 @@ export default function AdminConsole({ currentUser }: AdminConsoleProps) {
       setPendingResets(data);
     } catch (err: any) {
       console.error('Failed to load pending password resets:', err);
+    }
+  };
+
+  const handleDownloadBackup = async () => {
+    try {
+      setLoading(true); setError(null);
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/reports/backup`, {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('sap_pos_token')}` }
+      });
+      if (!res.ok) throw new Error('Backup download failed. Ensure you have Superadmin access.');
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `sappos_backup_${new Date().toISOString().split('T')[0]}.xlsx`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      setSuccessMsg('Excel backup downloaded successfully.');
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+      setTimeout(() => setSuccessMsg(null), 4000);
     }
   };
 
@@ -170,9 +195,16 @@ export default function AdminConsole({ currentUser }: AdminConsoleProps) {
                 : 'Admin Console: Create cashiers and approve security requests'}
             </p>
           </div>
-          <button onClick={() => setIsRegisterOpen(true)} style={{ padding: '8px 16px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg,#6366f1,#4f46e5)', color: '#fff', fontWeight: 700, fontSize: 12, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 4px 14px rgba(99,102,241,0.3)' }}>
-            <Plus style={{ width: 14, height: 14 }} /> Register Operator
-          </button>
+          <div style={{ display: 'flex', gap: 10 }}>
+            {isSuperAdmin && (
+              <button onClick={handleDownloadBackup} disabled={loading} style={{ padding: '8px 16px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg,#059669,#047857)', color: '#fff', fontWeight: 700, fontSize: 12, cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 4px 14px rgba(5,150,105,0.3)' }}>
+                <Download style={{ width: 14, height: 14 }} /> Export Backup
+              </button>
+            )}
+            <button onClick={() => setIsRegisterOpen(true)} style={{ padding: '8px 16px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg,#6366f1,#4f46e5)', color: '#fff', fontWeight: 700, fontSize: 12, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 4px 14px rgba(99,102,241,0.3)' }}>
+              <Plus style={{ width: 14, height: 14 }} /> Register Operator
+            </button>
+          </div>
         </div>
 
         {/* Alerts */}
