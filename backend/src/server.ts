@@ -7,7 +7,7 @@ import authRouter from './routes/auth';
 import posRouter from './routes/pos';
 import accountsRouter from './routes/accounts';
 import reportsRouter from './routes/reports';
-import { initBackupJob } from './jobs/backupJob';
+
 
 dotenv.config();
 
@@ -117,5 +117,4 @@ async function seedDatabase() {
 app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
   await seedDatabase();
-  initBackupJob();
 });

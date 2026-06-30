@@ -26,6 +26,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [showBackupReminder, setShowBackupReminder] = useState(false);
 
   // Restore session from localStorage
   useEffect(() => {
@@ -52,6 +53,9 @@ export default function App() {
       setToken(res.token);
       setUser(res.user);
       setActiveTab(res.user.role === 'USER' ? 'mystock' : 'dashboard');
+      if (res.user.role === 'SUPERADMIN') {
+        setShowBackupReminder(true);
+      }
       setUsername(''); setPassword('');
     } catch (err: any) {
       setError(err.message || 'Login failed. Please check credentials.');
@@ -385,6 +389,71 @@ export default function App() {
           {activeTab === 'reports'    && <ReportsManager />}
           {activeTab === 'admin'      && <AdminConsole currentUser={user} />}
         </main>
+
+        {/* Superadmin Backup Reminder Modal */}
+        {showBackupReminder && (
+          <div style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            background: 'rgba(15,23,42,0.6)', backdropFilter: 'blur(4px)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999
+          }}>
+            <div style={{
+              background: '#fff', borderRadius: 20, width: 420, padding: 30,
+              boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #e2e8f0',
+              textAlign: 'center'
+            }}>
+              <div style={{
+                background: '#ebf8ff', width: 64, height: 64, borderRadius: '50%',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px',
+                color: '#3b82f6'
+              }}>
+                <ShieldAlert size={32} />
+              </div>
+              <h2 style={{ fontSize: 20, fontWeight: 800, color: '#1e293b', marginBottom: 10 }}>Database Backup Reminder</h2>
+              <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.5, marginBottom: 24 }}>
+                Welcome, Superadmin! It is highly recommended to take a regular backup of your system data. Would you like to download a full Excel backup now?
+              </p>
+              <div style={{ display: 'flex', gap: 12 }}>
+                <button onClick={() => setShowBackupReminder(false)} style={{
+                  flex: 1, padding: '12px 0', border: '1px solid #cbd5e1', borderRadius: 10,
+                  background: '#fff', color: '#475569', fontSize: 13, fontWeight: 700, cursor: 'pointer'
+                }}>
+                  Remind Me Later
+                </button>
+                <button 
+                  onClick={async () => {
+                    try {
+                      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/reports/backup`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                      });
+                      if (!res.ok) {
+                        const errText = await res.text();
+                        throw new Error(`Backup failed: ${errText}`);
+                      }
+                      const blob = await res.blob();
+                      const url = window.URL.createObjectURL(blob);
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.download = `sappos_backup_${new Date().toISOString().split('T')[0]}.xlsx`;
+                      document.body.appendChild(a);
+                      a.click();
+                      a.remove();
+                      setShowBackupReminder(false);
+                    } catch (err: any) {
+                      alert(err.message);
+                    }
+                  }}
+                  style={{
+                  flex: 1, padding: '12px 0', border: 'none', borderRadius: 10,
+                  background: '#3b82f6', color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(59,130,246,0.3)'
+                }}>
+                  Download Backup
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
