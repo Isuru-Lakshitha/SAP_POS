@@ -9,15 +9,15 @@ interface InventoryManagerProps {
 
 const inputStyle: React.CSSProperties = {
   width: '100%', padding: '10px 14px', borderRadius: 10,
-  border: '1.5px solid #e2e8f0', background: '#f8fafc',
-  fontSize: 13, color: '#1e293b', outline: 'none',
+  border: '1.5px solid #e2e8f0', background: 'var(--border-color)',
+  fontSize: 13, color: 'var(--text-main)', outline: 'none',
   boxSizing: 'border-box', fontFamily: 'inherit',
   boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.04)',
   transition: 'border-color 0.2s, box-shadow 0.2s',
 };
 
 const labelStyle: React.CSSProperties = {
-  fontSize: 11, color: '#64748b', fontWeight: 700,
+  fontSize: 11, color: 'var(--text-muted)', fontWeight: 700,
   textTransform: 'uppercase', letterSpacing: '0.06em',
   display: 'block', marginBottom: 6,
 };
@@ -137,7 +137,7 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
 
       {/* ── HEADER CARD ─────────────────────────────────────── */}
       <div style={{
-        background: '#ffffff', borderRadius: 18,
+        background: 'var(--bg-card)', borderRadius: 18,
         boxShadow: '0 4px 24px rgba(0,0,0,0.07)',
         border: '1px solid #e8ecf4', padding: '20px 24px',
       }}>
@@ -150,11 +150,11 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               boxShadow: '0 6px 20px rgba(124,58,237,0.35)',
             }}>
-              <Package style={{ width: 22, height: 22, color: '#fff' }} />
+              <Package style={{ width: 22, height: 22, color: 'var(--bg-card)' }} />
             </div>
             <div>
-              <h2 style={{ margin: 0, fontSize: 20, fontWeight: 900, color: '#1e293b', letterSpacing: '-0.02em' }}>Product Registry</h2>
-              <p style={{ margin: 0, fontSize: 12, color: '#94a3b8', marginTop: 2 }}>
+              <h2 style={{ margin: 0, fontSize: 20, fontWeight: 900, color: 'var(--text-main)', letterSpacing: '-0.02em' }}>Product Registry</h2>
+              <p style={{ margin: 0, fontSize: 12, color: 'var(--text-light)', marginTop: 2 }}>
                 Configure models, cost margins, retail and wholesale pricing
               </p>
             </div>
@@ -177,7 +177,7 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 18, flexWrap: 'wrap' }}>
           {/* Search */}
           <div style={{ position: 'relative', flex: 1, minWidth: 200 }}>
-            <Search style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 15, height: 15, color: '#94a3b8' }} />
+            <Search style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 15, height: 15, color: 'var(--text-light)' }} />
             <input
               type="text"
               placeholder="Search by SKU or product name..."
@@ -191,9 +191,9 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
           {(['ALL', 'PRODUCT', 'SERVICE'] as const).map(type => (
             <button key={type} onClick={() => setFilterType(type)} style={{
               padding: '9px 16px', borderRadius: 10, border: '1.5px solid',
-              borderColor: filterType === type ? '#7c3aed' : '#e2e8f0',
-              background: filterType === type ? '#7c3aed' : '#ffffff',
-              color: filterType === type ? '#ffffff' : '#64748b',
+              borderColor: filterType === type ? '#7c3aed' : 'var(--border-color)',
+              background: filterType === type ? '#7c3aed' : 'var(--bg-card)',
+              color: filterType === type ? 'var(--bg-card)' : 'var(--text-muted)',
               fontSize: 12, fontWeight: 700, cursor: 'pointer', transition: 'all 0.15s',
             }}>
               {type === 'ALL' ? `All (${items.length})` : type === 'PRODUCT' ? `Products (${totalProducts})` : `Services (${totalServices})`}
@@ -205,7 +205,7 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
             <button onClick={handleOpenAdd} style={{
               padding: '10px 20px', borderRadius: 10, border: 'none',
               background: 'linear-gradient(135deg, #7c3aed, #4f46e5)',
-              color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer',
+              color: 'var(--bg-card)', fontSize: 13, fontWeight: 700, cursor: 'pointer',
               display: 'flex', alignItems: 'center', gap: 7,
               boxShadow: '0 4px 14px rgba(124,58,237,0.35)',
               transition: 'all 0.2s', whiteSpace: 'nowrap',
@@ -230,11 +230,11 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
 
       {/* ── PRODUCT CARD GRID ─────────────────────────────── */}
       {loading ? (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1, minHeight: 300, color: '#94a3b8', fontSize: 14 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1, minHeight: 300, color: 'var(--text-light)', fontSize: 14 }}>
           Loading catalog…
         </div>
       ) : filteredItems.length === 0 ? (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1, minHeight: 300, color: '#94a3b8' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1, minHeight: 300, color: 'var(--text-light)' }}>
           <Package style={{ width: 48, height: 48, marginBottom: 12, strokeWidth: 1 }} />
           <p style={{ margin: 0, fontSize: 14, fontWeight: 600 }}>No products match your search</p>
           <p style={{ margin: '4px 0 0', fontSize: 12 }}>Try a different SKU or product name</p>
@@ -253,7 +253,7 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
 
             return (
               <div key={item.id} style={{
-                background: '#ffffff', borderRadius: 14,
+                background: 'var(--bg-card)', borderRadius: 14,
                 border: '1.5px solid #e8ecf4',
                 boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
                 overflow: 'hidden', position: 'relative',
@@ -266,7 +266,7 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
                   (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
                 }}
                 onMouseLeave={e => {
-                  (e.currentTarget as HTMLElement).style.borderColor = '#e8ecf4';
+                  (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)';
                   (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 10px rgba(0,0,0,0.05)';
                   (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
                 }}
@@ -294,9 +294,9 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
                       }
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ margin: 0, fontSize: 13, fontWeight: 800, color: '#1e293b', lineHeight: 1.3, wordBreak: 'break-word' }}>{item.name}</p>
+                      <p style={{ margin: 0, fontSize: 13, fontWeight: 800, color: 'var(--text-main)', lineHeight: 1.3, wordBreak: 'break-word' }}>{item.name}</p>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
-                        <span style={{ fontSize: 10, fontWeight: 700, color: '#64748b', background: '#f1f5f9', padding: '2px 7px', borderRadius: 5, fontFamily: 'monospace' }}>
+                        <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-muted)', background: 'var(--border-color)', padding: '2px 7px', borderRadius: 5, fontFamily: 'monospace' }}>
                           {item.code}
                         </span>
                         <span style={{
@@ -313,12 +313,12 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
                   {/* Row 2: Pricing grid */}
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6 }}>
                     {[
-                      { label: 'Cost', value: item.cost, color: '#64748b' },
+                      { label: 'Cost', value: item.cost, color: 'var(--text-muted)' },
                       { label: 'Wholesale', value: item.wholesalePrice, color: '#f59e0b' },
                       { label: 'Retail', value: item.retailPrice, color: '#7c3aed' },
                     ].map(p => (
-                      <div key={p.label} style={{ background: '#f8fafc', borderRadius: 8, padding: '8px 10px', textAlign: 'center' }}>
-                        <p style={{ margin: 0, fontSize: 9, color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{p.label}</p>
+                      <div key={p.label} style={{ background: 'var(--border-color)', borderRadius: 8, padding: '8px 10px', textAlign: 'center' }}>
+                        <p style={{ margin: 0, fontSize: 9, color: 'var(--text-light)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{p.label}</p>
                         <p style={{ margin: '3px 0 0', fontSize: 12, fontWeight: 800, color: p.color, fontFamily: 'monospace' }}>
                           {p.value.toLocaleString('en-US', { minimumFractionDigits: 0 })}
                         </p>
@@ -328,9 +328,9 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
 
                   {/* Row 3: Warranty + Serial + Margin */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '3px 8px', borderRadius: 6, background: '#f1f5f9' }}>
-                      <ShieldCheck style={{ width: 11, height: 11, color: '#64748b' }} />
-                      <span style={{ fontSize: 10, color: '#64748b', fontWeight: 600 }}>{item.warrantyPeriod}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '3px 8px', borderRadius: 6, background: 'var(--border-color)' }}>
+                      <ShieldCheck style={{ width: 11, height: 11, color: 'var(--text-muted)' }} />
+                      <span style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 600 }}>{item.warrantyPeriod}</span>
                     </div>
                     {item.requiresSerial && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '3px 8px', borderRadius: 6, background: 'rgba(239,68,68,0.08)' }}>
@@ -347,7 +347,7 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
 
                   {/* Description */}
                   {item.description && (
-                    <p style={{ margin: 0, fontSize: 11, color: '#94a3b8', lineHeight: 1.5, borderTop: '1px solid #f1f5f9', paddingTop: 8 }}>
+                    <p style={{ margin: 0, fontSize: 11, color: 'var(--text-light)', lineHeight: 1.5, borderTop: '1px solid #f1f5f9', paddingTop: 8 }}>
                       {item.description}
                     </p>
                   )}
@@ -359,12 +359,12 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
                     <button onClick={() => handleOpenEdit(item)} style={{
                       display: 'flex', alignItems: 'center', gap: 5,
                       padding: '6px 12px', borderRadius: 8,
-                      border: '1.5px solid #e2e8f0', background: '#fff',
-                      color: '#64748b', fontSize: 11, fontWeight: 700, cursor: 'pointer',
+                      border: '1.5px solid #e2e8f0', background: 'var(--bg-card)',
+                      color: 'var(--text-muted)', fontSize: 11, fontWeight: 700, cursor: 'pointer',
                       transition: 'all 0.15s',
                     }}
                       onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#7c3aed'; (e.currentTarget as HTMLElement).style.color = '#7c3aed'; }}
-                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e2e8f0'; (e.currentTarget as HTMLElement).style.color = '#64748b'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)'; }}
                     >
                       <Edit2 style={{ width: 11, height: 11 }} /> Edit
                     </button>
@@ -374,7 +374,7 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
                       color: '#ef4444', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                       transition: 'all 0.15s',
                     }}
-                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#ef4444'; (e.currentTarget as HTMLElement).style.color = '#fff'; }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#ef4444'; (e.currentTarget as HTMLElement).style.color = 'var(--bg-card)'; }}
                       onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#fef2f2'; (e.currentTarget as HTMLElement).style.color = '#ef4444'; }}
                     >
                       <Trash2 style={{ width: 13, height: 13 }} />
@@ -390,22 +390,22 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
       {/* ── ADD / EDIT MODAL ──────────────────────────────── */}
       {isModalOpen && (
         <div style={{
-          position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.6)',
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)',
           backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center',
           justifyContent: 'center', zIndex: 50, padding: 20,
         }}>
           <div style={{
-            background: '#ffffff', borderRadius: 20, width: '100%', maxWidth: 520,
+            background: 'var(--bg-card)', borderRadius: 20, width: '100%', maxWidth: 520,
             boxShadow: '0 20px 60px rgba(0,0,0,0.2)', overflow: 'hidden',
           }}>
             {/* Modal header */}
             <div style={{ background: 'linear-gradient(135deg, #1e1b4b, #4c1d95)', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Package style={{ width: 18, height: 18, color: '#fff' }} />
+                  <Package style={{ width: 18, height: 18, color: 'var(--bg-card)' }} />
                 </div>
                 <div>
-                  <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: '#fff' }}>
+                  <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: 'var(--bg-card)' }}>
                     {editingItem ? 'Edit Product' : 'Register New Item'}
                   </h3>
                   <p style={{ margin: 0, fontSize: 11, color: 'rgba(255,255,255,0.6)' }}>
@@ -413,7 +413,7 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
                   </p>
                 </div>
               </div>
-              <button onClick={() => setIsModalOpen(false)} style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#fff' }}>
+              <button onClick={() => setIsModalOpen(false)} style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--bg-card)' }}>
                 <X style={{ width: 16, height: 16 }} />
               </button>
             </div>
@@ -455,7 +455,7 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
                 <label style={labelStyle}>Pricing (LKR)</label>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
                   {[
-                    { label: 'Cost', val: itemCost, set: setItemCost, color: '#64748b' },
+                    { label: 'Cost', val: itemCost, set: setItemCost, color: 'var(--text-muted)' },
                     { label: 'Wholesale', val: itemWholesale, set: setItemWholesale, color: '#f59e0b' },
                     { label: 'Retail *', val: itemRetail, set: setItemRetail, color: '#7c3aed' },
                   ].map(p => (
@@ -503,13 +503,13 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
 
               {/* Serial number toggle */}
               {itemType === 'PRODUCT' && (
-                <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', padding: '10px 14px', background: '#f8fafc', borderRadius: 10, border: '1.5px solid #e2e8f0' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', padding: '10px 14px', background: 'var(--border-color)', borderRadius: 10, border: '1.5px solid #e2e8f0' }}>
                   <input type="checkbox" id="modalRequireSerial" checked={itemRequireSerial}
                     onChange={e => setItemRequireSerial(e.target.checked)}
                     style={{ width: 16, height: 16, accentColor: '#7c3aed', cursor: 'pointer' }} />
                   <div>
-                    <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: '#1e293b' }}>Requires Serial Number</p>
-                    <p style={{ margin: 0, fontSize: 11, color: '#94a3b8' }}>Cashier must select a serial during POS checkout</p>
+                    <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: 'var(--text-main)' }}>Requires Serial Number</p>
+                    <p style={{ margin: 0, fontSize: 11, color: 'var(--text-light)' }}>Cashier must select a serial during POS checkout</p>
                   </div>
                 </label>
               )}
@@ -518,14 +518,14 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
               <div style={{ display: 'flex', gap: 10, paddingTop: 4, borderTop: '1px solid #f1f5f9' }}>
                 <button type="button" onClick={() => setIsModalOpen(false)} style={{
                   flex: 1, padding: '11px', borderRadius: 10, border: '1.5px solid #e2e8f0',
-                  background: '#fff', color: '#64748b', fontWeight: 700, fontSize: 13, cursor: 'pointer',
+                  background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer',
                 }}>
                   Cancel
                 </button>
                 <button type="submit" disabled={loading} style={{
                   flex: 2, padding: '11px', borderRadius: 10, border: 'none',
                   background: loading ? '#c4b5fd' : 'linear-gradient(135deg, #7c3aed, #4f46e5)',
-                  color: '#fff', fontWeight: 700, fontSize: 13, cursor: loading ? 'not-allowed' : 'pointer',
+                  color: 'var(--bg-card)', fontWeight: 700, fontSize: 13, cursor: loading ? 'not-allowed' : 'pointer',
                   boxShadow: '0 4px 14px rgba(124,58,237,0.35)',
                 }}>
                   {loading ? 'Saving…' : editingItem ? 'Save Changes' : 'Create Registry Entry'}

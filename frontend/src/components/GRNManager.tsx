@@ -13,17 +13,17 @@ interface GRNRow {
 
 // ── shared style atoms ────────────────────────────────────────────────────────
 const card: React.CSSProperties = {
-  background: '#ffffff', borderRadius: 16,
+  background: 'var(--bg-card)', borderRadius: 16,
   boxShadow: '0 4px 24px rgba(0,0,0,0.07)', border: '1px solid #e8ecf4',
 };
 const inp: React.CSSProperties = {
   width: '100%', padding: '10px 14px', borderRadius: 10,
-  border: '1.5px solid #e2e8f0', background: '#f8fafc',
-  fontSize: 12, color: '#1e293b', outline: 'none',
+  border: '1.5px solid #e2e8f0', background: 'var(--border-color)',
+  fontSize: 12, color: 'var(--text-main)', outline: 'none',
   boxSizing: 'border-box', fontFamily: 'inherit',
 };
 const lbl: React.CSSProperties = {
-  fontSize: 10, color: '#64748b', fontWeight: 700,
+  fontSize: 10, color: 'var(--text-muted)', fontWeight: 700,
   textTransform: 'uppercase', letterSpacing: '0.06em',
   display: 'block', marginBottom: 5,
 };
@@ -191,10 +191,10 @@ export default function GRNManager() {
         <div style={{ ...card, overflow: 'hidden' }}>
           <div style={{ background: 'linear-gradient(135deg,#1e1b4b,#312e81,#4c1d95)', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <ShoppingCart style={{ width: 17, height: 17, color: '#fff' }} />
+              <ShoppingCart style={{ width: 17, height: 17, color: 'var(--bg-card)' }} />
             </div>
             <div>
-              <h2 style={{ margin: 0, fontSize: 15, fontWeight: 800, color: '#fff' }}>New Goods Received Note (GRN)</h2>
+              <h2 style={{ margin: 0, fontSize: 15, fontWeight: 800, color: 'var(--bg-card)' }}>New Goods Received Note (GRN)</h2>
               <p style={{ margin: 0, fontSize: 11, color: 'rgba(255,255,255,0.55)' }}>Stock inbound from supplier to branch</p>
             </div>
           </div>
@@ -208,9 +208,9 @@ export default function GRNManager() {
                   {suppliers.map(s => <option key={s.id} value={s.id}>{s.name} ({s.telephone})</option>)}
                 </select>
                 <button onClick={() => setIsSupplierModalOpen(true)} type="button"
-                  style={{ padding: '10px 13px', borderRadius: 10, border: '1.5px solid #e2e8f0', background: '#fff', color: '#64748b', fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5, whiteSpace: 'nowrap', flexShrink: 0, transition: 'all 0.15s' }}
+                  style={{ padding: '10px 13px', borderRadius: 10, border: '1.5px solid #e2e8f0', background: 'var(--bg-card)', color: 'var(--text-muted)', fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5, whiteSpace: 'nowrap', flexShrink: 0, transition: 'all 0.15s' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#7c3aed'; (e.currentTarget as HTMLElement).style.color = '#7c3aed'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e2e8f0'; (e.currentTarget as HTMLElement).style.color = '#64748b'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)'; }}
                 >
                   <UserPlus style={{ width: 13, height: 13 }} /> New
                 </button>
@@ -235,10 +235,10 @@ export default function GRNManager() {
           </div>
 
           {/* ── Add Product Row (Integrated) ── */}
-          <div style={{ borderTop: '1px dashed #e2e8f0', padding: '16px 20px', background: !supplierId ? '#f8fafc' : '#ffffff', position: 'relative' }}>
+          <div style={{ borderTop: '1px dashed #e2e8f0', padding: '16px 20px', background: !supplierId ? 'var(--border-color)' : 'var(--bg-card)', position: 'relative' }}>
             {!supplierId && (
               <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.6)', backdropFilter: 'blur(2px)', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <p style={{ background: '#1e293b', color: '#fff', padding: '6px 14px', borderRadius: 20, fontSize: 12, fontWeight: 700, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                <p style={{ background: 'var(--text-main)', color: 'var(--bg-card)', padding: '6px 14px', borderRadius: 20, fontSize: 12, fontWeight: 700, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
                   Select a supplier first to add stock
                 </p>
               </div>
@@ -246,11 +246,11 @@ export default function GRNManager() {
             
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14, paddingBottom: 12, borderBottom: '1px solid #f1f5f9' }}>
               <div style={{ width: 32, height: 32, borderRadius: 9, background: 'linear-gradient(135deg,#7c3aed,#4f46e5)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 10px rgba(124,58,237,0.3)' }}>
-                <Plus style={{ width: 15, height: 15, color: '#fff' }} />
+                <Plus style={{ width: 15, height: 15, color: 'var(--bg-card)' }} />
               </div>
               <div>
-                <h3 style={{ margin: 0, fontSize: 13, fontWeight: 800, color: '#1e293b' }}>Add Product Row</h3>
-                <p style={{ margin: 0, fontSize: 11, color: '#94a3b8' }}>Select item and enter pricing for this delivery</p>
+                <h3 style={{ margin: 0, fontSize: 13, fontWeight: 800, color: 'var(--text-main)' }}>Add Product Row</h3>
+                <p style={{ margin: 0, fontSize: 11, color: 'var(--text-light)' }}>Select item and enter pricing for this delivery</p>
               </div>
             </div>
 
@@ -302,7 +302,7 @@ export default function GRNManager() {
                     </p>
                   </div>
                 )}
-                <button type="submit" style={{ padding: '10px 20px', background: 'linear-gradient(135deg,#7c3aed,#4f46e5)', color: '#fff', border: 'none', borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 12px rgba(124,58,237,0.3)', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 6, height: 42 }}
+                <button type="submit" style={{ padding: '10px 20px', background: 'linear-gradient(135deg,#7c3aed,#4f46e5)', color: 'var(--bg-card)', border: 'none', borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 12px rgba(124,58,237,0.3)', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 6, height: 42 }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}
                 >
@@ -330,11 +330,11 @@ export default function GRNManager() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, paddingBottom: 12, borderBottom: '1px solid #f1f5f9' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <div style={{ width: 32, height: 32, borderRadius: 9, background: 'linear-gradient(135deg,#059669,#047857)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 10px rgba(5,150,105,0.3)' }}>
-                <Package style={{ width: 15, height: 15, color: '#fff' }} />
+                <Package style={{ width: 15, height: 15, color: 'var(--bg-card)' }} />
               </div>
               <div>
-                <h3 style={{ margin: 0, fontSize: 13, fontWeight: 800, color: '#1e293b' }}>GRN Document Details</h3>
-                <p style={{ margin: 0, fontSize: 11, color: '#94a3b8' }}>{grnRows.length} product line(s) added</p>
+                <h3 style={{ margin: 0, fontSize: 13, fontWeight: 800, color: 'var(--text-main)' }}>GRN Document Details</h3>
+                <p style={{ margin: 0, fontSize: 11, color: 'var(--text-light)' }}>{grnRows.length} product line(s) added</p>
               </div>
             </div>
             {grnRows.length > 0 && (
@@ -347,7 +347,7 @@ export default function GRNManager() {
           {grnRows.length === 0 ? (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 160, color: '#cbd5e1' }}>
               <Package style={{ width: 40, height: 40, marginBottom: 10, strokeWidth: 1 }} />
-              <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: '#94a3b8' }}>No rows added yet</p>
+              <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: 'var(--text-light)' }}>No rows added yet</p>
               <p style={{ margin: '4px 0 0', fontSize: 12, color: '#cbd5e1' }}>Use the form above to add products</p>
             </div>
           ) : (
@@ -356,7 +356,7 @@ export default function GRNManager() {
                 <thead>
                   <tr style={{ borderBottom: '2px solid #f1f5f9' }}>
                     {['Product', 'Cost Price', 'Qty', 'Wholesale', 'Retail', 'Margin', 'Subtotal', ''].map(h => (
-                      <th key={h} style={{ padding: '8px 10px', fontSize: 10, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: ['Subtotal'].includes(h) ? 'right' : ['Qty'].includes(h) ? 'center' : 'left', whiteSpace: 'nowrap' }}>{h}</th>
+                      <th key={h} style={{ padding: '8px 10px', fontSize: 10, fontWeight: 700, color: 'var(--text-light)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: ['Subtotal'].includes(h) ? 'right' : ['Qty'].includes(h) ? 'center' : 'left', whiteSpace: 'nowrap' }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -364,10 +364,10 @@ export default function GRNManager() {
                   {grnRows.map((row, idx) => {
                     const margin = ((row.retailPrice - row.costPrice) / row.costPrice * 100).toFixed(1);
                     return (
-                      <tr key={idx} style={{ borderBottom: '1px solid #f8fafc', background: idx % 2 === 0 ? '#fff' : '#fafbff' }}>
+                      <tr key={idx} style={{ borderBottom: '1px solid #f8fafc', background: idx % 2 === 0 ? 'var(--bg-card)' : 'var(--bg-input)' }}>
                         <td style={{ padding: '10px 10px' }}>
-                          <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: '#1e293b' }}>{row.name}</p>
-                          <p style={{ margin: '2px 0 0', fontSize: 10, color: '#94a3b8', fontFamily: 'monospace' }}>{row.code}</p>
+                          <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: 'var(--text-main)' }}>{row.name}</p>
+                          <p style={{ margin: '2px 0 0', fontSize: 10, color: 'var(--text-light)', fontFamily: 'monospace' }}>{row.code}</p>
                           {row.requiresSerial && (
                             <p style={{ margin: '2px 0 0', fontSize: 9, color: '#0d9488', fontFamily: 'monospace', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                               S/N: {row.serials.join(', ')}
@@ -377,9 +377,9 @@ export default function GRNManager() {
                         <td style={{ padding: '10px 10px', fontSize: 12, fontFamily: 'monospace', color: '#475569', whiteSpace: 'nowrap' }}>
                           LKR {row.costPrice.toFixed(2)}
                         </td>
-                        <td style={{ padding: '10px 10px', textAlign: 'center', fontSize: 13, fontWeight: 800, color: '#1e293b', fontFamily: 'monospace' }}>{row.quantity}</td>
-                        <td style={{ padding: '10px 10px', fontSize: 11, fontFamily: 'monospace', color: '#64748b', whiteSpace: 'nowrap' }}>LKR {row.wholesalePrice.toFixed(2)}</td>
-                        <td style={{ padding: '10px 10px', fontSize: 11, fontFamily: 'monospace', color: '#64748b', whiteSpace: 'nowrap' }}>LKR {row.retailPrice.toFixed(2)}</td>
+                        <td style={{ padding: '10px 10px', textAlign: 'center', fontSize: 13, fontWeight: 800, color: 'var(--text-main)', fontFamily: 'monospace' }}>{row.quantity}</td>
+                        <td style={{ padding: '10px 10px', fontSize: 11, fontFamily: 'monospace', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>LKR {row.wholesalePrice.toFixed(2)}</td>
+                        <td style={{ padding: '10px 10px', fontSize: 11, fontFamily: 'monospace', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>LKR {row.retailPrice.toFixed(2)}</td>
                         <td style={{ padding: '10px 10px' }}>
                           <span style={{ fontSize: 11, fontWeight: 700, color: parseFloat(margin) > 20 ? '#059669' : '#f59e0b', background: parseFloat(margin) > 20 ? 'rgba(5,150,105,0.1)' : 'rgba(245,158,11,0.1)', padding: '2px 7px', borderRadius: 6 }}>
                             {margin}%
@@ -391,7 +391,7 @@ export default function GRNManager() {
                         <td style={{ padding: '10px 6px', textAlign: 'center' }}>
                           <button onClick={() => setGrnRows(grnRows.filter((_, i) => i !== idx))}
                             style={{ width: 28, height: 28, borderRadius: 7, border: '1.5px solid #fca5a5', background: '#fef2f2', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}
-                            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#ef4444'; (e.currentTarget as HTMLElement).style.color = '#fff'; }}
+                            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#ef4444'; (e.currentTarget as HTMLElement).style.color = 'var(--bg-card)'; }}
                             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#fef2f2'; (e.currentTarget as HTMLElement).style.color = '#ef4444'; }}
                           ><Trash2 style={{ width: 12, height: 12 }} /></button>
                         </td>
@@ -412,10 +412,10 @@ export default function GRNManager() {
         <div style={{ ...card, overflow: 'hidden' }}>
           <div style={{ background: 'linear-gradient(135deg,#064e3b,#047857)', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <FileText style={{ width: 17, height: 17, color: '#fff' }} />
+              <FileText style={{ width: 17, height: 17, color: 'var(--bg-card)' }} />
             </div>
             <div>
-              <h3 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: '#fff' }}>GRN Invoice Totals</h3>
+              <h3 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: 'var(--bg-card)' }}>GRN Invoice Totals</h3>
               <p style={{ margin: 0, fontSize: 11, color: 'rgba(255,255,255,0.55)' }}>Review before submitting</p>
             </div>
           </div>
@@ -427,10 +427,10 @@ export default function GRNManager() {
                 { label: 'Product Lines', value: `${grnRows.length}`, icon: '📦' },
                 { label: 'Total Units', value: `${totalUnits}`, icon: '🔢' },
               ].map(stat => (
-                <div key={stat.label} style={{ background: '#f8fafc', borderRadius: 10, padding: '10px 12px', border: '1px solid #e8ecf4', textAlign: 'center' }}>
+                <div key={stat.label} style={{ background: 'var(--border-color)', borderRadius: 10, padding: '10px 12px', border: '1px solid #e8ecf4', textAlign: 'center' }}>
                   <p style={{ margin: 0, fontSize: 18 }}>{stat.icon}</p>
-                  <p style={{ margin: '4px 0 0', fontSize: 18, fontWeight: 900, color: '#1e293b', fontFamily: 'monospace' }}>{stat.value}</p>
-                  <p style={{ margin: '2px 0 0', fontSize: 9, color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{stat.label}</p>
+                  <p style={{ margin: '4px 0 0', fontSize: 18, fontWeight: 900, color: 'var(--text-main)', fontFamily: 'monospace' }}>{stat.value}</p>
+                  <p style={{ margin: '2px 0 0', fontSize: 9, color: 'var(--text-light)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{stat.label}</p>
                 </div>
               ))}
             </div>
@@ -439,7 +439,7 @@ export default function GRNManager() {
             {supplierId && (
               <div style={{ background: 'rgba(124,58,237,0.05)', borderRadius: 10, padding: '10px 12px', border: '1.5px solid rgba(124,58,237,0.15)' }}>
                 <p style={{ margin: 0, fontSize: 9, color: '#7c3aed', fontWeight: 700, textTransform: 'uppercase' }}>Supplier</p>
-                <p style={{ margin: '3px 0 0', fontSize: 12, fontWeight: 800, color: '#1e293b' }}>
+                <p style={{ margin: '3px 0 0', fontSize: 12, fontWeight: 800, color: 'var(--text-main)' }}>
                   {suppliers.find(s => s.id.toString() === supplierId)?.name || '—'}
                 </p>
               </div>
@@ -451,7 +451,7 @@ export default function GRNManager() {
             <div style={{ background: 'linear-gradient(135deg,#f0fdf4,#dcfce7)', borderRadius: 12, padding: '12px 14px', border: '1.5px solid #86efac', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <p style={{ margin: 0, fontSize: 9, color: '#059669', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Total Billing Cost</p>
-                <p style={{ margin: '1px 0 0', fontSize: 10, color: '#94a3b8' }}>Sum of all cost × qty</p>
+                <p style={{ margin: '1px 0 0', fontSize: 10, color: 'var(--text-light)' }}>Sum of all cost × qty</p>
               </div>
               <p style={{ margin: 0, fontSize: 19, fontWeight: 900, color: '#059669', fontFamily: 'monospace', letterSpacing: '-0.02em' }}>
                 LKR {totalCost.toLocaleString('en-US', { minimumFractionDigits: 2 })}
@@ -475,7 +475,7 @@ export default function GRNManager() {
 
             <button onClick={handleSubmitGRN}
               disabled={grnRows.length === 0 || loading || !supplierId}
-              style={{ width: '100%', padding: '13px', background: (grnRows.length === 0 || !supplierId) ? '#e2e8f0' : 'linear-gradient(135deg,#059669,#047857)', color: (grnRows.length === 0 || !supplierId) ? '#94a3b8' : '#fff', border: 'none', borderRadius: 12, fontSize: 13, fontWeight: 700, cursor: (grnRows.length === 0 || !supplierId) ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, boxShadow: grnRows.length > 0 && supplierId ? '0 6px 20px rgba(5,150,105,0.35)' : 'none', transition: 'all 0.2s' }}
+              style={{ width: '100%', padding: '13px', background: (grnRows.length === 0 || !supplierId) ? 'var(--border-color)' : 'linear-gradient(135deg,#059669,#047857)', color: (grnRows.length === 0 || !supplierId) ? 'var(--text-light)' : 'var(--bg-card)', border: 'none', borderRadius: 12, fontSize: 13, fontWeight: 700, cursor: (grnRows.length === 0 || !supplierId) ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, boxShadow: grnRows.length > 0 && supplierId ? '0 6px 20px rgba(5,150,105,0.35)' : 'none', transition: 'all 0.2s' }}
               onMouseEnter={e => { if (grnRows.length > 0 && supplierId) (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}
             >
@@ -498,7 +498,7 @@ export default function GRNManager() {
             { range: '< 10%', label: 'Low Risk', color: '#ef4444', bg: 'rgba(239,68,68,0.1)' },
           ].map(m => (
             <div key={m.range} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 0', borderBottom: '1px solid rgba(124,58,237,0.08)' }}>
-              <span style={{ fontSize: 11, color: '#64748b' }}>{m.range}</span>
+              <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{m.range}</span>
               <span style={{ fontSize: 10, fontWeight: 700, color: m.color, background: m.bg, padding: '2px 8px', borderRadius: 5 }}>{m.label}</span>
             </div>
           ))}
@@ -507,16 +507,16 @@ export default function GRNManager() {
 
       {/* ══════ SUPPLIER MODAL ══════ */}
       {isSupplierModalOpen && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.6)', backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: 20 }}>
-          <div style={{ background: '#fff', borderRadius: 20, width: '100%', maxWidth: 440, boxShadow: '0 20px 60px rgba(0,0,0,0.2)', overflow: 'hidden' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: 20 }}>
+          <div style={{ background: 'var(--bg-card)', borderRadius: 20, width: '100%', maxWidth: 440, boxShadow: '0 20px 60px rgba(0,0,0,0.2)', overflow: 'hidden' }}>
             <div style={{ background: 'linear-gradient(135deg,#1e1b4b,#4c1d95)', padding: '18px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <UserPlus style={{ width: 16, height: 16, color: '#fff' }} />
+                  <UserPlus style={{ width: 16, height: 16, color: 'var(--bg-card)' }} />
                 </div>
-                <h3 style={{ margin: 0, fontSize: 15, fontWeight: 800, color: '#fff' }}>Register New Supplier</h3>
+                <h3 style={{ margin: 0, fontSize: 15, fontWeight: 800, color: 'var(--bg-card)' }}>Register New Supplier</h3>
               </div>
-              <button onClick={() => setIsSupplierModalOpen(false)} style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#fff' }}>
+              <button onClick={() => setIsSupplierModalOpen(false)} style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--bg-card)' }}>
                 <X style={{ width: 14, height: 14 }} />
               </button>
             </div>
@@ -526,8 +526,8 @@ export default function GRNManager() {
               <div><label style={lbl}>Email Address</label><input type="email" placeholder="e.g. sales@dell.lk" value={supEmail} onChange={e => setSupEmail(e.target.value)} style={inp} /></div>
               <div><label style={lbl}>Physical Address</label><textarea placeholder="e.g. 45 Galle Road, Colombo 03" rows={2} value={supAddress} onChange={e => setSupAddress(e.target.value)} style={{ ...inp, resize: 'none' }} /></div>
               <div style={{ display: 'flex', gap: 10, paddingTop: 4, borderTop: '1px solid #f1f5f9' }}>
-                <button type="button" onClick={() => setIsSupplierModalOpen(false)} style={{ flex: 1, padding: '10px', borderRadius: 10, border: '1.5px solid #e2e8f0', background: '#fff', color: '#64748b', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
-                <button type="submit" disabled={loading} style={{ flex: 2, padding: '10px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg,#7c3aed,#4f46e5)', color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer', boxShadow: '0 4px 14px rgba(124,58,237,0.35)' }}>
+                <button type="button" onClick={() => setIsSupplierModalOpen(false)} style={{ flex: 1, padding: '10px', borderRadius: 10, border: '1.5px solid #e2e8f0', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
+                <button type="submit" disabled={loading} style={{ flex: 2, padding: '10px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg,#7c3aed,#4f46e5)', color: 'var(--bg-card)', fontWeight: 700, fontSize: 13, cursor: 'pointer', boxShadow: '0 4px 14px rgba(124,58,237,0.35)' }}>
                   {loading ? 'Saving…' : 'Register Supplier'}
                 </button>
               </div>

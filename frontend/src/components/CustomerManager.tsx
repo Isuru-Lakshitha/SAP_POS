@@ -5,22 +5,22 @@ import type { Customer, Invoice } from '../types';
 
 // ── shared style atoms ────────────────────────────────────────────────────────
 const card: React.CSSProperties = {
-  background: '#ffffff', borderRadius: 16,
+  background: 'var(--bg-card)', borderRadius: 16,
   boxShadow: '0 4px 24px rgba(0,0,0,0.07)', border: '1px solid #e8ecf4',
 };
 const inp: React.CSSProperties = {
   width: '100%', padding: '10px 14px', borderRadius: 10,
-  border: '1.5px solid #e2e8f0', background: '#f8fafc',
-  fontSize: 12, color: '#1e293b', outline: 'none',
+  border: '1.5px solid #e2e8f0', background: 'var(--border-color)',
+  fontSize: 12, color: 'var(--text-main)', outline: 'none',
   boxSizing: 'border-box', fontFamily: 'inherit',
 };
 const lbl: React.CSSProperties = {
-  fontSize: 10, color: '#64748b', fontWeight: 700,
+  fontSize: 10, color: 'var(--text-muted)', fontWeight: 700,
   textTransform: 'uppercase', letterSpacing: '0.06em',
   display: 'block', marginBottom: 5,
 };
 const th: React.CSSProperties = {
-  padding: '10px 14px', fontSize: 10, fontWeight: 700, color: '#94a3b8',
+  padding: '10px 14px', fontSize: 10, fontWeight: 700, color: 'var(--text-light)',
   textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left',
   borderBottom: '2px solid #f1f5f9', whiteSpace: 'nowrap',
 };
@@ -132,22 +132,22 @@ export default function CustomerManager() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{ width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(135deg,#2563eb,#1d4ed8)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(37,99,235,0.3)' }}>
-                <Users style={{ width: 17, height: 17, color: '#fff' }} />
+                <Users style={{ width: 17, height: 17, color: 'var(--bg-card)' }} />
               </div>
               <div>
-                <h2 style={{ margin: 0, fontSize: 15, fontWeight: 800, color: '#1e293b' }}>Customer Registry</h2>
-                <p style={{ margin: 0, fontSize: 11, color: '#94a3b8' }}>{customers.length} registered profiles</p>
+                <h2 style={{ margin: 0, fontSize: 15, fontWeight: 800, color: 'var(--text-main)' }}>Customer Registry</h2>
+                <p style={{ margin: 0, fontSize: 11, color: 'var(--text-light)' }}>{customers.length} registered profiles</p>
               </div>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1, justifyContent: 'flex-end' }}>
               <div style={{ position: 'relative', maxWidth: 280, width: '100%' }}>
-                <Search style={{ position: 'absolute', left: 12, top: 10, width: 14, height: 14, color: '#94a3b8' }} />
+                <Search style={{ position: 'absolute', left: 12, top: 10, width: 14, height: 14, color: 'var(--text-light)' }} />
                 <input type="text" placeholder="Search by name or phone..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
                   style={{ ...inp, paddingLeft: 36 }} />
               </div>
               <button onClick={handleOpenAdd}
-                style={{ padding: '9px 16px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg,#3b82f6,#2563eb)', color: '#fff', fontWeight: 700, fontSize: 12, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 4px 12px rgba(59,130,246,0.3)', whiteSpace: 'nowrap', transition: 'transform 0.15s' }}
+                style={{ padding: '9px 16px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg,#3b82f6,#2563eb)', color: 'var(--bg-card)', fontWeight: 700, fontSize: 12, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 4px 12px rgba(59,130,246,0.3)', whiteSpace: 'nowrap', transition: 'transform 0.15s' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}
               >
@@ -188,34 +188,34 @@ export default function CustomerManager() {
                   const isSel = selectedCustomerId === cust.id;
                   return (
                     <tr key={cust.id} onClick={() => setSelectedCustomerId(cust.id)}
-                      style={{ background: isSel ? 'rgba(59,130,246,0.06)' : '#fff', cursor: 'pointer', transition: 'all 0.15s' }}
-                      onMouseEnter={e => { if (!isSel) (e.currentTarget as HTMLElement).style.background = '#f8fafc'; }}
-                      onMouseLeave={e => { if (!isSel) (e.currentTarget as HTMLElement).style.background = '#fff'; }}
+                      style={{ background: isSel ? 'rgba(59,130,246,0.06)' : 'var(--bg-card)', cursor: 'pointer', transition: 'all 0.15s' }}
+                      onMouseEnter={e => { if (!isSel) (e.currentTarget as HTMLElement).style.background = 'var(--border-color)'; }}
+                      onMouseLeave={e => { if (!isSel) (e.currentTarget as HTMLElement).style.background = 'var(--bg-card)'; }}
                     >
-                      <td style={{ ...td, fontWeight: 700, color: isSel ? '#2563eb' : '#1e293b' }}>
+                      <td style={{ ...td, fontWeight: 700, color: isSel ? '#2563eb' : 'var(--text-main)' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <div style={{ width: 24, height: 24, borderRadius: '50%', background: isSel ? 'rgba(59,130,246,0.15)' : '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: isSel ? '#2563eb' : '#94a3b8', fontSize: 10, fontWeight: 800 }}>
+                          <div style={{ width: 24, height: 24, borderRadius: '50%', background: isSel ? 'rgba(59,130,246,0.15)' : 'var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: isSel ? '#2563eb' : 'var(--text-light)', fontSize: 10, fontWeight: 800 }}>
                             {cust.name.charAt(0).toUpperCase()}
                           </div>
                           {cust.name}
                         </div>
                       </td>
-                      <td style={{ ...td, fontFamily: 'monospace', color: '#64748b', fontWeight: 600 }}>{cust.telephone}</td>
-                      <td style={{ ...td, color: '#64748b', maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{cust.address || '—'}</td>
+                      <td style={{ ...td, fontFamily: 'monospace', color: 'var(--text-muted)', fontWeight: 600 }}>{cust.telephone}</td>
+                      <td style={{ ...td, color: 'var(--text-muted)', maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{cust.address || '—'}</td>
                       <td style={{ ...td }}>
                         <span style={{ fontSize: 9, fontWeight: 700, padding: '3px 8px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.04em', background: cust.isCreditCorporate ? 'rgba(124,58,237,0.1)' : 'rgba(16,185,129,0.1)', color: cust.isCreditCorporate ? '#7c3aed' : '#059669' }}>
                           {cust.isCreditCorporate ? 'Credit / Corp' : 'Standard'}
                         </span>
                       </td>
-                      <td style={{ ...td, textAlign: 'right', fontFamily: 'monospace', fontWeight: cust.balance > 0 ? 800 : 600, color: cust.balance > 0 ? '#dc2626' : '#94a3b8' }}>
+                      <td style={{ ...td, textAlign: 'right', fontFamily: 'monospace', fontWeight: cust.balance > 0 ? 800 : 600, color: cust.balance > 0 ? '#dc2626' : 'var(--text-light)' }}>
                         LKR {cust.balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                       </td>
                       <td style={{ ...td, textAlign: 'right' }}>
                         <button onClick={(e) => handleOpenEdit(cust, e)}
                           title="Edit Customer"
-                          style={{ width: 28, height: 28, borderRadius: 8, border: '1.5px solid #e2e8f0', background: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#64748b', transition: 'all 0.15s' }}
+                          style={{ width: 28, height: 28, borderRadius: 8, border: '1.5px solid #e2e8f0', background: 'var(--bg-card)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text-muted)', transition: 'all 0.15s' }}
                           onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#3b82f6'; (e.currentTarget as HTMLElement).style.color = '#3b82f6'; }}
-                          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e2e8f0'; (e.currentTarget as HTMLElement).style.color = '#64748b'; }}
+                          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)'; }}
                         >
                           <Edit style={{ width: 13, height: 13 }} />
                         </button>
@@ -224,7 +224,7 @@ export default function CustomerManager() {
                   );
                 }) : (
                   <tr>
-                    <td colSpan={6} style={{ ...td, textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
+                    <td colSpan={6} style={{ ...td, textAlign: 'center', padding: '40px', color: 'var(--text-light)' }}>
                       <Users style={{ width: 32, height: 32, margin: '0 auto 10px', opacity: 0.3 }} />
                       No customers found matching your criteria.
                     </td>
@@ -242,10 +242,10 @@ export default function CustomerManager() {
           
           <div style={{ background: 'linear-gradient(135deg,#0f172a,#1e293b)', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{ width: 32, height: 32, borderRadius: 9, background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <FileText style={{ width: 15, height: 15, color: '#fff' }} />
+              <FileText style={{ width: 15, height: 15, color: 'var(--bg-card)' }} />
             </div>
             <div>
-              <h3 style={{ margin: 0, fontSize: 13, fontWeight: 800, color: '#fff' }}>Customer Profile</h3>
+              <h3 style={{ margin: 0, fontSize: 13, fontWeight: 800, color: 'var(--bg-card)' }}>Customer Profile</h3>
               <p style={{ margin: 0, fontSize: 10, color: 'rgba(255,255,255,0.55)' }}>Purchase & ledger logs</p>
             </div>
           </div>
@@ -254,7 +254,7 @@ export default function CustomerManager() {
             {!selectedCustomer ? (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, color: '#cbd5e1', textAlign: 'center' }}>
                 <Users style={{ width: 36, height: 36, marginBottom: 10, strokeWidth: 1 }} />
-                <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: '#94a3b8' }}>No Profile Selected</p>
+                <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: 'var(--text-light)' }}>No Profile Selected</p>
                 <p style={{ margin: '4px 0 0', fontSize: 11, color: '#cbd5e1' }}>Click on a customer in the registry to view their details.</p>
               </div>
             ) : (
@@ -263,17 +263,17 @@ export default function CustomerManager() {
                 {/* Profile header */}
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-                    <h4 style={{ margin: 0, fontSize: 16, fontWeight: 900, color: '#1e293b' }}>{selectedCustomer.name}</h4>
+                    <h4 style={{ margin: 0, fontSize: 16, fontWeight: 900, color: 'var(--text-main)' }}>{selectedCustomer.name}</h4>
                     {selectedCustomer.isCreditCorporate && (
                       <span style={{ fontSize: 9, fontWeight: 800, color: '#7c3aed', background: 'rgba(124,58,237,0.1)', padding: '2px 6px', borderRadius: 4 }}>CORPORATE</span>
                     )}
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 16, fontSize: 11, color: '#64748b', fontFamily: 'monospace' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 16, fontSize: 11, color: 'var(--text-muted)', fontFamily: 'monospace' }}>
                     <span>{selectedCustomer.telephone}</span>
                   </div>
                   {selectedCustomer.address && (
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6, marginTop: 8, padding: '8px 10px', background: '#f8fafc', borderRadius: 8, border: '1px solid #e8ecf4' }}>
-                      <MapPin style={{ width: 12, height: 12, color: '#94a3b8', marginTop: 1, flexShrink: 0 }} />
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6, marginTop: 8, padding: '8px 10px', background: 'var(--border-color)', borderRadius: 8, border: '1px solid #e8ecf4' }}>
+                      <MapPin style={{ width: 12, height: 12, color: 'var(--text-light)', marginTop: 1, flexShrink: 0 }} />
                       <span style={{ fontSize: 11, color: '#475569', lineHeight: 1.4 }}>{selectedCustomer.address}</span>
                     </div>
                   )}
@@ -298,21 +298,21 @@ export default function CustomerManager() {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 300, overflowY: 'auto' }}>
                     {selectedCustomerInvoices.length > 0 ? (
                       selectedCustomerInvoices.map(inv => (
-                        <div key={inv.id} style={{ padding: '10px 12px', background: '#f8fafc', borderRadius: 10, border: '1.5px solid #e8ecf4', display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'all 0.15s' }}>
+                        <div key={inv.id} style={{ padding: '10px 12px', background: 'var(--border-color)', borderRadius: 10, border: '1.5px solid #e8ecf4', display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'all 0.15s' }}>
                           <div>
-                            <p style={{ margin: 0, fontSize: 12, fontWeight: 800, color: '#1e293b', fontFamily: 'monospace' }}>{inv.invoiceNumber}</p>
-                            <p style={{ margin: '2px 0 0', fontSize: 10, color: '#94a3b8' }}>{new Date(inv.date).toLocaleDateString()}</p>
+                            <p style={{ margin: 0, fontSize: 12, fontWeight: 800, color: 'var(--text-main)', fontFamily: 'monospace' }}>{inv.invoiceNumber}</p>
+                            <p style={{ margin: '2px 0 0', fontSize: 10, color: 'var(--text-light)' }}>{new Date(inv.date).toLocaleDateString()}</p>
                           </div>
                           <div style={{ textAlign: 'right' }}>
                             <p style={{ margin: 0, fontSize: 12, fontWeight: 800, color: '#059669', fontFamily: 'monospace' }}>LKR {inv.finalAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
-                            <span style={{ display: 'inline-block', padding: '1px 6px', background: '#e2e8f0', color: '#475569', fontSize: 9, fontWeight: 700, borderRadius: 4, marginTop: 4, textTransform: 'uppercase' }}>
+                            <span style={{ display: 'inline-block', padding: '1px 6px', background: 'var(--border-color)', color: '#475569', fontSize: 9, fontWeight: 700, borderRadius: 4, marginTop: 4, textTransform: 'uppercase' }}>
                               {inv.paymentMethod}
                             </span>
                           </div>
                         </div>
                       ))
                     ) : (
-                      <div style={{ textAlign: 'center', padding: '20px', color: '#94a3b8', fontSize: 11, border: '1.5px dashed #e2e8f0', borderRadius: 10 }}>
+                      <div style={{ textAlign: 'center', padding: '20px', color: 'var(--text-light)', fontSize: 11, border: '1.5px dashed #e2e8f0', borderRadius: 10 }}>
                         No invoices on record.
                       </div>
                     )}
@@ -327,23 +327,23 @@ export default function CustomerManager() {
 
       {/* ══════ MODAL: ADD / EDIT CUSTOMER ══════ */}
       {isModalOpen && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.6)', backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: 20 }}>
-          <div style={{ background: '#fff', borderRadius: 20, width: '100%', maxWidth: 440, boxShadow: '0 20px 60px rgba(0,0,0,0.22)', overflow: 'hidden' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: 20 }}>
+          <div style={{ background: 'var(--bg-card)', borderRadius: 20, width: '100%', maxWidth: 440, boxShadow: '0 20px 60px rgba(0,0,0,0.22)', overflow: 'hidden' }}>
             
             <div style={{ background: 'linear-gradient(135deg,#1e1b4b,#312e81,#4c1d95)', padding: '18px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Users style={{ width: 16, height: 16, color: '#fff' }} />
+                  <Users style={{ width: 16, height: 16, color: 'var(--bg-card)' }} />
                 </div>
                 <div>
-                  <h3 style={{ margin: 0, fontSize: 15, fontWeight: 800, color: '#fff' }}>
+                  <h3 style={{ margin: 0, fontSize: 15, fontWeight: 800, color: 'var(--bg-card)' }}>
                     {editingCustomer ? 'Edit Customer' : 'Register Customer'}
                   </h3>
                   <p style={{ margin: 0, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>Update CRM database</p>
                 </div>
               </div>
               <button onClick={() => setIsModalOpen(false)}
-                style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#fff' }}>
+                style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--bg-card)' }}>
                 <X style={{ width: 14, height: 14 }} />
               </button>
             </div>
@@ -364,12 +364,12 @@ export default function CustomerManager() {
                 <textarea rows={2} placeholder="e.g. 45 Galle Road, Colombo 03" value={custAddress} onChange={e => setCustAddress(e.target.value)} style={{ ...inp, resize: 'none' }} />
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px', background: custIsCredit ? 'rgba(124,58,237,0.05)' : '#f8fafc', border: `1.5px solid ${custIsCredit ? 'rgba(124,58,237,0.3)' : '#e2e8f0'}`, borderRadius: 10, cursor: 'pointer', transition: 'all 0.15s' }}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px', background: custIsCredit ? 'rgba(124,58,237,0.05)' : 'var(--border-color)', border: `1.5px solid ${custIsCredit ? 'rgba(124,58,237,0.3)' : 'var(--border-color)'}`, borderRadius: 10, cursor: 'pointer', transition: 'all 0.15s' }}
                 onClick={() => setCustIsCredit(!custIsCredit)}>
                 <input type="checkbox" checked={custIsCredit} onChange={() => {}} style={{ width: 16, height: 16, accentColor: '#7c3aed' }} />
                 <div>
                   <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: custIsCredit ? '#7c3aed' : '#334155' }}>Corporate / Credit Account</p>
-                  <p style={{ margin: '2px 0 0', fontSize: 10, color: '#64748b' }}>Allows billing to a ledger without immediate payment.</p>
+                  <p style={{ margin: '2px 0 0', fontSize: 10, color: 'var(--text-muted)' }}>Allows billing to a ledger without immediate payment.</p>
                 </div>
               </div>
 
@@ -388,9 +388,9 @@ export default function CustomerManager() {
 
               <div style={{ display: 'flex', gap: 10, paddingTop: 4, borderTop: '1px solid #f1f5f9', marginTop: 4 }}>
                 <button type="button" onClick={() => setIsModalOpen(false)}
-                  style={{ flex: 1, padding: '10px', borderRadius: 10, border: '1.5px solid #e2e8f0', background: '#fff', color: '#64748b', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
+                  style={{ flex: 1, padding: '10px', borderRadius: 10, border: '1.5px solid #e2e8f0', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
                 <button type="submit" disabled={loading}
-                  style={{ flex: 2, padding: '10px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg,#3b82f6,#2563eb)', color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer', boxShadow: '0 4px 14px rgba(59,130,246,0.35)' }}>
+                  style={{ flex: 2, padding: '10px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg,#3b82f6,#2563eb)', color: 'var(--bg-card)', fontWeight: 700, fontSize: 13, cursor: 'pointer', boxShadow: '0 4px 14px rgba(59,130,246,0.35)' }}>
                   {loading ? 'Saving…' : (editingCustomer ? 'Save Changes' : 'Register Customer')}
                 </button>
               </div>

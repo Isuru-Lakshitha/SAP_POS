@@ -15,7 +15,7 @@ interface SerialEntry {
 
 // ── shared style atoms ────────────────────────────────────────────────────────
 const card = (extra?: React.CSSProperties): React.CSSProperties => ({
-  background: '#ffffff', borderRadius: 16,
+  background: 'var(--bg-card)', borderRadius: 16,
   boxShadow: '0 4px 24px rgba(0,0,0,0.07)', border: '1px solid #e8ecf4',
   ...extra,
 });
@@ -71,16 +71,16 @@ export default function TechnicianStock({ currentUser }: TechnicianStockProps) {
           <div style={{ background: 'linear-gradient(135deg,#1e1b4b,#312e81,#4c1d95)', padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Package style={{ width: 17, height: 17, color: '#fff' }} />
+                <Package style={{ width: 17, height: 17, color: 'var(--bg-card)' }} />
               </div>
               <div>
-                <h2 style={{ margin: 0, fontSize: 15, fontWeight: 800, color: '#fff' }}>My Stock Ledger</h2>
+                <h2 style={{ margin: 0, fontSize: 15, fontWeight: 800, color: 'var(--bg-card)' }}>My Stock Ledger</h2>
                 <p style={{ margin: 0, fontSize: 11, color: 'rgba(255,255,255,0.55)' }}>{locationName}</p>
               </div>
             </div>
             <button onClick={() => currentUser?.locationId && fetchTechnicianStock(currentUser.locationId)}
               disabled={loading}
-              style={{ padding: '8px 14px', borderRadius: 9, background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
+              style={{ padding: '8px 14px', borderRadius: 9, background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)', color: 'var(--bg-card)', fontSize: 12, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
               <RefreshCw style={{ width: 13, height: 13 }} /> Refresh
             </button>
           </div>
@@ -95,7 +95,7 @@ export default function TechnicianStock({ currentUser }: TechnicianStockProps) {
               <div key={s.label} style={{ padding: '14px 18px', textAlign: 'center', borderRight: i < 2 ? '1px solid #f1f5f9' : 'none' }}>
                 <p style={{ margin: 0, fontSize: 20 }}>{s.icon}</p>
                 <p style={{ margin: '4px 0 0', fontSize: 22, fontWeight: 900, color: s.color, fontFamily: 'monospace' }}>{s.value}</p>
-                <p style={{ margin: '2px 0 0', fontSize: 9, color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{s.label}</p>
+                <p style={{ margin: '2px 0 0', fontSize: 9, color: 'var(--text-light)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{s.label}</p>
               </div>
             ))}
           </div>
@@ -105,11 +105,11 @@ export default function TechnicianStock({ currentUser }: TechnicianStockProps) {
         <div style={{ ...card(), padding: '16px 20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14, paddingBottom: 12, borderBottom: '1px solid #f1f5f9' }}>
             <div style={{ width: 32, height: 32, borderRadius: 9, background: 'linear-gradient(135deg,#7c3aed,#4f46e5)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 10px rgba(124,58,237,0.3)' }}>
-              <BarChart2 style={{ width: 15, height: 15, color: '#fff' }} />
+              <BarChart2 style={{ width: 15, height: 15, color: 'var(--bg-card)' }} />
             </div>
             <div>
-              <h3 style={{ margin: 0, fontSize: 13, fontWeight: 800, color: '#1e293b' }}>Product Inventory</h3>
-              <p style={{ margin: 0, fontSize: 11, color: '#94a3b8' }}>{stocks.length} product line(s) in bag</p>
+              <h3 style={{ margin: 0, fontSize: 13, fontWeight: 800, color: 'var(--text-main)' }}>Product Inventory</h3>
+              <p style={{ margin: 0, fontSize: 11, color: 'var(--text-light)' }}>{stocks.length} product line(s) in bag</p>
             </div>
           </div>
 
@@ -122,7 +122,7 @@ export default function TechnicianStock({ currentUser }: TechnicianStockProps) {
           {stocks.length === 0 && !error ? (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, color: '#cbd5e1' }}>
               <Package style={{ width: 40, height: 40, marginBottom: 10, strokeWidth: 1 }} />
-              <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: '#94a3b8' }}>No stock assigned</p>
+              <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: 'var(--text-light)' }}>No stock assigned</p>
               <p style={{ margin: '4px 0 0', fontSize: 12, color: '#cbd5e1' }}>Contact Admin to transfer stock to your bag</p>
             </div>
           ) : (
@@ -131,20 +131,20 @@ export default function TechnicianStock({ currentUser }: TechnicianStockProps) {
                 <thead>
                   <tr style={{ borderBottom: '2px solid #f1f5f9' }}>
                     {['SKU', 'Item Name', 'Serial Req.', 'Qty In-Hand'].map(h => (
-                      <th key={h} style={{ padding: '8px 12px', fontSize: 10, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: h === 'Qty In-Hand' ? 'center' : 'left' }}>{h}</th>
+                      <th key={h} style={{ padding: '8px 12px', fontSize: 10, fontWeight: 700, color: 'var(--text-light)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: h === 'Qty In-Hand' ? 'center' : 'left' }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {stocks.map((st, idx) => (
-                    <tr key={st.id} style={{ borderBottom: '1px solid #f8fafc', background: idx % 2 === 0 ? '#fff' : '#fafbff' }}>
+                    <tr key={st.id} style={{ borderBottom: '1px solid #f8fafc', background: idx % 2 === 0 ? 'var(--bg-card)' : 'var(--bg-input)' }}>
                       <td style={{ padding: '11px 12px', fontFamily: 'monospace', fontSize: 11, color: '#7c3aed', fontWeight: 700 }}>{st.item.code}</td>
-                      <td style={{ padding: '11px 12px', fontSize: 12, fontWeight: 700, color: '#1e293b' }}>{st.item.name}</td>
+                      <td style={{ padding: '11px 12px', fontSize: 12, fontWeight: 700, color: 'var(--text-main)' }}>{st.item.name}</td>
                       <td style={{ padding: '11px 12px' }}>
                         {st.item.requiresSerial ? (
                           <span style={{ fontSize: 10, fontWeight: 700, color: '#dc2626', background: 'rgba(220,38,38,0.08)', padding: '3px 8px', borderRadius: 5 }}>Yes — Scan needed</span>
                         ) : (
-                          <span style={{ fontSize: 11, color: '#94a3b8', fontFamily: 'monospace' }}>—</span>
+                          <span style={{ fontSize: 11, color: 'var(--text-light)', fontFamily: 'monospace' }}>—</span>
                         )}
                       </td>
                       <td style={{ padding: '11px 12px', textAlign: 'center' }}>
@@ -167,10 +167,10 @@ export default function TechnicianStock({ currentUser }: TechnicianStockProps) {
         <div style={{ ...card(), overflow: 'hidden' }}>
           <div style={{ background: 'linear-gradient(135deg,#064e3b,#047857)', padding: '16px 18px', display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Layers style={{ width: 16, height: 16, color: '#fff' }} />
+              <Layers style={{ width: 16, height: 16, color: 'var(--bg-card)' }} />
             </div>
             <div>
-              <h3 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: '#fff' }}>Serial Numbers</h3>
+              <h3 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: 'var(--bg-card)' }}>Serial Numbers</h3>
               <p style={{ margin: 0, fontSize: 11, color: 'rgba(255,255,255,0.55)' }}>{serials.length} assigned to your bag</p>
             </div>
           </div>
@@ -178,25 +178,25 @@ export default function TechnicianStock({ currentUser }: TechnicianStockProps) {
           {/* Info note */}
           <div style={{ margin: '14px 16px 0', padding: '10px 12px', background: 'rgba(124,58,237,0.05)', border: '1.5px solid rgba(124,58,237,0.15)', borderRadius: 10, display: 'flex', alignItems: 'flex-start', gap: 8 }}>
             <AlertTriangle style={{ width: 14, height: 14, color: '#7c3aed', flexShrink: 0, marginTop: 1 }} />
-            <p style={{ margin: 0, fontSize: 11, color: '#64748b', lineHeight: 1.5 }}>
+            <p style={{ margin: 0, fontSize: 11, color: 'var(--text-muted)', lineHeight: 1.5 }}>
               These serials are in your technician bag. Select them when billing an outdoor customer job.
             </p>
           </div>
 
           <div style={{ padding: '12px 16px 16px', display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 460, overflowY: 'auto' }}>
             {serials.length > 0 ? serials.map(s => (
-              <div key={s.id} style={{ padding: '10px 12px', background: '#f8fafc', borderRadius: 10, border: '1.5px solid #e8ecf4', display: 'flex', flexDirection: 'column', gap: 3, transition: 'all 0.15s' }}
+              <div key={s.id} style={{ padding: '10px 12px', background: 'var(--border-color)', borderRadius: 10, border: '1.5px solid #e8ecf4', display: 'flex', flexDirection: 'column', gap: 3, transition: 'all 0.15s' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#7c3aed'; (e.currentTarget as HTMLElement).style.background = 'rgba(124,58,237,0.04)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e8ecf4'; (e.currentTarget as HTMLElement).style.background = '#f8fafc'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'; (e.currentTarget as HTMLElement).style.background = 'var(--border-color)'; }}
               >
                 <span style={{ fontFamily: 'monospace', fontWeight: 800, fontSize: 12, color: '#7c3aed', letterSpacing: '0.04em' }}>{s.serialNumber}</span>
-                <span style={{ fontSize: 10, color: '#94a3b8', fontWeight: 500 }}>{s.item.name}</span>
+                <span style={{ fontSize: 10, color: 'var(--text-light)', fontWeight: 500 }}>{s.item.name}</span>
                 <span style={{ fontSize: 9, color: '#cbd5e1', fontFamily: 'monospace' }}>{s.item.code}</span>
               </div>
             )) : (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 140, color: '#cbd5e1', border: '1.5px dashed #e2e8f0', borderRadius: 10, padding: 20 }}>
                 <Layers style={{ width: 28, height: 28, marginBottom: 8, strokeWidth: 1 }} />
-                <p style={{ margin: 0, fontSize: 12, fontWeight: 600, color: '#94a3b8' }}>No serialized items</p>
+                <p style={{ margin: 0, fontSize: 12, fontWeight: 600, color: 'var(--text-light)' }}>No serialized items</p>
                 <p style={{ margin: '3px 0 0', fontSize: 11, color: '#cbd5e1', textAlign: 'center' }}>Transfer stock from Admin to see serials here</p>
               </div>
             )}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
-  ShoppingCart, Layers, ShieldAlert, LogOut, User, Lock,
-  BarChart3, Users, PlusSquare, ArrowRightLeft, BookOpen, LayoutDashboard, Monitor
+  LogOut, LayoutDashboard, UserCheck, Search, Users, Database, FileText, Truck, ShieldAlert, Zap, Menu, X, PackageOpen, Boxes, Moon, Sun,
+  ShoppingCart, Layers, User, Lock, BarChart3, PlusSquare, ArrowRightLeft, BookOpen, Monitor
 } from 'lucide-react';
 import BillingRegister from './components/BillingRegister';
 import CustomerManager from './components/CustomerManager';
@@ -172,12 +172,12 @@ export default function App() {
 
         {/* RIGHT — neumorphic login form */}
         <div style={{
-          width: '50%', height: '100%', background: '#eef1f8',
+          width: '50%', height: '100%', background: 'var(--bg-body)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           padding: '40px 48px', boxSizing: 'border-box', overflowY: 'auto',
         }}>
           <div style={{
-            width: '100%', maxWidth: 400, background: '#eef1f8', borderRadius: 28,
+            width: '100%', maxWidth: 400, background: 'var(--bg-body)', borderRadius: 28,
             padding: '40px 36px',
             boxShadow: '14px 14px 28px #cdd0db, -14px -14px 28px #ffffff',
             border: '1px solid rgba(255,255,255,0.7)',
@@ -198,7 +198,7 @@ export default function App() {
                   <div style={{ position: 'relative' }}>
                     <input type="text" required placeholder="Enter your username" value={username}
                       onChange={e => setUsername(e.target.value)}
-                      style={{ width: '100%', padding: '14px 44px 14px 16px', border: '1px solid rgba(255,255,255,0.6)', borderRadius: 12, fontSize: 13, color: '#1e293b', outline: 'none', background: '#eef1f8', boxSizing: 'border-box', boxShadow: 'inset 4px 4px 8px #cdd0db, inset -4px -4px 8px #ffffff', transition: 'box-shadow 0.2s', fontFamily: 'inherit' }}
+                      style={{ width: '100%', padding: '14px 44px 14px 16px', border: '1px solid rgba(255,255,255,0.6)', borderRadius: 12, fontSize: 13, color: '#1e293b', outline: 'none', background: 'var(--bg-body)', boxSizing: 'border-box', boxShadow: 'inset 4px 4px 8px #cdd0db, inset -4px -4px 8px #ffffff', transition: 'box-shadow 0.2s', fontFamily: 'inherit' }}
                       onFocus={e => { e.target.style.boxShadow = 'inset 5px 5px 10px #c2c5d0, inset -2px -2px 6px #ffffff, 0 0 0 2px rgba(59,130,246,0.25)'; }}
                       onBlur={e => { e.target.style.boxShadow = 'inset 4px 4px 8px #cdd0db, inset -4px -4px 8px #ffffff'; }}
                     />
@@ -212,7 +212,7 @@ export default function App() {
                   <div style={{ position: 'relative' }}>
                     <input type="password" required placeholder="Enter your password" value={password}
                       onChange={e => setPassword(e.target.value)}
-                      style={{ width: '100%', padding: '14px 44px 14px 16px', border: '1px solid rgba(255,255,255,0.6)', borderRadius: 12, fontSize: 13, color: '#1e293b', outline: 'none', background: '#eef1f8', boxSizing: 'border-box', boxShadow: 'inset 4px 4px 8px #cdd0db, inset -4px -4px 8px #ffffff', transition: 'box-shadow 0.2s', fontFamily: 'inherit' }}
+                      style={{ width: '100%', padding: '14px 44px 14px 16px', border: '1px solid rgba(255,255,255,0.6)', borderRadius: 12, fontSize: 13, color: '#1e293b', outline: 'none', background: 'var(--bg-body)', boxSizing: 'border-box', boxShadow: 'inset 4px 4px 8px #cdd0db, inset -4px -4px 8px #ffffff', transition: 'box-shadow 0.2s', fontFamily: 'inherit' }}
                       onFocus={e => { e.target.style.boxShadow = 'inset 5px 5px 10px #c2c5d0, inset -2px -2px 6px #ffffff, 0 0 0 2px rgba(59,130,246,0.25)'; }}
                       onBlur={e => { e.target.style.boxShadow = 'inset 4px 4px 8px #cdd0db, inset -4px -4px 8px #ffffff'; }}
                     />
@@ -298,10 +298,10 @@ export default function App() {
   };
 
   return (
-    <div style={{ position: 'fixed', inset: 0, display: 'flex', flexDirection: 'row', overflow: 'hidden', background: '#eef0f7' }}>
+    <div style={{ position: 'fixed', inset: 0, display: 'flex', flexDirection: 'row', overflow: 'hidden', background: 'var(--bg-body)' }}>
 
       {/* ── LEFT SIDEBAR ────────────────────────────────────── */}
-      <aside style={{ width: 220, height: '100%', background: '#191924', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
+      <aside style={{ width: 220, height: '100%', background: 'var(--bg-sidebar)', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
         {/* Logo */}
         <div style={{ padding: '18px 20px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
           <div style={{ background: 'linear-gradient(135deg, #7c3aed, #4f46e5)', padding: 6, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -339,7 +339,7 @@ export default function App() {
 
         {/* Header */}
         <header style={{
-          background: '#eef0f7', padding: '13px 28px',
+          background: 'var(--bg-body)', padding: '13px 28px',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           borderBottom: '1px solid rgba(0,0,0,0.08)', flexShrink: 0,
           boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
@@ -359,13 +359,26 @@ export default function App() {
               <p style={{ fontSize: 10, color: '#94a3b8', margin: 0 }}>Operator:</p>
               <p style={{ fontSize: 13, fontWeight: 700, color: '#1e293b', margin: 0 }}>{user.username}</p>
             </div>
+            <button 
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36,
+                borderRadius: '50%', border: '1px solid var(--border-color)', background: 'var(--bg-card)',
+                color: 'var(--text-main)', cursor: 'pointer', transition: 'all 0.2s',
+              }}
+              title="Toggle Theme"
+              className="hover-scale"
+            >
+              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
             <button onClick={handleLogout} style={{
               display: 'flex', alignItems: 'center', gap: 6, padding: '7px 13px',
-              borderRadius: 8, border: '1px solid #e2e8f0', background: '#fff',
-              color: '#64748b', fontWeight: 600, fontSize: 12, cursor: 'pointer', transition: 'all 0.15s',
+              borderRadius: 8, border: '1px solid var(--border-color)', background: 'var(--bg-card)',
+              color: 'var(--text-main)', fontWeight: 600, fontSize: 12, cursor: 'pointer', transition: 'all 0.15s',
             }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#ef4444'; (e.currentTarget as HTMLElement).style.borderColor = '#fca5a5'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#64748b'; (e.currentTarget as HTMLElement).style.borderColor = '#e2e8f0'; }}
+              className="hover-scale"
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--error)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--error)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--text-main)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'; }}
             >
               <LogOut style={{ width: 14, height: 14 }} /> Log Out
             </button>
@@ -373,9 +386,9 @@ export default function App() {
         </header>
 
         {/* Page content */}
-        <main style={{
+        <main key={activeTab} className="animate-fade-in" style={{
           flex: 1, overflow: 'auto', minHeight: 0,
-          background: '#eef0f7',
+          background: 'var(--bg-body)',
           padding: activeTab === 'dashboard' ? 0 : '24px 28px',
         }}>
           {activeTab === 'dashboard'  && <Dashboard />}
@@ -397,9 +410,9 @@ export default function App() {
             background: 'rgba(15,23,42,0.6)', backdropFilter: 'blur(4px)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999
           }}>
-            <div style={{
-              background: '#fff', borderRadius: 20, width: 420, padding: 30,
-              boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #e2e8f0',
+            <div className="animate-slide-up" style={{
+              background: 'var(--bg-card)', borderRadius: 20, width: 420, padding: 30,
+              boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid var(--border-color)',
               textAlign: 'center'
             }}>
               <div style={{
@@ -409,14 +422,14 @@ export default function App() {
               }}>
                 <ShieldAlert size={32} />
               </div>
-              <h2 style={{ fontSize: 20, fontWeight: 800, color: '#1e293b', marginBottom: 10 }}>Database Backup Reminder</h2>
-              <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.5, marginBottom: 24 }}>
+              <h2 style={{ fontSize: 20, fontWeight: 800, color: 'var(--text-main)', marginBottom: 10 }}>Database Backup Reminder</h2>
+              <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5, marginBottom: 24 }}>
                 Welcome, Superadmin! It is highly recommended to take a regular backup of your system data. Would you like to download a full Excel backup now?
               </p>
               <div style={{ display: 'flex', gap: 12 }}>
-                <button onClick={() => setShowBackupReminder(false)} style={{
-                  flex: 1, padding: '12px 0', border: '1px solid #cbd5e1', borderRadius: 10,
-                  background: '#fff', color: '#475569', fontSize: 13, fontWeight: 700, cursor: 'pointer'
+                <button onClick={() => setShowBackupReminder(false)} className="hover-scale" style={{
+                  flex: 1, padding: '12px 0', border: '1px solid var(--border-color)', borderRadius: 10,
+                  background: 'var(--bg-card)', color: 'var(--text-main)', fontSize: 13, fontWeight: 700, cursor: 'pointer'
                 }}>
                   Remind Me Later
                 </button>

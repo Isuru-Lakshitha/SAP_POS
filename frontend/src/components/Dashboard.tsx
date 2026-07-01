@@ -151,7 +151,7 @@ export default function Dashboard() {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', flexDirection: 'column', gap: 16 }}>
         <RefreshCw size={36} style={{ color: '#7c3aed', animation: 'spin 1s linear infinite' }} />
-        <p style={{ color: '#64748b', fontWeight: 600 }}>Loading Dashboard…</p>
+        <p style={{ color: 'var(--text-muted)', fontWeight: 600 }}>Loading Dashboard…</p>
       </div>
     );
   }
@@ -162,8 +162,8 @@ export default function Dashboard() {
       {/* ── Header ──────────────────────────────────────────────────── */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
         <div>
-          <h1 style={{ fontSize: 22, fontWeight: 800, color: '#1e293b', margin: 0 }}>Dashboard Overview</h1>
-          <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 3 }}>
+          <h1 style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>Dashboard Overview</h1>
+          <p style={{ fontSize: 12, color: 'var(--text-light)', marginTop: 3 }}>
             {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
         </div>
@@ -171,7 +171,7 @@ export default function Dashboard() {
           onClick={loadAll}
           style={{
             display: 'flex', alignItems: 'center', gap: 8, padding: '9px 18px',
-            background: '#7c3aed', color: '#fff', border: 'none', borderRadius: 10,
+            background: '#7c3aed', color: 'var(--bg-card)', border: 'none', borderRadius: 10,
             fontSize: 12, fontWeight: 700, cursor: 'pointer',
             boxShadow: '0 4px 14px rgba(124,58,237,0.35)',
           }}
@@ -208,16 +208,16 @@ export default function Dashboard() {
               {c.icon}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontSize: 11, color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0 }}>
+              <p style={{ fontSize: 11, color: 'var(--text-light)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0 }}>
                 {c.label}
               </p>
-              <p style={{ fontSize: 20, fontWeight: 800, color: '#1e293b', margin: '4px 0 2px', lineHeight: 1 }}>
+              <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text-main)', margin: '4px 0 2px', lineHeight: 1 }}>
                 {c.value}
               </p>
               <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                 {c.trend === 'up' && <ArrowUpRight size={13} style={{ color: '#10b981' }} />}
                 {c.trend === 'down' && <ArrowDownRight size={13} style={{ color: '#ef4444' }} />}
-                <span style={{ fontSize: 11, color: c.trend === 'up' ? '#10b981' : c.trend === 'down' ? '#ef4444' : '#94a3b8', fontWeight: 600 }}>
+                <span style={{ fontSize: 11, color: c.trend === 'up' ? '#10b981' : c.trend === 'down' ? '#ef4444' : 'var(--text-light)', fontWeight: 600 }}>
                   {c.sub}
                 </span>
               </div>
@@ -237,8 +237,8 @@ export default function Dashboard() {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
             <div>
-              <h3 style={{ fontSize: 15, fontWeight: 800, color: '#1e293b', margin: 0 }}>Sales Statistics</h3>
-              <p style={{ fontSize: 11, color: '#94a3b8', marginTop: 3 }}>Last 7 days revenue & profit</p>
+              <h3 style={{ fontSize: 15, fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>Sales Statistics</h3>
+              <p style={{ fontSize: 11, color: 'var(--text-light)', marginTop: 3 }}>Last 7 days revenue & profit</p>
             </div>
             <div style={{ display: 'flex', gap: 16, fontSize: 11, fontWeight: 600 }}>
               <span style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#7c3aed' }}>
@@ -262,11 +262,11 @@ export default function Dashboard() {
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" />
-              <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false}
+              <XAxis dataKey="date" tick={{ fontSize: 11, fill: 'var(--text-light)' }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 11, fill: 'var(--text-light)' }} axisLine={false} tickLine={false}
                 tickFormatter={v => v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v} />
               <Tooltip
-                contentStyle={{ background: '#1e293b', border: 'none', borderRadius: 10, color: '#fff', fontSize: 12 }}
+                contentStyle={{ background: 'var(--text-main)', border: 'none', borderRadius: 10, color: 'var(--bg-card)', fontSize: 12 }}
                 formatter={(val: any, name: any) => [fmt(Number(val) || 0), name === 'revenue' ? 'Revenue' : 'Profit']}
               />
               <Area type="monotone" dataKey="revenue" stroke="#7c3aed" strokeWidth={2.5} fill="url(#gradRev)" dot={false} />
@@ -281,8 +281,8 @@ export default function Dashboard() {
           boxShadow: '8px 8px 20px #cdd0db, -8px -8px 20px #ffffff',
           border: '1px solid rgba(255,255,255,0.75)',
         }}>
-          <h3 style={{ fontSize: 15, fontWeight: 800, color: '#1e293b', margin: '0 0 4px' }}>Top Stock Items</h3>
-          <p style={{ fontSize: 11, color: '#94a3b8', marginBottom: 16 }}>By retail value</p>
+          <h3 style={{ fontSize: 15, fontWeight: 800, color: 'var(--text-main)', margin: '0 0 4px' }}>Top Stock Items</h3>
+          <p style={{ fontSize: 11, color: 'var(--text-light)', marginBottom: 16 }}>By retail value</p>
           {topItems.length > 0 ? (
             <>
               <ResponsiveContainer width="100%" height={170}>
@@ -294,7 +294,7 @@ export default function Dashboard() {
                     ))}
                   </Pie>
                   <Tooltip
-                    contentStyle={{ background: '#1e293b', border: 'none', borderRadius: 10, color: '#fff', fontSize: 11 }}
+                    contentStyle={{ background: 'var(--text-main)', border: 'none', borderRadius: 10, color: 'var(--bg-card)', fontSize: 11 }}
                     formatter={(val: any) => [fmt(Number(val) || 0), 'Value']}
                   />
                 </PieChart>
@@ -304,13 +304,13 @@ export default function Dashboard() {
                   <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11 }}>
                     <span style={{ width: 10, height: 10, borderRadius: 3, background: PIE_COLORS[idx % PIE_COLORS.length], flexShrink: 0 }} />
                     <span style={{ color: '#475569', fontWeight: 600, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</span>
-                    <span style={{ color: '#1e293b', fontWeight: 700 }}>{fmt(item.value)}</span>
+                    <span style={{ color: 'var(--text-main)', fontWeight: 700 }}>{fmt(item.value)}</span>
                   </div>
                 ))}
               </div>
             </>
           ) : (
-            <div style={{ textAlign: 'center', color: '#94a3b8', padding: '30px 0' }}>No stock data</div>
+            <div style={{ textAlign: 'center', color: 'var(--text-light)', padding: '30px 0' }}>No stock data</div>
           )}
         </div>
       </div>
@@ -326,10 +326,10 @@ export default function Dashboard() {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
             <div>
-              <h3 style={{ fontSize: 15, fontWeight: 800, color: '#1e293b', margin: 0 }}>Recent Transactions</h3>
-              <p style={{ fontSize: 11, color: '#94a3b8', marginTop: 3 }}>Latest 5 invoices</p>
+              <h3 style={{ fontSize: 15, fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>Recent Transactions</h3>
+              <p style={{ fontSize: 11, color: 'var(--text-light)', marginTop: 3 }}>Latest 5 invoices</p>
             </div>
-            <Layers size={18} style={{ color: '#94a3b8' }} />
+            <Layers size={18} style={{ color: 'var(--text-light)' }} />
           </div>
 
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
@@ -338,7 +338,7 @@ export default function Dashboard() {
                 {['Invoice #', 'Customer', 'Amount'].map(h => (
                   <th key={h} style={{
                     textAlign: 'left', padding: '8px 12px', fontSize: 10, fontWeight: 700,
-                    color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em',
+                    color: 'var(--text-light)', textTransform: 'uppercase', letterSpacing: '0.06em',
                     borderBottom: '1px solid rgba(0,0,0,0.06)',
                   }}>{h}</th>
                 ))}
@@ -351,12 +351,12 @@ export default function Dashboard() {
                   <td style={{ padding: '10px 12px', color: '#475569', fontWeight: 500 }}>
                     {inv.customer?.name ?? 'Walk-in'}
                   </td>
-                  <td style={{ padding: '10px 12px', fontWeight: 700, color: '#1e293b' }}>{fmt(inv.finalAmount)}</td>
+                  <td style={{ padding: '10px 12px', fontWeight: 700, color: 'var(--text-main)' }}>{fmt(inv.finalAmount)}</td>
                 </tr>
               ))}
               {recentInvoices.length === 0 && (
                 <tr>
-                  <td colSpan={3} style={{ padding: '24px', textAlign: 'center', color: '#94a3b8' }}>No transactions yet</td>
+                  <td colSpan={3} style={{ padding: '24px', textAlign: 'center', color: 'var(--text-light)' }}>No transactions yet</td>
                 </tr>
               )}
             </tbody>
@@ -371,8 +371,8 @@ export default function Dashboard() {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
             <div>
-              <h3 style={{ fontSize: 15, fontWeight: 800, color: '#1e293b', margin: 0 }}>Low Stock Alerts</h3>
-              <p style={{ fontSize: 11, color: '#94a3b8', marginTop: 3 }}>Items at or below minimum threshold</p>
+              <h3 style={{ fontSize: 15, fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>Low Stock Alerts</h3>
+              <p style={{ fontSize: 11, color: 'var(--text-light)', marginTop: 3 }}>Items at or below minimum threshold</p>
             </div>
             <AlertTriangle size={18} style={{ color: '#ef4444' }} />
           </div>
@@ -383,7 +383,7 @@ export default function Dashboard() {
                 {['Item', 'Min', 'Current Stock'].map(h => (
                   <th key={h} style={{
                     textAlign: 'left', padding: '8px 12px', fontSize: 10, fontWeight: 700,
-                    color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em',
+                    color: 'var(--text-light)', textTransform: 'uppercase', letterSpacing: '0.06em',
                     borderBottom: '1px solid rgba(0,0,0,0.06)',
                   }}>{h}</th>
                 ))}
@@ -392,8 +392,8 @@ export default function Dashboard() {
             <tbody>
               {lowStock.map((item, i) => (
                 <tr key={item.id} style={{ background: item.currentStock === 0 ? 'rgba(239,68,68,0.08)' : (i % 2 === 0 ? 'transparent' : 'rgba(245,158,11,0.05)') }}>
-                  <td style={{ padding: '10px 12px', fontWeight: 600, color: '#1e293b' }}>{item.name}</td>
-                  <td style={{ padding: '10px 12px', color: '#64748b' }}>{item.minStock}</td>
+                  <td style={{ padding: '10px 12px', fontWeight: 600, color: 'var(--text-main)' }}>{item.name}</td>
+                  <td style={{ padding: '10px 12px', color: 'var(--text-muted)' }}>{item.minStock}</td>
                   <td style={{ padding: '10px 12px', fontWeight: 700, color: item.currentStock === 0 ? '#ef4444' : '#d97706' }}>
                     {item.currentStock}
                   </td>

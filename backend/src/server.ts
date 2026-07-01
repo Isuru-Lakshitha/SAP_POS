@@ -27,6 +27,7 @@ app.use('/api/system', systemRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {
+  console.log('Health check called');
   res.json({ status: 'ok', time: new Date() });
 });
 

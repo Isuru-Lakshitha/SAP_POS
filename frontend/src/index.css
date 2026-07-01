@@ -5,14 +5,17 @@
   --font-display: 'Outfit', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Soft 3D Neumorphic Professional SaaS Color Palette */
+  /* Soft 3D Neumorphic Professional SaaS Color Palette (Light Mode Default) */
   --bg-sidebar: #191924; /* Deep Slate Sidebar */
   --bg-sidebar-hover: #222232;
   --bg-sidebar-active: #7c3aed; /* Vibrant Violet active indicator */
   
   --bg-body: #e4e6f2; /* Soft grey-lavender base for neumorphic depth */
   --bg-content: #eef0f7; /* Very soft neumorphic panel background */
-  --bg-card: #eef0f7; /* Cards matching background for neumorphism */
+  --bg-card: #ffffff; /* Cards matching background for neumorphism */
+  --bg-input: #ffffff;
+  --border-color: #e2e8f0;
+  --border-focus: #7c3aed;
   
   /* Accent Colors */
   --primary: #7c3aed;
@@ -44,6 +47,59 @@
   --shadow-sunken-focus: inset 3px 3px 7px rgba(124, 58, 237, 0.15), 
                           inset -3px -3px 7px rgba(255, 255, 255, 0.85),
                           0 0 10px rgba(124, 58, 237, 0.15);
+}
+
+/* Dark Theme Overrides */
+body.dark {
+  --bg-body: #0f172a;
+  --bg-content: #1e293b;
+  --bg-card: #1e293b;
+  --bg-input: #334155;
+  --border-color: #334155;
+  --border-focus: #8b5cf6;
+  
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-light: #64748b;
+  
+  --shadow-raised: 6px 6px 14px rgba(0, 0, 0, 0.4), 
+                    -6px -6px 14px rgba(255, 255, 255, 0.05);
+  
+  --shadow-raised-hover: 10px 10px 22px rgba(0, 0, 0, 0.5), 
+                          -10px -10px 22px rgba(255, 255, 255, 0.07);
+  
+  --shadow-sunken: inset 3px 3px 7px rgba(0, 0, 0, 0.4), 
+                    inset -3px -3px 7px rgba(255, 255, 255, 0.05);
+                    
+  --shadow-sunken-focus: inset 3px 3px 7px rgba(139, 92, 246, 0.2), 
+                          inset -3px -3px 7px rgba(255, 255, 255, 0.05),
+                          0 0 10px rgba(139, 92, 246, 0.2);
+}
+
+/* Global Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hover-scale {
+  transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.hover-scale:hover {
+  transform: scale(1.02);
 }
 
 /* Reset & Base Setup */
@@ -186,7 +242,8 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(255,255,255,0.6);
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .header-title {
@@ -214,7 +271,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Neumorphic 3D Card (Raised) */
 .cyber-card {
   background: var(--bg-card);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-raised);
   padding: 24px;
@@ -231,8 +288,8 @@ h1, h2, h3, h4, h5, h6 {
 .cyber-input {
   width: 100%;
   padding: 11px 16px;
-  background: var(--bg-content);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
   color: var(--text-main);
   font-size: 0.85rem;
@@ -259,7 +316,7 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.7);
+  border: 1px solid var(--border-color);
   background: var(--bg-card);
   color: var(--text-main);
   box-shadow: 3px 3px 7px rgba(165, 177, 203, 0.45), 
@@ -317,7 +374,7 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.05em;
   padding: 12px 16px;
   text-align: left;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .cyber-table tr {
@@ -329,26 +386,26 @@ h1, h2, h3, h4, h5, h6 {
 .cyber-table td {
   padding: 14px 16px;
   color: var(--text-main);
-  background: rgba(255, 255, 255, 0.55);
+  background: var(--bg-card);
   font-size: 0.85rem;
-  border-top: 1px solid rgba(255,255,255,0.7);
-  border-bottom: 1px solid rgba(0,0,0,0.02);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .cyber-table td:first-child {
-  border-left: 1px solid rgba(255,255,255,0.7);
+  border-left: 1px solid var(--border-color);
   border-top-left-radius: var(--radius-sm);
   border-bottom-left-radius: var(--radius-sm);
 }
 
 .cyber-table td:last-child {
-  border-right: 1px solid rgba(255,255,255,0.7);
+  border-right: 1px solid var(--border-color);
   border-top-right-radius: var(--radius-sm);
   border-bottom-right-radius: var(--radius-sm);
 }
 
 .cyber-table tr:hover td {
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--bg-input);
   transform: scaleY(1.01);
 }
 
