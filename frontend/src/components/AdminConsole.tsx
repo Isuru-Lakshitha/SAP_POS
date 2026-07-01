@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { UserCheck, Shield, Key, AlertCircle, Trash2, X, Plus, ShieldAlert, User, Database, DownloadCloud, UploadCloud, RefreshCw, CheckCircle2, Download } from 'lucide-react';
-import { api, auth } from '../api';
+import { UserCheck, Shield, Key, Trash2, X, Plus, ShieldAlert, User, Database, DownloadCloud, UploadCloud, RefreshCw, CheckCircle2, Download } from 'lucide-react';
+import { api } from '../api';
 import type { User as UserType } from '../types';
+
+const auth = () => ({ 'Authorization': `Bearer ${localStorage.getItem('sap_pos_token')}` });
 
 // ── shared style atoms ────────────────────────────────────────────────────────
 const card: React.CSSProperties = {
@@ -34,7 +36,7 @@ export default function AdminConsole({ currentUser }: AdminConsoleProps) {
   const [regPassword, setRegPassword] = useState('');
   const [regRole, setRegRole] = useState('ADMIN');
   const [regLocationId, setRegLocationId] = useState('');
-  const [locations, setLocations] = useState<{ id: number; name: string; type: string }[]>([]);
+  const [, setLocations] = useState<{ id: number; name: string; type: string }[]>([]);
 
   // Password reset approval states
   const [resettingUser, setResettingUser] = useState<UserType | null>(null);

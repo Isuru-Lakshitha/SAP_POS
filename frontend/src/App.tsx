@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  LogOut, LayoutDashboard, UserCheck, Search, Users, Database, FileText, Truck, ShieldAlert, Zap, Menu, X, PackageOpen, Boxes, Moon, Sun,
+  LogOut, LayoutDashboard, ShieldAlert, Moon, Sun, Users,
   ShoppingCart, Layers, User, Lock, BarChart3, PlusSquare, ArrowRightLeft, BookOpen, Monitor
 } from 'lucide-react';
 import BillingRegister from './components/BillingRegister';
@@ -27,6 +27,21 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [showBackupReminder, setShowBackupReminder] = useState(false);
+
+  // Theme State
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem('sap_pos_theme') === 'dark';
+  });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add('dark');
+      localStorage.setItem('sap_pos_theme', 'dark');
+    } else {
+      document.body.classList.remove('dark');
+      localStorage.setItem('sap_pos_theme', 'light');
+    }
+  }, [isDarkMode]);
 
   // Restore session from localStorage
   useEffect(() => {
