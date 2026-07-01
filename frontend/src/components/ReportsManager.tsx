@@ -13,11 +13,11 @@ interface ProfitSummary { totalRevenue: number; totalCogs: number; totalProfit: 
 interface ProfitRecord { id: number; invoiceNumber: string; date: string; location: string; customer: string; cashier: string; revenue: number; cogs: number; profit: number; }
 
 // ── style atoms ───────────────────────────────────────────────────────────────
-const card: React.CSSProperties = { background: 'var(--bg-card)', borderRadius: 16, boxShadow: '0 4px 24px rgba(0,0,0,0.07)', border: '1px solid #e8ecf4' };
-const inp: React.CSSProperties = { width: '100%', padding: '9px 13px', borderRadius: 10, border: '1.5px solid #e2e8f0', background: 'var(--border-color)', fontSize: 12, color: 'var(--text-main)', outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit' };
+const card: React.CSSProperties = { background: 'var(--bg-card)', borderRadius: 16, boxShadow: '0 4px 24px rgba(0,0,0,0.07)', border: '1px solid var(--border-color)' };
+const inp: React.CSSProperties = { width: '100%', padding: '9px 13px', borderRadius: 10, border: '1.5px solid var(--border-color)', background: 'var(--border-color)', fontSize: 12, color: 'var(--text-main)', outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit' };
 const lbl: React.CSSProperties = { fontSize: 10, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 4 };
-const th: React.CSSProperties = { padding: '9px 12px', fontSize: 10, fontWeight: 700, color: 'var(--text-light)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', whiteSpace: 'nowrap', borderBottom: '2px solid #f1f5f9' };
-const td: React.CSSProperties = { padding: '10px 12px', fontSize: 12, color: '#334155', borderBottom: '1px solid #f8fafc' };
+const th: React.CSSProperties = { padding: '9px 12px', fontSize: 10, fontWeight: 700, color: 'var(--text-light)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', whiteSpace: 'nowrap', borderBottom: '2px solid var(--border-color)' };
+const td: React.CSSProperties = { padding: '10px 12px', fontSize: 12, color: 'var(--text-main)', borderBottom: '1px solid var(--border-color)' };
 
 type ReportTab = 'stock' | 'warranty' | 'transfers' | 'profit';
 
@@ -193,7 +193,7 @@ export default function ReportsManager() {
                   <div>
                     <p style={{ margin: 0, fontSize: 9, color: 'var(--text-light)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{s.label}</p>
                     <p style={{ margin: '3px 0 0', fontSize: 17, fontWeight: 900, color: 'var(--text-main)', fontFamily: 'monospace', letterSpacing: '-0.02em' }}>{s.value}</p>
-                    <p style={{ margin: '1px 0 0', fontSize: 9, color: '#cbd5e1' }}>{s.sub}</p>
+                    <p style={{ margin: '1px 0 0', fontSize: 9, color: 'var(--text-light)' }}>{s.sub}</p>
                   </div>
                 </div>
               ))}
@@ -202,7 +202,7 @@ export default function ReportsManager() {
 
           {/* Table */}
           <div style={{ ...card, padding: '16px 20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14, paddingBottom: 12, borderBottom: '1px solid #f1f5f9' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14, paddingBottom: 12, borderBottom: '1px solid var(--border-color)' }}>
               <div style={{ width: 32, height: 32, borderRadius: 9, background: 'linear-gradient(135deg,#7c3aed,#4f46e5)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 10px rgba(124,58,237,0.3)' }}>
                 <BarChart2 style={{ width: 15, height: 15, color: 'var(--bg-card)' }} />
               </div>
@@ -300,26 +300,26 @@ export default function ReportsManager() {
               </div>
               <div style={{ padding: '18px 20px' }}>
                 {!warrantyResult ? (
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 220, color: '#cbd5e1' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 220, color: 'var(--text-light)' }}>
                     <Award style={{ width: 40, height: 40, marginBottom: 10, strokeWidth: 1 }} />
                     <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: 'var(--text-light)' }}>No result yet</p>
-                    <p style={{ margin: '4px 0 0', fontSize: 12, color: '#cbd5e1' }}>Search a serial number to see its full history</p>
+                    <p style={{ margin: '4px 0 0', fontSize: 12, color: 'var(--text-light)' }}>Search a serial number to see its full history</p>
                   </div>
                 ) : (
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
                     {/* Left */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                      <div style={{ padding: '14px 16px', background: 'var(--border-color)', borderRadius: 12, border: '1.5px solid #e8ecf4' }}>
+                      <div style={{ padding: '14px 16px', background: 'var(--border-color)', borderRadius: 12, border: '1.5px solid var(--border-color)' }}>
                         <p style={{ margin: '0 0 4px', ...lbl }}>Serial Number</p>
                         <p style={{ margin: 0, fontSize: 16, fontWeight: 900, color: '#7c3aed', fontFamily: 'monospace' }}>{warrantyResult.serialNumber}</p>
                       </div>
-                      <div style={{ padding: '14px 16px', background: 'var(--border-color)', borderRadius: 12, border: '1.5px solid #e8ecf4' }}>
+                      <div style={{ padding: '14px 16px', background: 'var(--border-color)', borderRadius: 12, border: '1.5px solid var(--border-color)' }}>
                         <p style={{ margin: '0 0 4px', ...lbl }}>Product</p>
                         <p style={{ margin: 0, fontSize: 13, fontWeight: 800, color: 'var(--text-main)' }}>{warrantyResult.itemName}</p>
                         <p style={{ margin: '3px 0 0', fontSize: 10, color: 'var(--text-light)', fontFamily: 'monospace' }}>SKU: {warrantyResult.itemCode}</p>
                       </div>
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                        <div style={{ padding: '12px 14px', background: 'var(--border-color)', borderRadius: 10, border: '1.5px solid #e8ecf4' }}>
+                        <div style={{ padding: '12px 14px', background: 'var(--border-color)', borderRadius: 10, border: '1.5px solid var(--border-color)' }}>
                           <p style={{ margin: '0 0 4px', ...lbl }}>Location</p>
                           <p style={{ margin: 0, fontSize: 11, fontWeight: 700, color: 'var(--text-main)' }}>{warrantyResult.location}</p>
                         </div>
@@ -377,7 +377,7 @@ export default function ReportsManager() {
                           ))}
                         </div>
                       ) : (
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', border: '1.5px dashed #e2e8f0', borderRadius: 12, textAlign: 'center' }}>
+                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', border: '1.5px dashed var(--border-color)', borderRadius: 12, textAlign: 'center' }}>
                           <CheckCircle2 style={{ width: 28, height: 28, color: '#10b981', marginBottom: 8 }} />
                           <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: '#059669' }}>Unsold — In Stock</p>
                           <p style={{ margin: '4px 0 0', fontSize: 11, color: 'var(--text-light)' }}>No sales history recorded</p>
@@ -428,7 +428,7 @@ export default function ReportsManager() {
                       <td style={{ ...td, fontSize: 11, fontWeight: 600 }}>{rec.cashier.username}</td>
                       <td style={{ ...td }}>
                         {rec.transferItems.map((ti, i) => (
-                          <p key={i} style={{ margin: '1px 0', fontSize: 11, fontWeight: 700, color: '#334155' }}>
+                          <p key={i} style={{ margin: '1px 0', fontSize: 11, fontWeight: 700, color: 'var(--text-main)' }}>
                             {ti.item.name} <span style={{ color: 'var(--text-light)', fontFamily: 'monospace', fontWeight: 400, fontSize: 10 }}>({ti.item.code})</span>
                           </p>
                         ))}
@@ -473,7 +473,7 @@ export default function ReportsManager() {
                   <div>
                     <p style={{ margin: 0, fontSize: 9, color: 'var(--text-light)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{s.label}</p>
                     <p style={{ margin: '3px 0 0', fontSize: 17, fontWeight: 900, color: 'var(--text-main)', fontFamily: 'monospace', letterSpacing: '-0.02em' }}>{s.value}</p>
-                    <p style={{ margin: '1px 0 0', fontSize: 9, color: '#cbd5e1' }}>{startDate} to {endDate}</p>
+                    <p style={{ margin: '1px 0 0', fontSize: 9, color: 'var(--text-light)' }}>{startDate} to {endDate}</p>
                   </div>
                 </div>
               ))}

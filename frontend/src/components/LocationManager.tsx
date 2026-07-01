@@ -9,11 +9,11 @@ interface SerialEntry { id: number; serialNumber: string; itemId: number; locati
 // ── shared style atoms ────────────────────────────────────────────────────────
 const card: React.CSSProperties = {
   background: 'var(--bg-card)', borderRadius: 16,
-  boxShadow: '0 4px 24px rgba(0,0,0,0.07)', border: '1px solid #e8ecf4',
+  boxShadow: '0 4px 24px rgba(0,0,0,0.07)', border: '1px solid var(--border-color)',
 };
 const inp: React.CSSProperties = {
   width: '100%', padding: '10px 14px', borderRadius: 10,
-  border: '1.5px solid #e2e8f0', background: 'var(--border-color)',
+  border: '1.5px solid var(--border-color)', background: 'var(--border-color)',
   fontSize: 12, color: 'var(--text-main)', outline: 'none',
   boxSizing: 'border-box', fontFamily: 'inherit',
 };
@@ -315,7 +315,7 @@ export default function LocationManager({ currentUser }: { currentUser?: { role:
 
           <div style={{ padding: '14px 18px' }}>
             {!selectedLocation ? (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 160, color: '#cbd5e1' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 160, color: 'var(--text-light)' }}>
                 <MapPin style={{ width: 32, height: 32, marginBottom: 8, strokeWidth: 1 }} />
                 <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: 'var(--text-light)' }}>Select a location</p>
               </div>
@@ -325,7 +325,7 @@ export default function LocationManager({ currentUser }: { currentUser?: { role:
                 {stocks.length > 0 ? (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 240, overflowY: 'auto', marginBottom: 16 }}>
                     {stocks.map(st => (
-                      <div key={st.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 12px', background: 'var(--border-color)', borderRadius: 10, border: '1.5px solid #e8ecf4' }}>
+                      <div key={st.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 12px', background: 'var(--border-color)', borderRadius: 10, border: '1.5px solid var(--border-color)' }}>
                         <div>
                           <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: 'var(--text-main)' }}>{st.item.name}</p>
                           <p style={{ margin: '2px 0 0', fontSize: 10, color: 'var(--text-light)', fontFamily: 'monospace' }}>{st.item.code}</p>
@@ -337,7 +337,7 @@ export default function LocationManager({ currentUser }: { currentUser?: { role:
                     ))}
                   </div>
                 ) : (
-                  <div style={{ textAlign: 'center', padding: '20px', color: 'var(--text-light)', fontSize: 12, border: '1.5px dashed #e2e8f0', borderRadius: 10, marginBottom: 16 }}>
+                  <div style={{ textAlign: 'center', padding: '20px', color: 'var(--text-light)', fontSize: 12, border: '1.5px dashed var(--border-color)', borderRadius: 10, marginBottom: 16 }}>
                     No stock at this location.
                   </div>
                 )}
@@ -347,7 +347,7 @@ export default function LocationManager({ currentUser }: { currentUser?: { role:
                     <p style={{ margin: '0 0 8px', ...lbl }}>Available Serial Numbers</p>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, maxHeight: 140, overflowY: 'auto' }}>
                       {serials.map(s => (
-                        <div key={s.id} style={{ padding: '7px 10px', background: 'var(--border-color)', borderRadius: 8, border: '1.5px solid #e8ecf4', display: 'flex', flexDirection: 'column', gap: 2 }}>
+                        <div key={s.id} style={{ padding: '7px 10px', background: 'var(--border-color)', borderRadius: 8, border: '1.5px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: 2 }}>
                           <span style={{ fontSize: 11, fontFamily: 'monospace', fontWeight: 700, color: '#7c3aed' }}>{s.serialNumber}</span>
                           <span style={{ fontSize: 9, color: 'var(--text-light)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.item.name}</span>
                         </div>
@@ -447,14 +447,14 @@ export default function LocationManager({ currentUser }: { currentUser?: { role:
                     {selectedSerials.length} / {transferQty} selected
                   </span>
                 </div>
-                <div style={{ background: 'var(--border-color)', border: '1.5px solid #e2e8f0', borderRadius: 10, padding: '10px 12px', maxHeight: 130, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 5 }}>
+                <div style={{ background: 'var(--border-color)', border: '1.5px solid var(--border-color)', borderRadius: 10, padding: '10px 12px', maxHeight: 130, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 5 }}>
                   {filteredSourceSerials.map(s => {
                     const checked = selectedSerials.includes(s.serialNumber);
                     return (
                       <label key={s.id} style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', padding: '6px 8px', borderRadius: 8, background: checked ? 'rgba(124,58,237,0.07)' : 'transparent', border: `1.5px solid ${checked ? 'rgba(124,58,237,0.25)' : 'transparent'}`, transition: 'all 0.15s' }}>
                         <input type="checkbox" checked={checked} onChange={() => handleSerialCheckbox(s.serialNumber)}
                           style={{ width: 14, height: 14, accentColor: '#7c3aed', flexShrink: 0 }} />
-                        <span style={{ fontFamily: 'monospace', fontSize: 11, fontWeight: checked ? 800 : 600, color: checked ? '#7c3aed' : '#475569' }}>
+                        <span style={{ fontFamily: 'monospace', fontSize: 11, fontWeight: checked ? 800 : 600, color: checked ? '#7c3aed' : 'var(--text-muted)' }}>
                           {s.serialNumber}
                         </span>
                       </label>
@@ -494,7 +494,7 @@ export default function LocationManager({ currentUser }: { currentUser?: { role:
           {['Choose source location', 'Choose destination location', 'Select product & quantity', 'Pick serials if required', 'Add reason & submit'].map((step, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '4px 0' }}>
               <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#7c3aed', color: 'var(--bg-card)', fontSize: 10, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{i + 1}</div>
-              <span style={{ fontSize: 11, color: '#475569' }}>{step}</span>
+              <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{step}</span>
             </div>
           ))}
         </div>
@@ -535,7 +535,7 @@ export default function LocationManager({ currentUser }: { currentUser?: { role:
                       <button key={opt.type} type="button" onClick={() => setNewLocType(opt.type)}
                         style={{ padding: '14px 12px', borderRadius: 12, border: `2px solid ${sel ? opt.border : 'var(--border-color)'}`, background: sel ? opt.bg : 'var(--border-color)', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, transition: 'all 0.15s', color: sel ? opt.color : 'var(--text-light)' }}>
                         {opt.icon}
-                        <span style={{ fontSize: 12, fontWeight: 800, color: sel ? opt.color : '#475569' }}>{opt.label}</span>
+                        <span style={{ fontSize: 12, fontWeight: 800, color: sel ? opt.color : 'var(--text-muted)' }}>{opt.label}</span>
                         <span style={{ fontSize: 10, color: 'var(--text-light)', textAlign: 'center' }}>{opt.sub}</span>
                       </button>
                     );
@@ -581,9 +581,9 @@ export default function LocationManager({ currentUser }: { currentUser?: { role:
                 </div>
               )}
 
-              <div style={{ display: 'flex', gap: 10, paddingTop: 4, borderTop: '1px solid #f1f5f9' }}>
+              <div style={{ display: 'flex', gap: 10, paddingTop: 4, borderTop: '1px solid var(--border-color)' }}>
                 <button type="button" onClick={() => { setIsAddLocOpen(false); setError(null); }}
-                  style={{ flex: 1, padding: '10px', borderRadius: 10, border: '1.5px solid #e2e8f0', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
+                  style={{ flex: 1, padding: '10px', borderRadius: 10, border: '1.5px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
                 <button type="submit" disabled={locLoading}
                   style={{ flex: 2, padding: '10px', borderRadius: 10, border: 'none', background: newLocType === 'MAIN' ? 'linear-gradient(135deg,#7c3aed,#4f46e5)' : 'linear-gradient(135deg,#059669,#047857)', color: 'var(--bg-card)', fontWeight: 700, fontSize: 13, cursor: 'pointer', boxShadow: newLocType === 'MAIN' ? '0 4px 14px rgba(124,58,237,0.35)' : '0 4px 14px rgba(5,150,105,0.35)' }}>
                   {locLoading ? 'Creating…' : `Create ${newLocType === 'MAIN' ? 'Branch' : 'Technician'}`}
@@ -615,7 +615,7 @@ export default function LocationManager({ currentUser }: { currentUser?: { role:
               </p>
               <div style={{ display: 'flex', gap: 10, width: '100%', marginTop: 8 }}>
                 <button onClick={() => { setDeleteConfirmId(null); setForceDeletePrompt(null); }}
-                  style={{ flex: 1, padding: '10px', borderRadius: 10, border: '1.5px solid #e2e8f0', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
+                  style={{ flex: 1, padding: '10px', borderRadius: 10, border: '1.5px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
                 
                 {forceDeletePrompt !== null ? (
                   <button onClick={() => handleDeleteLocation(forceDeletePrompt, true)} disabled={locLoading}

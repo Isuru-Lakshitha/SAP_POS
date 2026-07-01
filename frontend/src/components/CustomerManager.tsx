@@ -6,11 +6,11 @@ import type { Customer, Invoice } from '../types';
 // ── shared style atoms ────────────────────────────────────────────────────────
 const card: React.CSSProperties = {
   background: 'var(--bg-card)', borderRadius: 16,
-  boxShadow: '0 4px 24px rgba(0,0,0,0.07)', border: '1px solid #e8ecf4',
+  boxShadow: '0 4px 24px rgba(0,0,0,0.07)', border: '1px solid var(--border-color)',
 };
 const inp: React.CSSProperties = {
   width: '100%', padding: '10px 14px', borderRadius: 10,
-  border: '1.5px solid #e2e8f0', background: 'var(--border-color)',
+  border: '1.5px solid var(--border-color)', background: 'var(--border-color)',
   fontSize: 12, color: 'var(--text-main)', outline: 'none',
   boxSizing: 'border-box', fontFamily: 'inherit',
 };
@@ -22,10 +22,10 @@ const lbl: React.CSSProperties = {
 const th: React.CSSProperties = {
   padding: '10px 14px', fontSize: 10, fontWeight: 700, color: 'var(--text-light)',
   textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left',
-  borderBottom: '2px solid #f1f5f9', whiteSpace: 'nowrap',
+  borderBottom: '2px solid var(--border-color)', whiteSpace: 'nowrap',
 };
 const td: React.CSSProperties = {
-  padding: '12px 14px', fontSize: 12, color: '#334155', borderBottom: '1px solid #f8fafc',
+  padding: '12px 14px', fontSize: 12, color: 'var(--text-main)', borderBottom: '1px solid var(--border-color)',
 };
 
 export default function CustomerManager() {
@@ -213,7 +213,7 @@ export default function CustomerManager() {
                       <td style={{ ...td, textAlign: 'right' }}>
                         <button onClick={(e) => handleOpenEdit(cust, e)}
                           title="Edit Customer"
-                          style={{ width: 28, height: 28, borderRadius: 8, border: '1.5px solid #e2e8f0', background: 'var(--bg-card)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text-muted)', transition: 'all 0.15s' }}
+                          style={{ width: 28, height: 28, borderRadius: 8, border: '1.5px solid var(--border-color)', background: 'var(--bg-card)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text-muted)', transition: 'all 0.15s' }}
                           onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#3b82f6'; (e.currentTarget as HTMLElement).style.color = '#3b82f6'; }}
                           onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)'; }}
                         >
@@ -240,7 +240,7 @@ export default function CustomerManager() {
       <div style={{ width: 320, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
         <div style={{ ...card, overflow: 'hidden' }}>
           
-          <div style={{ background: 'linear-gradient(135deg,#0f172a,#1e293b)', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ background: 'linear-gradient(135deg,var(--text-main),var(--text-main))', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{ width: 32, height: 32, borderRadius: 9, background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <FileText style={{ width: 15, height: 15, color: 'var(--bg-card)' }} />
             </div>
@@ -252,10 +252,10 @@ export default function CustomerManager() {
 
           <div style={{ padding: '16px 20px' }}>
             {!selectedCustomer ? (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, color: '#cbd5e1', textAlign: 'center' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, color: 'var(--text-light)', textAlign: 'center' }}>
                 <Users style={{ width: 36, height: 36, marginBottom: 10, strokeWidth: 1 }} />
                 <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: 'var(--text-light)' }}>No Profile Selected</p>
-                <p style={{ margin: '4px 0 0', fontSize: 11, color: '#cbd5e1' }}>Click on a customer in the registry to view their details.</p>
+                <p style={{ margin: '4px 0 0', fontSize: 11, color: 'var(--text-light)' }}>Click on a customer in the registry to view their details.</p>
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -272,9 +272,9 @@ export default function CustomerManager() {
                     <span>{selectedCustomer.telephone}</span>
                   </div>
                   {selectedCustomer.address && (
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6, marginTop: 8, padding: '8px 10px', background: 'var(--border-color)', borderRadius: 8, border: '1px solid #e8ecf4' }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6, marginTop: 8, padding: '8px 10px', background: 'var(--border-color)', borderRadius: 8, border: '1px solid var(--border-color)' }}>
                       <MapPin style={{ width: 12, height: 12, color: 'var(--text-light)', marginTop: 1, flexShrink: 0 }} />
-                      <span style={{ fontSize: 11, color: '#475569', lineHeight: 1.4 }}>{selectedCustomer.address}</span>
+                      <span style={{ fontSize: 11, color: 'var(--text-muted)', lineHeight: 1.4 }}>{selectedCustomer.address}</span>
                     </div>
                   )}
                 </div>
@@ -298,21 +298,21 @@ export default function CustomerManager() {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 300, overflowY: 'auto' }}>
                     {selectedCustomerInvoices.length > 0 ? (
                       selectedCustomerInvoices.map(inv => (
-                        <div key={inv.id} style={{ padding: '10px 12px', background: 'var(--border-color)', borderRadius: 10, border: '1.5px solid #e8ecf4', display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'all 0.15s' }}>
+                        <div key={inv.id} style={{ padding: '10px 12px', background: 'var(--border-color)', borderRadius: 10, border: '1.5px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'all 0.15s' }}>
                           <div>
                             <p style={{ margin: 0, fontSize: 12, fontWeight: 800, color: 'var(--text-main)', fontFamily: 'monospace' }}>{inv.invoiceNumber}</p>
                             <p style={{ margin: '2px 0 0', fontSize: 10, color: 'var(--text-light)' }}>{new Date(inv.date).toLocaleDateString()}</p>
                           </div>
                           <div style={{ textAlign: 'right' }}>
                             <p style={{ margin: 0, fontSize: 12, fontWeight: 800, color: '#059669', fontFamily: 'monospace' }}>LKR {inv.finalAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
-                            <span style={{ display: 'inline-block', padding: '1px 6px', background: 'var(--border-color)', color: '#475569', fontSize: 9, fontWeight: 700, borderRadius: 4, marginTop: 4, textTransform: 'uppercase' }}>
+                            <span style={{ display: 'inline-block', padding: '1px 6px', background: 'var(--border-color)', color: 'var(--text-muted)', fontSize: 9, fontWeight: 700, borderRadius: 4, marginTop: 4, textTransform: 'uppercase' }}>
                               {inv.paymentMethod}
                             </span>
                           </div>
                         </div>
                       ))
                     ) : (
-                      <div style={{ textAlign: 'center', padding: '20px', color: 'var(--text-light)', fontSize: 11, border: '1.5px dashed #e2e8f0', borderRadius: 10 }}>
+                      <div style={{ textAlign: 'center', padding: '20px', color: 'var(--text-light)', fontSize: 11, border: '1.5px dashed var(--border-color)', borderRadius: 10 }}>
                         No invoices on record.
                       </div>
                     )}
@@ -368,7 +368,7 @@ export default function CustomerManager() {
                 onClick={() => setCustIsCredit(!custIsCredit)}>
                 <input type="checkbox" checked={custIsCredit} onChange={() => {}} style={{ width: 16, height: 16, accentColor: '#7c3aed' }} />
                 <div>
-                  <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: custIsCredit ? '#7c3aed' : '#334155' }}>Corporate / Credit Account</p>
+                  <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: custIsCredit ? '#7c3aed' : 'var(--text-main)' }}>Corporate / Credit Account</p>
                   <p style={{ margin: '2px 0 0', fontSize: 10, color: 'var(--text-muted)' }}>Allows billing to a ledger without immediate payment.</p>
                 </div>
               </div>
@@ -386,9 +386,9 @@ export default function CustomerManager() {
                 </div>
               )}
 
-              <div style={{ display: 'flex', gap: 10, paddingTop: 4, borderTop: '1px solid #f1f5f9', marginTop: 4 }}>
+              <div style={{ display: 'flex', gap: 10, paddingTop: 4, borderTop: '1px solid var(--border-color)', marginTop: 4 }}>
                 <button type="button" onClick={() => setIsModalOpen(false)}
-                  style={{ flex: 1, padding: '10px', borderRadius: 10, border: '1.5px solid #e2e8f0', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
+                  style={{ flex: 1, padding: '10px', borderRadius: 10, border: '1.5px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
                 <button type="submit" disabled={loading}
                   style={{ flex: 2, padding: '10px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg,#3b82f6,#2563eb)', color: 'var(--bg-card)', fontWeight: 700, fontSize: 13, cursor: 'pointer', boxShadow: '0 4px 14px rgba(59,130,246,0.35)' }}>
                   {loading ? 'Saving…' : (editingCustomer ? 'Save Changes' : 'Register Customer')}

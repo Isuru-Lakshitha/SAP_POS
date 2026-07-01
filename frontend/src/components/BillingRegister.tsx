@@ -16,11 +16,11 @@ interface SerialNumberEntry { serialNumber: string; itemId: number; locationId: 
 // ─── shared inline style atoms ───────────────────────────────────────────────
 const card: React.CSSProperties = {
   background: 'var(--bg-card)', borderRadius: 16,
-  boxShadow: '0 4px 24px rgba(0,0,0,0.07)', border: '1px solid #e8ecf4',
+  boxShadow: '0 4px 24px rgba(0,0,0,0.07)', border: '1px solid var(--border-color)',
 };
 const inp: React.CSSProperties = {
   width: '100%', padding: '10px 14px', borderRadius: 10,
-  border: '1.5px solid #e2e8f0', background: 'var(--border-color)',
+  border: '1.5px solid var(--border-color)', background: 'var(--border-color)',
   fontSize: 12, color: 'var(--text-main)', outline: 'none',
   boxSizing: 'border-box', fontFamily: 'inherit',
 };
@@ -268,11 +268,11 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
                   value={customerSearch} onChange={e => setCustomerSearch(e.target.value)}
                   style={{ ...inp, paddingLeft: 34 }} />
                 {customerSearch && (
-                  <div style={{ position: 'absolute', left: 0, right: 0, top: '100%', marginTop: 4, background: 'var(--bg-card)', border: '1.5px solid #e2e8f0', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,0.12)', zIndex: 30, maxHeight: 220, overflowY: 'auto' }}>
+                  <div style={{ position: 'absolute', left: 0, right: 0, top: '100%', marginTop: 4, background: 'var(--bg-card)', border: '1.5px solid var(--border-color)', borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,0.12)', zIndex: 30, maxHeight: 220, overflowY: 'auto' }}>
                     {filteredCustomers.length > 0 ? filteredCustomers.map(cust => (
                       <button key={cust.id} type="button"
                         onClick={() => { setSelectedCustomerId(cust.id); setCustomerSearch(''); setRedeemPoints(0); }}
-                        style={{ width: '100%', textAlign: 'left', padding: '9px 14px', border: 'none', background: selectedCustomerId === cust.id ? 'rgba(124,58,237,0.06)' : 'transparent', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #f1f5f9' }}
+                        style={{ width: '100%', textAlign: 'left', padding: '9px 14px', border: 'none', background: selectedCustomerId === cust.id ? 'rgba(124,58,237,0.06)' : 'transparent', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)' }}
                         onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(124,58,237,0.06)'; }}
                         onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = selectedCustomerId === cust.id ? 'rgba(124,58,237,0.06)' : 'transparent'; }}
                       >
@@ -321,7 +321,7 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
             )}
 
             {/* New customer */}
-            <button onClick={() => setIsCustomerModalOpen(true)} style={{ padding: '10px 16px', borderRadius: 10, border: '1.5px solid #e2e8f0', background: 'var(--bg-card)', color: 'var(--text-muted)', fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, whiteSpace: 'nowrap', transition: 'all 0.15s' }}
+            <button onClick={() => setIsCustomerModalOpen(true)} style={{ padding: '10px 16px', borderRadius: 10, border: '1.5px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-muted)', fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, whiteSpace: 'nowrap', transition: 'all 0.15s' }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#7c3aed'; (e.currentTarget as HTMLElement).style.color = '#7c3aed'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)'; }}
             >
@@ -332,7 +332,7 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
 
         {/* ── Cart Table ── */}
         <div style={{ ...card, padding: '18px 20px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, paddingBottom: 12, borderBottom: '1px solid #f1f5f9' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, paddingBottom: 12, borderBottom: '1px solid var(--border-color)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <div style={{ ...iconBox('#7c3aed, #4f46e5'), width: 34, height: 34 }}>
                 <ShoppingCart style={{ width: 16, height: 16, color: 'var(--bg-card)' }} />
@@ -350,16 +350,16 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
           </div>
 
           {cart.length === 0 ? (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, color: '#cbd5e1' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, color: 'var(--text-light)' }}>
               <ShoppingCart style={{ width: 48, height: 48, marginBottom: 12, strokeWidth: 1 }} />
               <p style={{ margin: 0, fontSize: 14, fontWeight: 600, color: 'var(--text-light)' }}>Cart is empty</p>
-              <p style={{ margin: '4px 0 0', fontSize: 12, color: '#cbd5e1' }}>Click a product below to add it</p>
+              <p style={{ margin: '4px 0 0', fontSize: 12, color: 'var(--text-light)' }}>Click a product below to add it</p>
             </div>
           ) : (
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 640 }}>
                 <thead>
-                  <tr style={{ borderBottom: '2px solid #f1f5f9' }}>
+                  <tr style={{ borderBottom: '2px solid var(--border-color)' }}>
                     {['Product', 'Unit Price', 'Qty', 'Discount', 'Serial / Notes', 'Total', ''].map(h => (
                       <th key={h} style={{ padding: '8px 10px', fontSize: 10, fontWeight: 700, color: 'var(--text-light)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: h === 'Total' ? 'right' : h === 'Qty' ? 'center' : 'left', whiteSpace: 'nowrap' }}>{h}</th>
                     ))}
@@ -370,24 +370,24 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
                     const dbItem = items.find(i => i.id === item.itemId);
                     const filteredSerials = localSerials.filter(s => s.itemId === item.itemId);
                     return (
-                      <tr key={item.itemId} style={{ borderBottom: '1px solid #f8fafc', background: idx % 2 === 0 ? 'var(--bg-card)' : 'var(--bg-input)' }}>
+                      <tr key={item.itemId} style={{ borderBottom: '1px solid var(--border-color)', background: idx % 2 === 0 ? 'var(--bg-card)' : 'var(--bg-input)' }}>
                         <td style={{ padding: '10px 10px' }}>
                           <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: 'var(--text-main)' }}>{item.name}</p>
                           <p style={{ margin: '2px 0 0', fontSize: 10, color: 'var(--text-light)', fontFamily: 'monospace' }}>{item.code}</p>
                         </td>
-                        <td style={{ padding: '10px 10px', fontSize: 12, fontWeight: 600, color: '#475569', fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
+                        <td style={{ padding: '10px 10px', fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
                           LKR {item.unitPrice.toLocaleString()}
                         </td>
                         <td style={{ padding: '10px 10px' }}>
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
                             <button onClick={() => updateQuantity(item.itemId, item.quantity - 1)}
-                              style={{ width: 26, height: 26, borderRadius: 7, border: '1.5px solid #e2e8f0', background: 'var(--border-color)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}
+                              style={{ width: 26, height: 26, borderRadius: 7, border: '1.5px solid var(--border-color)', background: 'var(--border-color)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}
                               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#7c3aed'; (e.currentTarget as HTMLElement).style.color = '#7c3aed'; }}
                               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)'; }}
                             ><Minus style={{ width: 11, height: 11 }} /></button>
                             <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--text-main)', minWidth: 22, textAlign: 'center', fontFamily: 'monospace' }}>{item.quantity}</span>
                             <button onClick={() => updateQuantity(item.itemId, item.quantity + 1)}
-                              style={{ width: 26, height: 26, borderRadius: 7, border: '1.5px solid #e2e8f0', background: 'var(--border-color)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}
+                              style={{ width: 26, height: 26, borderRadius: 7, border: '1.5px solid var(--border-color)', background: 'var(--border-color)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}
                               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#7c3aed'; (e.currentTarget as HTMLElement).style.color = '#7c3aed'; }}
                               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)'; }}
                             ><Plus style={{ width: 11, height: 11 }} /></button>
@@ -479,7 +479,7 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
                     <p style={{ margin: 0, fontSize: 11, fontWeight: 700, color: 'var(--text-main)', lineHeight: 1.3 }}>{item.name}</p>
                     <span style={{ display: 'inline-block', marginTop: 3, fontSize: 9, fontWeight: 600, color: 'var(--text-muted)', background: 'var(--border-color)', padding: '1px 6px', borderRadius: 4, fontFamily: 'monospace' }}>{item.code}</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #f1f5f9', paddingTop: 7 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border-color)', paddingTop: 7 }}>
                     <span style={{ fontSize: 12, fontWeight: 800, color: '#7c3aed', fontFamily: 'monospace' }}>LKR {item.retailPrice.toLocaleString()}</span>
                     <span style={{ fontSize: 9, fontWeight: 700, color: stockColor, background: stockBg, padding: '2px 6px', borderRadius: 5 }}>
                       {isService ? 'Service' : localQty > 0 ? `${localQty} left` : 'Out'}
@@ -515,9 +515,9 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
             {cart.length > 0 && (
               <div style={{ background: 'var(--border-color)', borderRadius: 10, padding: '10px 12px', maxHeight: 160, overflowY: 'auto' }}>
                 {cart.map(item => (
-                  <div key={item.itemId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 0', borderBottom: '1px solid #f1f5f9' }}>
+                  <div key={item.itemId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 0', borderBottom: '1px solid var(--border-color)' }}>
                     <div>
-                      <p style={{ margin: 0, fontSize: 11, fontWeight: 600, color: '#334155' }}>{item.name}</p>
+                      <p style={{ margin: 0, fontSize: 11, fontWeight: 600, color: 'var(--text-main)' }}>{item.name}</p>
                       <p style={{ margin: 0, fontSize: 10, color: 'var(--text-light)' }}>×{item.quantity} @ LKR {item.unitPrice.toLocaleString()}</p>
                     </div>
                     <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-main)', fontFamily: 'monospace' }}>
@@ -634,12 +634,12 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
               <div><label style={lbl}>Customer Name *</label><input type="text" required placeholder="e.g. John Smith" value={newCustName} onChange={e => setNewCustName(e.target.value)} style={inp} /></div>
               <div><label style={lbl}>Telephone *</label><input type="text" required placeholder="e.g. 0771234567" value={newCustPhone} onChange={e => setNewCustPhone(e.target.value)} style={inp} /></div>
               <div><label style={lbl}>Address (Optional)</label><textarea placeholder="e.g. 123 Main Street, Colombo" rows={2} value={newCustAddress} onChange={e => setNewCustAddress(e.target.value)} style={{ ...inp, resize: 'none' }} /></div>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', padding: '9px 12px', background: 'var(--border-color)', borderRadius: 10, border: '1.5px solid #e2e8f0' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', padding: '9px 12px', background: 'var(--border-color)', borderRadius: 10, border: '1.5px solid var(--border-color)' }}>
                 <input type="checkbox" checked={newCustIsCredit} onChange={e => setNewCustIsCredit(e.target.checked)} style={{ width: 15, height: 15, accentColor: '#7c3aed' }} />
-                <span style={{ fontSize: 12, fontWeight: 600, color: '#475569' }}>Credit / Corporate Customer</span>
+                <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)' }}>Credit / Corporate Customer</span>
               </label>
-              <div style={{ display: 'flex', gap: 10, paddingTop: 4, borderTop: '1px solid #f1f5f9' }}>
-                <button type="button" onClick={() => setIsCustomerModalOpen(false)} style={{ flex: 1, padding: '10px', borderRadius: 10, border: '1.5px solid #e2e8f0', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
+              <div style={{ display: 'flex', gap: 10, paddingTop: 4, borderTop: '1px solid var(--border-color)' }}>
+                <button type="button" onClick={() => setIsCustomerModalOpen(false)} style={{ flex: 1, padding: '10px', borderRadius: 10, border: '1.5px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
                 <button type="submit" disabled={loading} style={{ flex: 2, padding: '10px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg,#7c3aed,#4f46e5)', color: 'var(--bg-card)', fontWeight: 700, fontSize: 13, cursor: 'pointer', boxShadow: '0 4px 14px rgba(124,58,237,0.35)' }}>
                   {loading ? 'Registering…' : 'Register Customer'}
                 </button>
@@ -691,7 +691,7 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
                 </div>
               </div>
               {/* Payment details */}
-              <div style={{ background: 'var(--border-color)', borderRadius: 12, padding: '14px 16px', border: '1.5px solid #e2e8f0' }}>
+              <div style={{ background: 'var(--border-color)', borderRadius: 12, padding: '14px 16px', border: '1.5px solid var(--border-color)' }}>
                 {paymentMethod === 'CASH' ? (
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                     <div>
@@ -716,8 +716,8 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
                   </div>
                 )}
               </div>
-              <div style={{ display: 'flex', gap: 10, borderTop: '1px solid #f1f5f9', paddingTop: 4 }}>
-                <button type="button" onClick={() => setIsCheckoutOpen(false)} style={{ flex: 1, padding: '11px', borderRadius: 10, border: '1.5px solid #e2e8f0', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Go Back</button>
+              <div style={{ display: 'flex', gap: 10, borderTop: '1px solid var(--border-color)', paddingTop: 4 }}>
+                <button type="button" onClick={() => setIsCheckoutOpen(false)} style={{ flex: 1, padding: '11px', borderRadius: 10, border: '1.5px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Go Back</button>
                 <button onClick={handleCheckout} disabled={loading} style={{ flex: 2, padding: '11px', borderRadius: 10, border: 'none', background: loading ? '#6ee7b7' : 'linear-gradient(135deg,#059669,#047857)', color: 'var(--bg-card)', fontWeight: 700, fontSize: 13, cursor: loading ? 'not-allowed' : 'pointer', boxShadow: '0 4px 14px rgba(5,150,105,0.35)' }}>
                   {loading ? 'Processing…' : 'Confirm & Print Bill'}
                 </button>
@@ -733,22 +733,22 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
           <div style={{ background: 'var(--bg-card)', borderRadius: 16, width: '100%', maxWidth: 850, maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', display: 'flex', flexDirection: 'column' }}>
             
             {/* Modal Actions Bar (Hidden during print) */}
-            <div className="hide-on-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 24px', borderBottom: '1px solid #e2e8f0', background: 'var(--border-color)', position: 'sticky', top: 0, zIndex: 10 }}>
+            <div className="hide-on-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 24px', borderBottom: '1px solid var(--border-color)', background: 'var(--border-color)', position: 'sticky', top: 0, zIndex: 10 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <CheckCircle2 style={{ color: '#10b981', width: 24, height: 24 }} />
-                <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: '#0f172a' }}>Sale Completed Successfully</h3>
+                <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: 'var(--text-main)' }}>Sale Completed Successfully</h3>
               </div>
               <div style={{ display: 'flex', gap: 12 }}>
-                <button type="button" onClick={() => setCompletedInvoice(null)} style={{ padding: '8px 16px', borderRadius: 8, border: '1.5px solid #e2e8f0', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 600, fontSize: 14, cursor: 'pointer' }}>Close (New Sale)</button>
+                <button type="button" onClick={() => setCompletedInvoice(null)} style={{ padding: '8px 16px', borderRadius: 8, border: '1.5px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 600, fontSize: 14, cursor: 'pointer' }}>Close (New Sale)</button>
                 <button type="button" onClick={() => window.print()} style={{ padding: '8px 16px', borderRadius: 8, border: 'none', background: 'linear-gradient(135deg,#059669,#047857)', color: 'var(--bg-card)', fontWeight: 600, fontSize: 14, cursor: 'pointer', boxShadow: '0 4px 12px rgba(5,150,105,0.3)' }}>Print Invoice</button>
               </div>
             </div>
 
             {/* The Actual Invoice to Print */}
-            <div id="print-receipt-section" style={{ width: '100%', fontFamily: 'Arial, sans-serif', color: '#000', padding: '40px', boxSizing: 'border-box', background: 'var(--bg-card)' }}>
+            <div id="print-receipt-section" style={{ width: '100%', fontFamily: 'Arial, sans-serif', color: 'var(--text-main)', padding: '40px', boxSizing: 'border-box', background: 'var(--bg-card)' }}>
               
               {/* Header */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '2px solid #000', paddingBottom: '10px', marginBottom: '2px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '2px solid var(--text-main)', paddingBottom: '10px', marginBottom: '2px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <div style={{ fontSize: '32px', fontWeight: '900', fontStyle: 'italic', letterSpacing: '-1px' }}>
                     SAP <span style={{ fontSize: '18px', verticalAlign: 'super' }}>+</span>
@@ -756,10 +756,10 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
                   </div>
                 </div>
                 <div style={{ textAlign: 'center', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                  <h1 style={{ margin: 0, fontSize: '28px', fontWeight: 'bold', paddingRight: '80px', color: '#1f2937' }}>SAP COMPUTERS</h1>
+                  <h1 style={{ margin: 0, fontSize: '28px', fontWeight: 'bold', paddingRight: '80px', color: 'var(--text-main)' }}>SAP COMPUTERS</h1>
                 </div>
               </div>
-          <div style={{ background: '#e5e7eb', textAlign: 'center', padding: '4px', borderTop: '1px solid #000', borderBottom: '1px solid #000', marginBottom: '15px' }}>
+          <div style={{ background: '#e5e7eb', textAlign: 'center', padding: '4px', borderTop: '1px solid var(--text-main)', borderBottom: '1px solid var(--text-main)', marginBottom: '15px' }}>
             <h2 style={{ margin: 0, fontSize: '16px', letterSpacing: '4px', fontWeight: 'bold' }}>INVOICE</h2>
           </div>
 
@@ -774,27 +774,27 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
             <div style={{ width: '35%' }}>
               <div style={{ display: 'flex', marginBottom: '5px' }}>
                 <strong style={{ width: '60px' }}>DATE:</strong>
-                <span style={{ borderBottom: '1px dotted #000', flexGrow: 1 }}>{new Date(completedInvoice.date).toLocaleDateString()}</span>
+                <span style={{ borderBottom: '1px dotted var(--text-main)', flexGrow: 1 }}>{new Date(completedInvoice.date).toLocaleDateString()}</span>
               </div>
               <div style={{ display: 'flex', marginBottom: '5px' }}>
                 <strong style={{ width: '60px' }}>TO:</strong>
-                <span style={{ borderBottom: '1px dotted #000', flexGrow: 1 }}>{completedInvoice.customer?.name || 'Walk-in'}</span>
+                <span style={{ borderBottom: '1px dotted var(--text-main)', flexGrow: 1 }}>{completedInvoice.customer?.name || 'Walk-in'}</span>
               </div>
               <div style={{ display: 'flex', marginTop: '5px' }}>
                 <strong style={{ width: '60px' }}>INV NO:</strong>
-                <span style={{ borderBottom: '1px dotted #000', flexGrow: 1 }}>{completedInvoice.invoiceNumber}</span>
+                <span style={{ borderBottom: '1px dotted var(--text-main)', flexGrow: 1 }}>{completedInvoice.invoiceNumber}</span>
               </div>
             </div>
           </div>
 
           {/* Table */}
-          <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #000', fontSize: '13px' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid var(--text-main)', fontSize: '13px' }}>
             <thead>
-              <tr style={{ background: '#374151', color: 'var(--bg-card)' }}>
-                <th style={{ border: '1px solid #000', padding: '8px', textAlign: 'left', width: '50%' }}>DESCRIPTION</th>
-                <th style={{ border: '1px solid #000', padding: '8px', textAlign: 'center', width: '20%' }}>UNIT PRICE</th>
-                <th style={{ border: '1px solid #000', padding: '8px', textAlign: 'center', width: '10%' }}>QTY</th>
-                <th style={{ border: '1px solid #000', padding: '8px', textAlign: 'right', width: '20%' }}>AMOUNT</th>
+              <tr style={{ background: 'var(--text-main)', color: 'var(--bg-card)' }}>
+                <th style={{ border: '1px solid var(--text-main)', padding: '8px', textAlign: 'left', width: '50%' }}>DESCRIPTION</th>
+                <th style={{ border: '1px solid var(--text-main)', padding: '8px', textAlign: 'center', width: '20%' }}>UNIT PRICE</th>
+                <th style={{ border: '1px solid var(--text-main)', padding: '8px', textAlign: 'center', width: '10%' }}>QTY</th>
+                <th style={{ border: '1px solid var(--text-main)', padding: '8px', textAlign: 'right', width: '20%' }}>AMOUNT</th>
               </tr>
             </thead>
             <tbody>
@@ -803,23 +803,23 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
                 const ci = completedInvoice.cartItems[idx];
                 return (
                   <tr key={idx} style={{ height: '30px' }}>
-                    <td style={{ border: '1px solid #000', padding: '4px 8px', verticalAlign: 'top' }}>
+                    <td style={{ border: '1px solid var(--text-main)', padding: '4px 8px', verticalAlign: 'top' }}>
                       {ci ? (
                         <>
                           <div style={{ fontWeight: 'bold' }}>{ci.item.name}</div>
-                          {ci.serialNumber && <div style={{ fontSize: '11px', color: '#333' }}>S/N: {ci.serialNumber}</div>}
+                          {ci.serialNumber && <div style={{ fontSize: '11px', color: 'var(--text-main)' }}>S/N: {ci.serialNumber}</div>}
                           {ci.notes && <div style={{ fontSize: '11px', fontStyle: 'italic', color: '#555' }}>Note: {ci.notes}</div>}
                           {ci.warrantyPeriod && ci.warrantyPeriod !== 'No Warranty' && <div style={{ fontSize: '11px' }}>Warranty: {ci.warrantyPeriod}</div>}
                         </>
                       ) : null}
                     </td>
-                    <td style={{ border: '1px solid #000', padding: '4px 8px', textAlign: 'center', verticalAlign: 'top' }}>
+                    <td style={{ border: '1px solid var(--text-main)', padding: '4px 8px', textAlign: 'center', verticalAlign: 'top' }}>
                       {ci ? (ci.unitPrice - ci.discount).toLocaleString('en-US', { minimumFractionDigits: 2 }) : ''}
                     </td>
-                    <td style={{ border: '1px solid #000', padding: '4px 8px', textAlign: 'center', verticalAlign: 'top' }}>
+                    <td style={{ border: '1px solid var(--text-main)', padding: '4px 8px', textAlign: 'center', verticalAlign: 'top' }}>
                       {ci ? ci.quantity : ''}
                     </td>
-                    <td style={{ border: '1px solid #000', padding: '4px 8px', textAlign: 'right', verticalAlign: 'top' }}>
+                    <td style={{ border: '1px solid var(--text-main)', padding: '4px 8px', textAlign: 'right', verticalAlign: 'top' }}>
                       {ci ? ((ci.unitPrice - ci.discount) * ci.quantity).toLocaleString('en-US', { minimumFractionDigits: 2 }) : ''}
                     </td>
                   </tr>
@@ -827,9 +827,9 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
               })}
               {/* Total Row */}
               <tr>
-                <td colSpan={2} style={{ border: '1px solid #000', borderRight: 'none' }}></td>
-                <td style={{ border: '1px solid #000', padding: '8px', textAlign: 'center', background: '#374151', color: 'var(--bg-card)', fontWeight: 'bold' }}>Total</td>
-                <td style={{ border: '1px solid #000', padding: '8px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px' }}>
+                <td colSpan={2} style={{ border: '1px solid var(--text-main)', borderRight: 'none' }}></td>
+                <td style={{ border: '1px solid var(--text-main)', padding: '8px', textAlign: 'center', background: 'var(--text-main)', color: 'var(--bg-card)', fontWeight: 'bold' }}>Total</td>
+                <td style={{ border: '1px solid var(--text-main)', padding: '8px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px' }}>
                   {completedInvoice.finalAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </td>
               </tr>
@@ -848,7 +848,7 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
           {/* Signatures & Stamp */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '60px' }}>
             <div style={{ textAlign: 'center', width: '200px' }}>
-              <div style={{ borderTop: '1px dotted #000', paddingTop: '5px', fontSize: '11px', fontWeight: 'bold' }}>
+              <div style={{ borderTop: '1px dotted var(--text-main)', paddingTop: '5px', fontSize: '11px', fontWeight: 'bold' }}>
                 Issued By<br/>SAP Computers
               </div>
             </div>
@@ -861,7 +861,7 @@ export default function BillingRegister({ currentUser }: BillingRegisterProps) {
             </div>
 
             <div style={{ textAlign: 'center', width: '200px' }}>
-              <div style={{ borderTop: '1px dotted #000', paddingTop: '5px', fontSize: '11px', fontWeight: 'bold' }}>
+              <div style={{ borderTop: '1px dotted var(--text-main)', paddingTop: '5px', fontSize: '11px', fontWeight: 'bold' }}>
                 Customer Signature
               </div>
             </div>

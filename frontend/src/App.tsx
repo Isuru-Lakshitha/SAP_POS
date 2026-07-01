@@ -194,14 +194,14 @@ export default function App() {
           <div style={{
             width: '100%', maxWidth: 400, background: 'var(--bg-body)', borderRadius: 28,
             padding: '40px 36px',
-            boxShadow: '14px 14px 28px #cdd0db, -14px -14px 28px #ffffff',
+            boxShadow: '14px 14px 28px #cdd0db, -14px -14px 28px var(--bg-card)',
             border: '1px solid rgba(255,255,255,0.7)',
           }}>
             {!isResetMode ? (
               <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
                 <div style={{ marginBottom: 4 }}>
-                  <h2 style={{ fontSize: 28, fontWeight: 800, color: '#1e293b', margin: 0, lineHeight: 1.2 }}>Login</h2>
-                  <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 6, fontWeight: 500 }}>Welcome back! Please login to your account</p>
+                  <h2 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-main)', margin: 0, lineHeight: 1.2 }}>Login</h2>
+                  <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 6, fontWeight: 500 }}>Welcome back! Please login to your account</p>
                 </div>
 
                 {error && <div style={{ padding: '12px 16px', background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: 10, color: '#dc2626', fontSize: 12, fontWeight: 600 }}>{error}</div>}
@@ -209,36 +209,36 @@ export default function App() {
 
                 {/* Username */}
                 <div>
-                  <label style={{ fontSize: 11, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 6 }}>User Name</label>
+                  <label style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 6 }}>User Name</label>
                   <div style={{ position: 'relative' }}>
                     <input type="text" required placeholder="Enter your username" value={username}
                       onChange={e => setUsername(e.target.value)}
-                      style={{ width: '100%', padding: '14px 44px 14px 16px', border: '1px solid rgba(255,255,255,0.6)', borderRadius: 12, fontSize: 13, color: '#1e293b', outline: 'none', background: 'var(--bg-body)', boxSizing: 'border-box', boxShadow: 'inset 4px 4px 8px #cdd0db, inset -4px -4px 8px #ffffff', transition: 'box-shadow 0.2s', fontFamily: 'inherit' }}
-                      onFocus={e => { e.target.style.boxShadow = 'inset 5px 5px 10px #c2c5d0, inset -2px -2px 6px #ffffff, 0 0 0 2px rgba(59,130,246,0.25)'; }}
-                      onBlur={e => { e.target.style.boxShadow = 'inset 4px 4px 8px #cdd0db, inset -4px -4px 8px #ffffff'; }}
+                      style={{ width: '100%', padding: '14px 44px 14px 16px', border: '1px solid rgba(255,255,255,0.6)', borderRadius: 12, fontSize: 13, color: 'var(--text-main)', outline: 'none', background: 'var(--bg-body)', boxSizing: 'border-box', boxShadow: 'inset 4px 4px 8px #cdd0db, inset -4px -4px 8px var(--bg-card)', transition: 'box-shadow 0.2s', fontFamily: 'inherit' }}
+                      onFocus={e => { e.target.style.boxShadow = 'inset 5px 5px 10px #c2c5d0, inset -2px -2px 6px var(--bg-card), 0 0 0 2px rgba(59,130,246,0.25)'; }}
+                      onBlur={e => { e.target.style.boxShadow = 'inset 4px 4px 8px #cdd0db, inset -4px -4px 8px var(--bg-card)'; }}
                     />
-                    <User style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', width: 16, height: 16, color: '#94a3b8' }} />
+                    <User style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', width: 16, height: 16, color: 'var(--text-muted)' }} />
                   </div>
                 </div>
 
                 {/* Password */}
                 <div>
-                  <label style={{ fontSize: 11, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 6 }}>Password</label>
+                  <label style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 6 }}>Password</label>
                   <div style={{ position: 'relative' }}>
                     <input type="password" required placeholder="Enter your password" value={password}
                       onChange={e => setPassword(e.target.value)}
-                      style={{ width: '100%', padding: '14px 44px 14px 16px', border: '1px solid rgba(255,255,255,0.6)', borderRadius: 12, fontSize: 13, color: '#1e293b', outline: 'none', background: 'var(--bg-body)', boxSizing: 'border-box', boxShadow: 'inset 4px 4px 8px #cdd0db, inset -4px -4px 8px #ffffff', transition: 'box-shadow 0.2s', fontFamily: 'inherit' }}
-                      onFocus={e => { e.target.style.boxShadow = 'inset 5px 5px 10px #c2c5d0, inset -2px -2px 6px #ffffff, 0 0 0 2px rgba(59,130,246,0.25)'; }}
-                      onBlur={e => { e.target.style.boxShadow = 'inset 4px 4px 8px #cdd0db, inset -4px -4px 8px #ffffff'; }}
+                      style={{ width: '100%', padding: '14px 44px 14px 16px', border: '1px solid rgba(255,255,255,0.6)', borderRadius: 12, fontSize: 13, color: 'var(--text-main)', outline: 'none', background: 'var(--bg-body)', boxSizing: 'border-box', boxShadow: 'inset 4px 4px 8px #cdd0db, inset -4px -4px 8px var(--bg-card)', transition: 'box-shadow 0.2s', fontFamily: 'inherit' }}
+                      onFocus={e => { e.target.style.boxShadow = 'inset 5px 5px 10px #c2c5d0, inset -2px -2px 6px var(--bg-card), 0 0 0 2px rgba(59,130,246,0.25)'; }}
+                      onBlur={e => { e.target.style.boxShadow = 'inset 4px 4px 8px #cdd0db, inset -4px -4px 8px var(--bg-card)'; }}
                     />
-                    <Lock style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', width: 16, height: 16, color: '#94a3b8' }} />
+                    <Lock style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', width: 16, height: 16, color: 'var(--text-muted)' }} />
                   </div>
                 </div>
 
                 {/* Forgot password */}
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                   <button type="button" onClick={() => { setError(null); setIsResetMode(true); }}
-                    style={{ fontSize: 12, color: '#94a3b8', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+                    style={{ fontSize: 12, color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
                     Forgot Password?
                   </button>
                 </div>
@@ -246,7 +246,7 @@ export default function App() {
                 <button type="submit" disabled={loading} style={{
                   width: '100%', padding: 14,
                   background: loading ? '#93c5fd' : 'linear-gradient(135deg, #3b82f6, #2563eb)',
-                  color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700,
+                  color: 'var(--bg-card)', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700,
                   cursor: loading ? 'not-allowed' : 'pointer', letterSpacing: '0.04em',
                   boxShadow: '0 4px 15px rgba(59,130,246,0.35)', transition: 'all 0.2s', textTransform: 'uppercase',
                 }}>
@@ -256,25 +256,25 @@ export default function App() {
             ) : (
               <form onSubmit={handleResetRequest} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                 <div>
-                  <h2 style={{ fontSize: 24, fontWeight: 800, color: '#1e293b', margin: 0 }}>Reset Password</h2>
-                  <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 6 }}>Verify username to request admin assistance</p>
+                  <h2 style={{ fontSize: 24, fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>Reset Password</h2>
+                  <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 6 }}>Verify username to request admin assistance</p>
                 </div>
                 <div style={{ padding: '12px 16px', background: '#fffbeb', border: '1px solid #fcd34d', borderRadius: 10, color: '#92400e', fontSize: 12, display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                   <ShieldAlert style={{ width: 16, height: 16, flexShrink: 0, marginTop: 1 }} />
                   <span>System administrators will unlock your access once verified.</span>
                 </div>
                 <div>
-                  <label style={{ fontSize: 11, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 6 }}>Username</label>
+                  <label style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 6 }}>Username</label>
                   <input type="text" required placeholder="username" value={resetUsername} onChange={e => setResetUsername(e.target.value)}
-                    style={{ width: '100%', padding: '13px 16px', border: '1.5px solid #e2e8f0', borderRadius: 10, fontSize: 13, color: '#1e293b', outline: 'none', background: '#f8fafc', boxSizing: 'border-box', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.04)' }} />
+                    style={{ width: '100%', padding: '13px 16px', border: '1.5px solid var(--border-color)', borderRadius: 10, fontSize: 13, color: 'var(--text-main)', outline: 'none', background: 'var(--border-color)', boxSizing: 'border-box', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.04)' }} />
                 </div>
                 <div style={{ display: 'flex', gap: 12 }}>
                   <button type="button" onClick={() => { setError(null); setIsResetMode(false); }}
-                    style={{ flex: 1, padding: 12, borderRadius: 10, border: '1.5px solid #e2e8f0', background: '#fff', color: '#64748b', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
+                    style={{ flex: 1, padding: 12, borderRadius: 10, border: '1.5px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
                     Cancel
                   </button>
                   <button type="submit" disabled={loading}
-                    style={{ flex: 1, padding: 12, borderRadius: 10, border: 'none', background: 'linear-gradient(135deg, #3b82f6, #2563eb)', color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer', boxShadow: '0 4px 12px rgba(59,130,246,0.3)' }}>
+                    style={{ flex: 1, padding: 12, borderRadius: 10, border: 'none', background: 'linear-gradient(135deg, #3b82f6, #2563eb)', color: 'var(--bg-card)', fontWeight: 700, fontSize: 13, cursor: 'pointer', boxShadow: '0 4px 12px rgba(59,130,246,0.3)' }}>
                     {loading ? 'Sending...' : 'Submit'}
                   </button>
                 </div>
@@ -335,7 +335,7 @@ export default function App() {
               padding: '11px 14px', borderRadius: 8, border: 'none', cursor: 'pointer',
               fontWeight: 600, fontSize: 13, textAlign: 'left', width: '100%',
               background: activeTab === item.tab ? '#7c3aed' : 'transparent',
-              color: activeTab === item.tab ? '#ffffff' : '#8f9bb3',
+              color: activeTab === item.tab ? 'var(--bg-card)' : 'var(--text-muted)',
               boxShadow: activeTab === item.tab ? '0 4px 14px rgba(124,58,237,0.4)' : 'none',
               transition: 'all 0.18s ease', fontFamily: 'Inter, sans-serif',
             }}
@@ -359,7 +359,7 @@ export default function App() {
           borderBottom: '1px solid rgba(0,0,0,0.08)', flexShrink: 0,
           boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
         }}>
-          <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#1e293b', margin: 0, fontFamily: 'Outfit, sans-serif' }}>
+          <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)', margin: 0, fontFamily: 'Outfit, sans-serif' }}>
             {tabTitle[activeTab] || ''}
           </h2>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -371,8 +371,8 @@ export default function App() {
               {user.role === 'SUPERADMIN' ? 'Superadmin' : user.role === 'ADMIN' ? 'Admin' : 'Technician'}
             </span>
             <div style={{ lineHeight: 1.3, textAlign: 'right' }}>
-              <p style={{ fontSize: 10, color: '#94a3b8', margin: 0 }}>Operator:</p>
-              <p style={{ fontSize: 13, fontWeight: 700, color: '#1e293b', margin: 0 }}>{user.username}</p>
+              <p style={{ fontSize: 10, color: 'var(--text-muted)', margin: 0 }}>Operator:</p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-main)', margin: 0 }}>{user.username}</p>
             </div>
             <button 
               onClick={() => setIsDarkMode(!isDarkMode)}
@@ -473,7 +473,7 @@ export default function App() {
                   }}
                   style={{
                   flex: 1, padding: '12px 0', border: 'none', borderRadius: 10,
-                  background: '#3b82f6', color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer',
+                  background: '#3b82f6', color: 'var(--bg-card)', fontSize: 13, fontWeight: 700, cursor: 'pointer',
                   boxShadow: '0 4px 12px rgba(59,130,246,0.3)'
                 }}>
                   Download Backup

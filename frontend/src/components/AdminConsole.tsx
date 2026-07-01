@@ -8,11 +8,11 @@ const auth = () => ({ 'Authorization': `Bearer ${localStorage.getItem('sap_pos_t
 // ── shared style atoms ────────────────────────────────────────────────────────
 const card: React.CSSProperties = {
   background: 'var(--bg-card)', borderRadius: 16,
-  boxShadow: '0 4px 24px rgba(0,0,0,0.07)', border: '1px solid #e8ecf4',
+  boxShadow: '0 4px 24px rgba(0,0,0,0.07)', border: '1px solid var(--border-color)',
 };
 const inp: React.CSSProperties = {
   width: '100%', padding: '10px 14px', borderRadius: 10,
-  border: '1.5px solid #e2e8f0', background: 'var(--border-color)',
+  border: '1.5px solid var(--border-color)', background: 'var(--border-color)',
   fontSize: 13, color: 'var(--text-main)', outline: 'none',
   boxSizing: 'border-box', fontFamily: 'inherit',
 };
@@ -229,7 +229,7 @@ export default function AdminConsole({ currentUser }: AdminConsoleProps) {
       
       {/* ══════ LEFT: ALL ACCOUNTS (Operators) ══════ */}
       <div style={{ ...card, flex: 2, minWidth: 400, display: 'flex', flexDirection: 'column', height: '100%' }}>
-        <div style={{ padding: '20px 24px', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: 8 }}>
               <UserCheck style={{ color: '#6366f1', width: 20, height: 20 }} />
@@ -263,7 +263,7 @@ export default function AdminConsole({ currentUser }: AdminConsoleProps) {
 
         <div style={{ flex: 1, overflowY: 'auto', padding: 12 }}>
           {users.map(u => (
-            <div key={u.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 16px', borderBottom: '1px solid #f8fafc', transition: 'background 0.2s', borderRadius: 12 }} onMouseEnter={e => (e.currentTarget.style.background = 'var(--border-color)')} onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
+            <div key={u.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 16px', borderBottom: '1px solid var(--border-color)', transition: 'background 0.2s', borderRadius: 12 }} onMouseEnter={e => (e.currentTarget.style.background = 'var(--border-color)')} onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                 <div style={{ width: 40, height: 40, borderRadius: 10, background: u.role === 'SUPERADMIN' ? '#eff6ff' : u.role === 'ADMIN' ? '#f5f3ff' : '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: u.role === 'SUPERADMIN' ? '#3b82f6' : u.role === 'ADMIN' ? '#8b5cf6' : '#10b981' }}>
                   {u.role === 'SUPERADMIN' ? <Shield style={{ width: 20, height: 20 }} /> : u.role === 'ADMIN' ? <UserCheck style={{ width: 20, height: 20 }} /> : <User style={{ width: 20, height: 20 }} />}
@@ -303,7 +303,7 @@ export default function AdminConsole({ currentUser }: AdminConsoleProps) {
         
         {/* PENDING APPROVALS */}
         <div style={{ ...card }}>
-          <div style={{ padding: '20px 24px', borderBottom: '1px solid #f1f5f9' }}>
+          <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border-color)' }}>
           <h3 style={{ margin: 0, fontSize: 15, fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: 8 }}>
             <Key style={{ color: '#f59e0b', width: 18, height: 18 }} /> Pending Approvals
           </h3>
@@ -338,7 +338,7 @@ export default function AdminConsole({ currentUser }: AdminConsoleProps) {
       {/* SYSTEM BACKUP & RESTORE */}
       {isAdminOrSuper && (
         <div style={{ ...card }}>
-          <div style={{ padding: '20px 24px', borderBottom: '1px solid #f1f5f9' }}>
+          <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border-color)' }}>
             <h3 style={{ margin: 0, fontSize: 15, fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: 8 }}>
               <Database style={{ color: '#0ea5e9', width: 18, height: 18 }} /> System Data & Backup
             </h3>
@@ -374,7 +374,7 @@ export default function AdminConsole({ currentUser }: AdminConsoleProps) {
       {isRegisterOpen && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
           <div style={{ background: 'var(--bg-card)', borderRadius: 16, width: '100%', maxWidth: 450, boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}>
-            <div style={{ padding: '20px 24px', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: 'var(--text-main)' }}>Register New Operator</h3>
               <button onClick={() => setIsRegisterOpen(false)} style={{ background: 'transparent', border: 'none', color: 'var(--text-light)', cursor: 'pointer' }}><X style={{ width: 20, height: 20 }} /></button>
             </div>
@@ -401,7 +401,7 @@ export default function AdminConsole({ currentUser }: AdminConsoleProps) {
               )}
 
               <div style={{ display: 'flex', gap: 12, marginTop: 10 }}>
-                <button type="button" onClick={() => setIsRegisterOpen(false)} style={{ flex: 1, padding: '12px', borderRadius: 10, border: '1.5px solid #e2e8f0', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
+                <button type="button" onClick={() => setIsRegisterOpen(false)} style={{ flex: 1, padding: '12px', borderRadius: 10, border: '1.5px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
                 <button type="submit" disabled={loading} style={{ flex: 1, padding: '12px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg,#059669,#047857)', color: 'var(--bg-card)', fontWeight: 700, fontSize: 13, cursor: loading ? 'not-allowed' : 'pointer', boxShadow: '0 4px 14px rgba(5,150,105,0.3)' }}>{loading ? 'Creating...' : 'Create Operator'}</button>
               </div>
             </form>
@@ -413,7 +413,7 @@ export default function AdminConsole({ currentUser }: AdminConsoleProps) {
       {resettingUser && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
           <div style={{ background: 'var(--bg-card)', borderRadius: 16, width: '100%', maxWidth: 450, boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}>
-            <div style={{ padding: '20px 24px', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: 'var(--text-main)' }}>Reset Password</h3>
                 <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>For user: <strong>{resettingUser.username}</strong></div>
@@ -428,7 +428,7 @@ export default function AdminConsole({ currentUser }: AdminConsoleProps) {
               </div>
 
               <div style={{ display: 'flex', gap: 12, marginTop: 10 }}>
-                <button type="button" onClick={() => setResettingUser(null)} style={{ flex: 1, padding: '12px', borderRadius: 10, border: '1.5px solid #e2e8f0', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
+                <button type="button" onClick={() => setResettingUser(null)} style={{ flex: 1, padding: '12px', borderRadius: 10, border: '1.5px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
                 <button type="submit" disabled={loading} style={{ flex: 1, padding: '12px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg,#f59e0b,#d97706)', color: 'var(--bg-card)', fontWeight: 700, fontSize: 13, cursor: loading ? 'not-allowed' : 'pointer', boxShadow: '0 4px 14px rgba(245,158,11,0.3)' }}>{loading ? 'Processing...' : 'Confirm Reset'}</button>
               </div>
             </form>

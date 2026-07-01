@@ -16,7 +16,7 @@ interface SerialEntry {
 // ── shared style atoms ────────────────────────────────────────────────────────
 const card = (extra?: React.CSSProperties): React.CSSProperties => ({
   background: 'var(--bg-card)', borderRadius: 16,
-  boxShadow: '0 4px 24px rgba(0,0,0,0.07)', border: '1px solid #e8ecf4',
+  boxShadow: '0 4px 24px rgba(0,0,0,0.07)', border: '1px solid var(--border-color)',
   ...extra,
 });
 
@@ -86,13 +86,13 @@ export default function TechnicianStock({ currentUser }: TechnicianStockProps) {
           </div>
 
           {/* Stats row */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, borderBottom: '1px solid #f1f5f9' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, borderBottom: '1px solid var(--border-color)' }}>
             {[
               { label: 'Total Units', value: totalUnits, color: '#7c3aed', icon: '📦' },
               { label: 'Low Stock', value: lowStock, color: '#f59e0b', icon: '⚠️' },
               { label: 'Out of Stock', value: outOfStock, color: '#ef4444', icon: '🚫' },
             ].map((s, i) => (
-              <div key={s.label} style={{ padding: '14px 18px', textAlign: 'center', borderRight: i < 2 ? '1px solid #f1f5f9' : 'none' }}>
+              <div key={s.label} style={{ padding: '14px 18px', textAlign: 'center', borderRight: i < 2 ? '1px solid var(--border-color)' : 'none' }}>
                 <p style={{ margin: 0, fontSize: 20 }}>{s.icon}</p>
                 <p style={{ margin: '4px 0 0', fontSize: 22, fontWeight: 900, color: s.color, fontFamily: 'monospace' }}>{s.value}</p>
                 <p style={{ margin: '2px 0 0', fontSize: 9, color: 'var(--text-light)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{s.label}</p>
@@ -103,7 +103,7 @@ export default function TechnicianStock({ currentUser }: TechnicianStockProps) {
 
         {/* Stock table */}
         <div style={{ ...card(), padding: '16px 20px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14, paddingBottom: 12, borderBottom: '1px solid #f1f5f9' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14, paddingBottom: 12, borderBottom: '1px solid var(--border-color)' }}>
             <div style={{ width: 32, height: 32, borderRadius: 9, background: 'linear-gradient(135deg,#7c3aed,#4f46e5)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 10px rgba(124,58,237,0.3)' }}>
               <BarChart2 style={{ width: 15, height: 15, color: 'var(--bg-card)' }} />
             </div>
@@ -120,16 +120,16 @@ export default function TechnicianStock({ currentUser }: TechnicianStockProps) {
           )}
 
           {stocks.length === 0 && !error ? (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, color: '#cbd5e1' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, color: 'var(--text-light)' }}>
               <Package style={{ width: 40, height: 40, marginBottom: 10, strokeWidth: 1 }} />
               <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: 'var(--text-light)' }}>No stock assigned</p>
-              <p style={{ margin: '4px 0 0', fontSize: 12, color: '#cbd5e1' }}>Contact Admin to transfer stock to your bag</p>
+              <p style={{ margin: '4px 0 0', fontSize: 12, color: 'var(--text-light)' }}>Contact Admin to transfer stock to your bag</p>
             </div>
           ) : (
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ borderBottom: '2px solid #f1f5f9' }}>
+                  <tr style={{ borderBottom: '2px solid var(--border-color)' }}>
                     {['SKU', 'Item Name', 'Serial Req.', 'Qty In-Hand'].map(h => (
                       <th key={h} style={{ padding: '8px 12px', fontSize: 10, fontWeight: 700, color: 'var(--text-light)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: h === 'Qty In-Hand' ? 'center' : 'left' }}>{h}</th>
                     ))}
@@ -137,7 +137,7 @@ export default function TechnicianStock({ currentUser }: TechnicianStockProps) {
                 </thead>
                 <tbody>
                   {stocks.map((st, idx) => (
-                    <tr key={st.id} style={{ borderBottom: '1px solid #f8fafc', background: idx % 2 === 0 ? 'var(--bg-card)' : 'var(--bg-input)' }}>
+                    <tr key={st.id} style={{ borderBottom: '1px solid var(--border-color)', background: idx % 2 === 0 ? 'var(--bg-card)' : 'var(--bg-input)' }}>
                       <td style={{ padding: '11px 12px', fontFamily: 'monospace', fontSize: 11, color: '#7c3aed', fontWeight: 700 }}>{st.item.code}</td>
                       <td style={{ padding: '11px 12px', fontSize: 12, fontWeight: 700, color: 'var(--text-main)' }}>{st.item.name}</td>
                       <td style={{ padding: '11px 12px' }}>
@@ -185,19 +185,19 @@ export default function TechnicianStock({ currentUser }: TechnicianStockProps) {
 
           <div style={{ padding: '12px 16px 16px', display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 460, overflowY: 'auto' }}>
             {serials.length > 0 ? serials.map(s => (
-              <div key={s.id} style={{ padding: '10px 12px', background: 'var(--border-color)', borderRadius: 10, border: '1.5px solid #e8ecf4', display: 'flex', flexDirection: 'column', gap: 3, transition: 'all 0.15s' }}
+              <div key={s.id} style={{ padding: '10px 12px', background: 'var(--border-color)', borderRadius: 10, border: '1.5px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: 3, transition: 'all 0.15s' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#7c3aed'; (e.currentTarget as HTMLElement).style.background = 'rgba(124,58,237,0.04)'; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'; (e.currentTarget as HTMLElement).style.background = 'var(--border-color)'; }}
               >
                 <span style={{ fontFamily: 'monospace', fontWeight: 800, fontSize: 12, color: '#7c3aed', letterSpacing: '0.04em' }}>{s.serialNumber}</span>
                 <span style={{ fontSize: 10, color: 'var(--text-light)', fontWeight: 500 }}>{s.item.name}</span>
-                <span style={{ fontSize: 9, color: '#cbd5e1', fontFamily: 'monospace' }}>{s.item.code}</span>
+                <span style={{ fontSize: 9, color: 'var(--text-light)', fontFamily: 'monospace' }}>{s.item.code}</span>
               </div>
             )) : (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 140, color: '#cbd5e1', border: '1.5px dashed #e2e8f0', borderRadius: 10, padding: 20 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 140, color: 'var(--text-light)', border: '1.5px dashed var(--border-color)', borderRadius: 10, padding: 20 }}>
                 <Layers style={{ width: 28, height: 28, marginBottom: 8, strokeWidth: 1 }} />
                 <p style={{ margin: 0, fontSize: 12, fontWeight: 600, color: 'var(--text-light)' }}>No serialized items</p>
-                <p style={{ margin: '3px 0 0', fontSize: 11, color: '#cbd5e1', textAlign: 'center' }}>Transfer stock from Admin to see serials here</p>
+                <p style={{ margin: '3px 0 0', fontSize: 11, color: 'var(--text-light)', textAlign: 'center' }}>Transfer stock from Admin to see serials here</p>
               </div>
             )}
           </div>
@@ -213,7 +213,7 @@ export default function TechnicianStock({ currentUser }: TechnicianStockProps) {
           ].map(g => (
             <div key={g.label} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '3px 0' }}>
               <div style={{ width: 8, height: 8, borderRadius: '50%', background: g.dot, flexShrink: 0 }} />
-              <span style={{ fontSize: 11, color: '#475569' }}>{g.label}</span>
+              <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{g.label}</span>
             </div>
           ))}
         </div>

@@ -187,7 +187,7 @@ export default function Dashboard() {
             background: 'var(--bg-card)',
             borderRadius: 18,
             padding: '20px 22px',
-            boxShadow: '8px 8px 20px #cdd0db, -8px -8px 20px #ffffff',
+            boxShadow: '8px 8px 20px #cdd0db, -8px -8px 20px var(--bg-card)',
             border: '1px solid rgba(255,255,255,0.75)',
             display: 'flex',
             alignItems: 'center',
@@ -232,7 +232,7 @@ export default function Dashboard() {
         {/* Sales & Profit Area Chart */}
         <div style={{
           background: 'var(--bg-card)', borderRadius: 18, padding: '22px 24px',
-          boxShadow: '8px 8px 20px #cdd0db, -8px -8px 20px #ffffff',
+          boxShadow: '8px 8px 20px #cdd0db, -8px -8px 20px var(--bg-card)',
           border: '1px solid rgba(255,255,255,0.75)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
@@ -278,7 +278,7 @@ export default function Dashboard() {
         {/* Top Products Pie Chart */}
         <div style={{
           background: 'var(--bg-card)', borderRadius: 18, padding: '22px 20px',
-          boxShadow: '8px 8px 20px #cdd0db, -8px -8px 20px #ffffff',
+          boxShadow: '8px 8px 20px #cdd0db, -8px -8px 20px var(--bg-card)',
           border: '1px solid rgba(255,255,255,0.75)',
         }}>
           <h3 style={{ fontSize: 15, fontWeight: 800, color: 'var(--text-main)', margin: '0 0 4px' }}>Top Stock Items</h3>
@@ -303,7 +303,7 @@ export default function Dashboard() {
                 {topItems.map((item, idx) => (
                   <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11 }}>
                     <span style={{ width: 10, height: 10, borderRadius: 3, background: PIE_COLORS[idx % PIE_COLORS.length], flexShrink: 0 }} />
-                    <span style={{ color: '#475569', fontWeight: 600, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</span>
+                    <span style={{ color: 'var(--text-muted)', fontWeight: 600, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</span>
                     <span style={{ color: 'var(--text-main)', fontWeight: 700 }}>{fmt(item.value)}</span>
                   </div>
                 ))}
@@ -321,7 +321,7 @@ export default function Dashboard() {
         {/* Recent Invoices Table */}
         <div style={{
           background: 'var(--bg-card)', borderRadius: 18, padding: '22px 24px',
-          boxShadow: '8px 8px 20px #cdd0db, -8px -8px 20px #ffffff',
+          boxShadow: '8px 8px 20px #cdd0db, -8px -8px 20px var(--bg-card)',
           border: '1px solid rgba(255,255,255,0.75)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
@@ -348,7 +348,7 @@ export default function Dashboard() {
               {recentInvoices.map((inv, i) => (
                 <tr key={inv.id} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(124,58,237,0.03)' }}>
                   <td style={{ padding: '10px 12px', fontWeight: 700, color: '#7c3aed' }}>{inv.invoiceNumber}</td>
-                  <td style={{ padding: '10px 12px', color: '#475569', fontWeight: 500 }}>
+                  <td style={{ padding: '10px 12px', color: 'var(--text-muted)', fontWeight: 500 }}>
                     {inv.customer?.name ?? 'Walk-in'}
                   </td>
                   <td style={{ padding: '10px 12px', fontWeight: 700, color: 'var(--text-main)' }}>{fmt(inv.finalAmount)}</td>
@@ -366,7 +366,7 @@ export default function Dashboard() {
         {/* Low Stock Alerts */}
         <div style={{
           background: 'var(--bg-card)', borderRadius: 18, padding: '22px 24px',
-          boxShadow: '8px 8px 20px #cdd0db, -8px -8px 20px #ffffff',
+          boxShadow: '8px 8px 20px #cdd0db, -8px -8px 20px var(--bg-card)',
           border: '1px solid rgba(255,255,255,0.75)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>

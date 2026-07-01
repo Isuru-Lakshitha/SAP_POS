@@ -9,7 +9,7 @@ interface InventoryManagerProps {
 
 const inputStyle: React.CSSProperties = {
   width: '100%', padding: '10px 14px', borderRadius: 10,
-  border: '1.5px solid #e2e8f0', background: 'var(--border-color)',
+  border: '1.5px solid var(--border-color)', background: 'var(--border-color)',
   fontSize: 13, color: 'var(--text-main)', outline: 'none',
   boxSizing: 'border-box', fontFamily: 'inherit',
   boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.04)',
@@ -139,7 +139,7 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
       <div style={{
         background: 'var(--bg-card)', borderRadius: 18,
         boxShadow: '0 4px 24px rgba(0,0,0,0.07)',
-        border: '1px solid #e8ecf4', padding: '20px 24px',
+        border: '1px solid var(--border-color)', padding: '20px 24px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
           {/* Title */}
@@ -254,7 +254,7 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
             return (
               <div key={item.id} style={{
                 background: 'var(--bg-card)', borderRadius: 14,
-                border: '1.5px solid #e8ecf4',
+                border: '1.5px solid var(--border-color)',
                 boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
                 overflow: 'hidden', position: 'relative',
                 transition: 'all 0.2s ease',
@@ -347,7 +347,7 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
 
                   {/* Description */}
                   {item.description && (
-                    <p style={{ margin: 0, fontSize: 11, color: 'var(--text-light)', lineHeight: 1.5, borderTop: '1px solid #f1f5f9', paddingTop: 8 }}>
+                    <p style={{ margin: 0, fontSize: 11, color: 'var(--text-light)', lineHeight: 1.5, borderTop: '1px solid var(--border-color)', paddingTop: 8 }}>
                       {item.description}
                     </p>
                   )}
@@ -355,11 +355,11 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
 
                 {/* Action footer */}
                 {isAdmin && (
-                  <div style={{ padding: '10px 16px', borderTop: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8 }}>
+                  <div style={{ padding: '10px 16px', borderTop: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8 }}>
                     <button onClick={() => handleOpenEdit(item)} style={{
                       display: 'flex', alignItems: 'center', gap: 5,
                       padding: '6px 12px', borderRadius: 8,
-                      border: '1.5px solid #e2e8f0', background: 'var(--bg-card)',
+                      border: '1.5px solid var(--border-color)', background: 'var(--bg-card)',
                       color: 'var(--text-muted)', fontSize: 11, fontWeight: 700, cursor: 'pointer',
                       transition: 'all 0.15s',
                     }}
@@ -503,7 +503,7 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
 
               {/* Serial number toggle */}
               {itemType === 'PRODUCT' && (
-                <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', padding: '10px 14px', background: 'var(--border-color)', borderRadius: 10, border: '1.5px solid #e2e8f0' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', padding: '10px 14px', background: 'var(--border-color)', borderRadius: 10, border: '1.5px solid var(--border-color)' }}>
                   <input type="checkbox" id="modalRequireSerial" checked={itemRequireSerial}
                     onChange={e => setItemRequireSerial(e.target.checked)}
                     style={{ width: 16, height: 16, accentColor: '#7c3aed', cursor: 'pointer' }} />
@@ -515,9 +515,9 @@ export default function InventoryManager({ currentUser }: InventoryManagerProps)
               )}
 
               {/* Footer buttons */}
-              <div style={{ display: 'flex', gap: 10, paddingTop: 4, borderTop: '1px solid #f1f5f9' }}>
+              <div style={{ display: 'flex', gap: 10, paddingTop: 4, borderTop: '1px solid var(--border-color)' }}>
                 <button type="button" onClick={() => setIsModalOpen(false)} style={{
-                  flex: 1, padding: '11px', borderRadius: 10, border: '1.5px solid #e2e8f0',
+                  flex: 1, padding: '11px', borderRadius: 10, border: '1.5px solid var(--border-color)',
                   background: 'var(--bg-card)', color: 'var(--text-muted)', fontWeight: 700, fontSize: 13, cursor: 'pointer',
                 }}>
                   Cancel
