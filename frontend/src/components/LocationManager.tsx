@@ -599,14 +599,16 @@ export default function LocationManager() {
         >
           <p style={{ margin: 0, fontSize: 11, fontWeight: 700, color: isSel ? (isMain ? '#7c3aed' : '#059669') : '#1e293b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{loc.name}</p>
         </button>
-        <button onClick={() => { setDeleteConfirmId(loc.id); setError(null); }}
-          title="Delete location"
-          style={{ width: 28, height: 28, borderRadius: 8, border: '1.5px solid #fca5a5', background: '#fef2f2', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444', flexShrink: 0, transition: 'all 0.15s' }}
-          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#ef4444'; (e.currentTarget as HTMLElement).style.color = '#fff'; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#fef2f2'; (e.currentTarget as HTMLElement).style.color = '#ef4444'; }}
-        >
-          <Trash2 style={{ width: 11, height: 11 }} />
-        </button>
+        {loc.name !== 'Gampaha Head Office' && (
+          <button onClick={() => { setDeleteConfirmId(loc.id); setError(null); }}
+            title="Delete location"
+            style={{ width: 28, height: 28, borderRadius: 8, border: '1.5px solid #fca5a5', background: '#fef2f2', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444', flexShrink: 0, transition: 'all 0.15s' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#ef4444'; (e.currentTarget as HTMLElement).style.color = '#fff'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#fef2f2'; (e.currentTarget as HTMLElement).style.color = '#ef4444'; }}
+          >
+            <Trash2 style={{ width: 11, height: 11 }} />
+          </button>
+        )}
       </div>
     );
   }

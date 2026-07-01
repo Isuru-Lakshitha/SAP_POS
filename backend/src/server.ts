@@ -57,10 +57,10 @@ async function seedDatabase() {
     // 2. Seed Default Location
     console.log('Seeding default Main Branch...');
     await prisma.location.upsert({
-      where: { name: 'Main Branch' },
+      where: { name: 'Gampaha Head Office' },
       update: {},
       create: {
-        name: 'Main Branch',
+        name: 'Gampaha Head Office',
         type: 'MAIN'
       }
     });

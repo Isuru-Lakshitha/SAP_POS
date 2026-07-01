@@ -215,6 +215,13 @@ router.post('/locations', authenticateToken, async (req: AuthRequest, res: Respo
 router.delete('/locations/:id', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     const id = parseInt(req.params.id as string);
+    const location = await prisma.location.findUnique({ where: { id } });
+    if (!location) {
+      return res.status(404).json({ error: 'Location not found.' });
+    }
+    if (location.name === 'Gampaha Head Office') {
+      return res.status(403).json({ error: 'Gampaha Head Office is the main branch and cannot be deleted.' });
+    }
     const stockCount = await prisma.stock.count({ where: { locationId: id } });
     if (stockCount > 0) {
       return res.status(400).json({ error: 'Cannot delete a location that has stock. Transfer all stock out first.' });
