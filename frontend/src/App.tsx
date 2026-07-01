@@ -384,7 +384,7 @@ export default function App() {
           {activeTab === 'grn'        && <GRNManager />}
           {activeTab === 'customers'  && <CustomerManager />}
           {activeTab === 'inventory'  && <InventoryManager currentUser={user} />}
-          {activeTab === 'locations'  && <LocationManager />}
+          {activeTab === 'locations'  && <LocationManager currentUser={user} />}
           {activeTab === 'ledger'     && <AccountsLedger currentUser={user} />}
           {activeTab === 'reports'    && <ReportsManager />}
           {activeTab === 'admin'      && <AdminConsole currentUser={user} />}

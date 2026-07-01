@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { UserCheck, ShieldAlert, Key, Trash2, X, Plus, Shield, User, RefreshCw, CheckCircle2, Download } from 'lucide-react';
-import { api } from '../api';
+import { UserCheck, Shield, Key, AlertCircle, Trash2, X, Plus, ShieldAlert, User, Database, DownloadCloud, UploadCloud, RefreshCw, CheckCircle2, Download } from 'lucide-react';
+import { api, auth } from '../api';
 import type { User as UserType } from '../types';
 
 // ── shared style atoms ────────────────────────────────────────────────────────
@@ -45,6 +45,10 @@ export default function AdminConsole({ currentUser }: AdminConsoleProps) {
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   const isSuperAdmin = currentUser?.role === 'SUPERADMIN';
+  const isAdminOrSuper = currentUser?.role === 'ADMIN' || isSuperAdmin;
+  
+  const [backupLoading, setBackupLoading] = useState(false);
+  const [restoreLoading, setRestoreLoading] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -181,6 +185,59 @@ export default function AdminConsole({ currentUser }: AdminConsoleProps) {
     }
   };
 
+  const handleBackup = async () => {
+    try {
+      setBackupLoading(true); setError(null); setSuccessMsg(null);
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/system/backup`, {
+        headers: auth()
+      });
+      if (!res.ok) throw new Error('Backup failed to download');
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `sappos_full_backup_${new Date().getTime()}.json`;
+      a.click();
+      setSuccessMsg('System backup downloaded successfully.');
+      setTimeout(() => setSuccessMsg(null), 3000);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setBackupLoading(false);
+    }
+  };
+
+  const handleRestore = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    if (!window.confirm('CRITICAL WARNING: Restoring from a backup will permanently erase all current data in the system and replace it with the backup data. Are you absolutely sure you want to proceed?')) {
+      e.target.value = '';
+      return;
+    }
+
+    try {
+      setRestoreLoading(true); setError(null); setSuccessMsg(null);
+      const text = await file.text();
+      const data = JSON.parse(text);
+
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/system/restore`, {
+        method: 'POST',
+        headers: { ...auth(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const resData = await res.json();
+      if (!res.ok) throw new Error(resData.error || 'Restore failed');
+      
+      setSuccessMsg('System restored successfully. Please refresh the page.');
+    } catch (err: any) {
+      setError(err.message || 'Invalid backup file format');
+    } finally {
+      setRestoreLoading(false);
+      e.target.value = '';
+    }
+  };
+
   return (
     <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', height: '100%', flexWrap: 'wrap' }}>
       
@@ -260,9 +317,12 @@ export default function AdminConsole({ currentUser }: AdminConsoleProps) {
         </div>
       </div>
 
-      {/* ══════ RIGHT: PENDING PASSWORD RESETS ══════ */}
-      <div style={{ ...card, flex: 1, minWidth: 300 }}>
-        <div style={{ padding: '20px 24px', borderBottom: '1px solid #f1f5f9' }}>
+      {/* ══════ RIGHT SIDE: PENDING APPROVALS & SYSTEM BACKUP ══════ */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16, flex: 1, minWidth: 300 }}>
+        
+        {/* PENDING APPROVALS */}
+        <div style={{ ...card }}>
+          <div style={{ padding: '20px 24px', borderBottom: '1px solid #f1f5f9' }}>
           <h3 style={{ margin: 0, fontSize: 15, fontWeight: 800, color: '#1e293b', display: 'flex', alignItems: 'center', gap: 8 }}>
             <Key style={{ color: '#f59e0b', width: 18, height: 18 }} /> Pending Approvals
           </h3>
@@ -292,6 +352,41 @@ export default function AdminConsole({ currentUser }: AdminConsoleProps) {
             </div>
           )}
         </div>
+      </div>
+
+      {/* SYSTEM BACKUP & RESTORE */}
+      {isAdminOrSuper && (
+        <div style={{ ...card }}>
+          <div style={{ padding: '20px 24px', borderBottom: '1px solid #f1f5f9' }}>
+            <h3 style={{ margin: 0, fontSize: 15, fontWeight: 800, color: '#1e293b', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <Database style={{ color: '#0ea5e9', width: 18, height: 18 }} /> System Data & Backup
+            </h3>
+            <p style={{ margin: '4px 0 0 0', fontSize: 11, color: '#64748b' }}>Download or restore full database (JSON)</p>
+          </div>
+          
+          <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div style={{ background: '#f0f9ff', border: '1px solid #e0f2fe', borderRadius: 12, padding: 16 }}>
+              <h4 style={{ margin: '0 0 4px 0', fontSize: 13, color: '#0369a1' }}>Full System Backup</h4>
+              <p style={{ margin: '0 0 12px 0', fontSize: 11, color: '#0ea5e9' }}>Exports a complete .json snapshot of the entire database.</p>
+              <button onClick={handleBackup} disabled={backupLoading} style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center', width: '100%', padding: '10px', borderRadius: 8, border: 'none', background: '#0ea5e9', color: '#fff', fontSize: 12, fontWeight: 700, cursor: backupLoading ? 'not-allowed' : 'pointer', boxShadow: '0 4px 10px rgba(14,165,233,0.2)' }}>
+                <DownloadCloud style={{ width: 16, height: 16 }} />
+                {backupLoading ? 'Downloading...' : 'Download JSON Backup'}
+              </button>
+            </div>
+
+            <div style={{ background: '#fff1f2', border: '1px solid #ffe4e6', borderRadius: 12, padding: 16 }}>
+              <h4 style={{ margin: '0 0 4px 0', fontSize: 13, color: '#be123c' }}>System Restore</h4>
+              <p style={{ margin: '0 0 12px 0', fontSize: 11, color: '#e11d48' }}>WARNING: Uploading a backup will erase all current live data.</p>
+              
+              <label style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center', width: '100%', padding: '10px', borderRadius: 8, border: 'none', background: '#e11d48', color: '#fff', fontSize: 12, fontWeight: 700, cursor: restoreLoading ? 'not-allowed' : 'pointer', boxShadow: '0 4px 10px rgba(225,29,72,0.2)' }}>
+                <UploadCloud style={{ width: 16, height: 16 }} />
+                {restoreLoading ? 'Restoring...' : 'Restore from JSON'}
+                <input type="file" accept=".json" onChange={handleRestore} disabled={restoreLoading} style={{ display: 'none' }} />
+              </label>
+            </div>
+          </div>
+        </div>
+      )}
       </div>
 
       {/* ══════ MODAL: REGISTER OPERATOR ══════ */}

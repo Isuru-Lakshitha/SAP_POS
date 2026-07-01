@@ -222,6 +222,49 @@ router.delete('/locations/:id', authenticateToken, async (req: AuthRequest, res:
     if (location.name === 'Gampaha Head Office') {
       return res.status(403).json({ error: 'Gampaha Head Office is the main branch and cannot be deleted.' });
     }
+    
+    const force = req.query.force === 'true';
+    if (force) {
+      if (req.user?.role !== 'SUPERADMIN') {
+        return res.status(403).json({ error: 'Only Superadmin can force delete a location with data.' });
+      }
+      
+      // Cascade delete everything associated with this location
+      const locationInvoices = await prisma.invoice.findMany({ where: { locationId: id } });
+      const invoiceIds = locationInvoices.map(i => i.id);
+      
+      if (invoiceIds.length > 0) {
+        await prisma.ledgerTransaction.deleteMany({ where: { invoiceId: { in: invoiceIds } } });
+        await prisma.cartItem.deleteMany({ where: { invoiceId: { in: invoiceIds } } });
+      }
+      await prisma.invoice.deleteMany({ where: { locationId: id } });
+      
+      const grns = await prisma.gRN.findMany({ where: { locationId: id } });
+      const grnIds = grns.map(g => g.id);
+      if (grnIds.length > 0) {
+        await prisma.gRNItem.deleteMany({ where: { grnId: { in: grnIds } } });
+      }
+      await prisma.gRN.deleteMany({ where: { locationId: id } });
+      
+      await prisma.serial.deleteMany({ where: { locationId: id } });
+      
+      const transfers = await prisma.stockTransfer.findMany({
+        where: { OR: [{ fromLocationId: id }, { toLocationId: id }] }
+      });
+      const transferIds = transfers.map(t => t.id);
+      if (transferIds.length > 0) {
+        await prisma.stockTransferItem.deleteMany({ where: { transferId: { in: transferIds } } });
+      }
+      await prisma.stockTransfer.deleteMany({
+        where: { OR: [{ fromLocationId: id }, { toLocationId: id }] }
+      });
+      
+      await prisma.stock.deleteMany({ where: { locationId: id } });
+      
+      await prisma.location.delete({ where: { id } });
+      return res.json({ message: 'Location and all associated data force deleted successfully.' });
+    }
+
     const stockCount = await prisma.stock.count({ where: { locationId: id } });
     if (stockCount > 0) {
       return res.status(400).json({ error: 'Cannot delete a location that has stock. Transfer all stock out first.' });

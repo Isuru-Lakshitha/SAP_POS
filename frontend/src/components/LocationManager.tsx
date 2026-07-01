@@ -23,7 +23,8 @@ const lbl: React.CSSProperties = {
   display: 'block', marginBottom: 5,
 };
 
-export default function LocationManager() {
+export default function LocationManager({ currentUser }: { currentUser?: { role: string } | null }) {
+  const isSuperAdmin = currentUser?.role === 'SUPERADMIN';
   const [locations, setLocations] = useState<Location[]>([]);
   const [selectedLocId, setSelectedLocId] = useState<number | null>(null);
   const [stocks, setStocks] = useState<StockEntry[]>([]);
@@ -46,6 +47,7 @@ export default function LocationManager() {
 
   // Delete confirm
   const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
+  const [forceDeletePrompt, setForceDeletePrompt] = useState<number | null>(null);
 
   const [loading, setLoading] = useState(false);
   const [locLoading, setLocLoading] = useState(false);
@@ -111,22 +113,56 @@ export default function LocationManager() {
     finally { setLocLoading(false); }
   };
 
-  const handleDeleteLocation = async (locId: number) => {
+  const handleDeleteLocation = async (locId: number, force: boolean = false) => {
     try {
-      setLocLoading(true); setError(null);
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/pos/locations/${locId}`, {
+      if (force) {
+        // Download full JSON backup first
+        setSuccess('Downloading full system backup before force deletion...');
+        try {
+          const backupRes = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/system/backup`, { headers: auth() });
+          if (backupRes.ok) {
+            const blob = await backupRes.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `sappos_full_backup_${new Date().getTime()}.json`;
+            a.click();
+          }
+        } catch (e) {
+          console.error("Backup failed", e);
+          if (!window.confirm("Backup failed to download. Proceed with permanent deletion anyway?")) {
+            setLocLoading(false);
+            setSuccess(null);
+            return;
+          }
+        }
+      }
+
+      setLocLoading(true); setError(null); setSuccess(null);
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/pos/locations/${locId}${force ? '?force=true' : ''}`, {
         method: 'DELETE', headers: auth(),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Delete failed');
+      
+      if (!res.ok) {
+        if (res.status === 400 && data.error.includes('has stock') && isSuperAdmin && !force) {
+          // Change the modal state to ask for force delete
+          setForceDeletePrompt(locId);
+          setLocLoading(false);
+          return;
+        }
+        throw new Error(data.error || 'Delete failed');
+      }
+      
       setLocations(prev => prev.filter(l => l.id !== locId));
       if (selectedLocId === locId) {
         const remaining = locations.filter(l => l.id !== locId);
         setSelectedLocId(remaining.length > 0 ? remaining[0].id : null);
       }
       setDeleteConfirmId(null);
-      setSuccess('Location deleted.'); setTimeout(() => setSuccess(null), 3000);
-    } catch (err: any) { setError(err.message); setDeleteConfirmId(null); }
+      setForceDeletePrompt(null);
+      setSuccess('Location deleted successfully.'); setTimeout(() => setSuccess(null), 3000);
+    } catch (err: any) { setError(err.message); setDeleteConfirmId(null); setForceDeletePrompt(null); }
     finally { setLocLoading(false); }
   };
 
@@ -559,25 +595,39 @@ export default function LocationManager() {
       )}
 
       {/* ══════ DELETE CONFIRM MODAL ══════ */}
-      {deleteConfirmId !== null && (
+      {(deleteConfirmId !== null || forceDeletePrompt !== null) && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.6)', backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: 20 }}>
           <div style={{ background: '#fff', borderRadius: 18, width: '100%', maxWidth: 360, boxShadow: '0 20px 60px rgba(0,0,0,0.22)', padding: '24px' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, textAlign: 'center' }}>
               <div style={{ width: 52, height: 52, borderRadius: '50%', background: '#fef2f2', border: '2px solid #fca5a5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Trash2 style={{ width: 22, height: 22, color: '#ef4444' }} />
               </div>
-              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: '#1e293b' }}>Delete Location?</h3>
+              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: '#1e293b' }}>
+                {forceDeletePrompt !== null ? 'FORCE Delete Location?' : 'Delete Location?'}
+              </h3>
               <p style={{ margin: 0, fontSize: 12, color: '#64748b', lineHeight: 1.5 }}>
-                <strong>{locations.find(l => l.id === deleteConfirmId)?.name}</strong> will be permanently deleted.<br />
-                This only works if the location has no stock.
+                <strong>{locations.find(l => l.id === (forceDeletePrompt || deleteConfirmId))?.name}</strong> will be permanently deleted.<br />
+                {forceDeletePrompt !== null ? (
+                  <span style={{ color: '#dc2626', fontWeight: 600 }}>WARNING: This location has data! Force deleting it will destroy all associated stock, serials, and invoices. A full JSON backup will be auto-downloaded first.</span>
+                ) : (
+                  'This only works if the location has no stock.'
+                )}
               </p>
               <div style={{ display: 'flex', gap: 10, width: '100%', marginTop: 8 }}>
-                <button onClick={() => setDeleteConfirmId(null)}
+                <button onClick={() => { setDeleteConfirmId(null); setForceDeletePrompt(null); }}
                   style={{ flex: 1, padding: '10px', borderRadius: 10, border: '1.5px solid #e2e8f0', background: '#fff', color: '#64748b', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
-                <button onClick={() => handleDeleteLocation(deleteConfirmId!)} disabled={locLoading}
-                  style={{ flex: 1, padding: '10px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg,#ef4444,#dc2626)', color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer', boxShadow: '0 4px 12px rgba(239,68,68,0.35)' }}>
-                  {locLoading ? 'Deleting…' : 'Yes, Delete'}
-                </button>
+                
+                {forceDeletePrompt !== null ? (
+                  <button onClick={() => handleDeleteLocation(forceDeletePrompt, true)} disabled={locLoading}
+                    style={{ flex: 1, padding: '10px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg,#ef4444,#dc2626)', color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer', boxShadow: '0 4px 12px rgba(239,68,68,0.35)' }}>
+                    {locLoading ? 'Processing…' : 'FORCE DELETE'}
+                  </button>
+                ) : (
+                  <button onClick={() => handleDeleteLocation(deleteConfirmId!)} disabled={locLoading}
+                    style={{ flex: 1, padding: '10px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg,#ef4444,#dc2626)', color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer', boxShadow: '0 4px 12px rgba(239,68,68,0.35)' }}>
+                    {locLoading ? 'Deleting…' : 'Yes, Delete'}
+                  </button>
+                )}
               </div>
             </div>
           </div>
