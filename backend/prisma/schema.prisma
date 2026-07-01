@@ -9,21 +9,23 @@ generator client {
 }
 
 model User {
-  id             Int             @id @default(autoincrement())
-  username       String          @unique
-  password       String
-  role           String          // "SUPERADMIN", "ADMIN", "USER" (Cashier/Technician)
-  status         String          // "ACTIVE", "PASSWORD_RESET_REQUESTED"
-  locationId     Int?            // Associated location (specifically for Technicians)
-  location       Location?       @relation("UserLocation", fields: [locationId], references: [id])
-  invoices       Invoice[]
-  transfers      StockTransfer[]
+  id         Int             @id @default(autoincrement())
+  username   String          @unique
+  password   String
+  role       String // "SUPERADMIN", "ADMIN", "USER" (Cashier/Technician)
+  status     String // "ACTIVE", "PASSWORD_RESET_REQUESTED"
+  locationId Int? // Associated location (specifically for Technicians)
+  location   Location?       @relation("UserLocation", fields: [locationId], references: [id])
+  invoices   Invoice[]
+  transfers  StockTransfer[]
+
+  @@index([locationId])
 }
 
 model Location {
   id            Int             @id @default(autoincrement())
   name          String          @unique
-  type          String          // "MAIN" (Branches), "SUB_TECHNICIAN" (Technicians)
+  type          String // "MAIN" (Branches), "SUB_TECHNICIAN" (Technicians)
   users         User[]          @relation("UserLocation")
   stocks        Stock[]
   serials       Serial[]
@@ -50,7 +52,7 @@ model Item {
   cost           Float               @default(0.0) // Purchase cost
   wholesalePrice Float               @default(0.0) // Wholesale sale price
   retailPrice    Float               @default(0.0) // Retail sale price (regular price)
-  warrantyPeriod String              // Default warranty period (e.g. "1 Year")
+  warrantyPeriod String // Default warranty period (e.g. "1 Year")
   requiresSerial Boolean             @default(false)
   type           String              @default("PRODUCT") // "PRODUCT" or "SERVICE"
   description    String?
@@ -60,6 +62,8 @@ model Item {
   serials        Serial[]
   grnItems       GRNItem[]
   transferItems  StockTransferItem[]
+
+  @@index([name])
 }
 
 model Stock {
@@ -71,6 +75,8 @@ model Stock {
   quantity   Int      @default(0)
 
   @@unique([itemId, locationId])
+  @@index([itemId])
+  @@index([locationId])
 }
 
 model Serial {
@@ -80,12 +86,16 @@ model Serial {
   itemId       Int
   location     Location  @relation(fields: [locationId], references: [id])
   locationId   Int
-  status       String    // "IN_STOCK", "SOLD"
+  status       String // "IN_STOCK", "SOLD"
   purchaseDate DateTime  @default(now())
   soldDate     DateTime?
   supplier     Supplier? @relation(fields: [supplierId], references: [id])
   supplierId   Int?
-  invoiceId    Int?      // Link to invoice when sold
+  invoiceId    Int? // Link to invoice when sold
+
+  @@index([itemId])
+  @@index([locationId])
+  @@index([status])
 }
 
 model GRN {
@@ -100,6 +110,9 @@ model GRN {
   totalAmount  Float
   notes        String?
   grnItems     GRNItem[]
+
+  @@index([supplierId])
+  @@index([locationId])
 }
 
 model GRNItem {
@@ -112,6 +125,9 @@ model GRNItem {
   costPrice      Float
   wholesalePrice Float
   retailPrice    Float
+
+  @@index([grnId])
+  @@index([itemId])
 }
 
 model Customer {
@@ -123,6 +139,8 @@ model Customer {
   balance           Float     @default(0.0)
   loyaltyPoints     Float     @default(0.0)
   invoices          Invoice[]
+
+  @@index([name])
 }
 
 model Invoice {
@@ -138,11 +156,16 @@ model Invoice {
   totalAmount    Float
   discountAmount Float               @default(0.0)
   finalAmount    Float
-  paymentMethod  String              // "CASH", "CARD", "CHEQUE", "KOKO", "BANK_TRANSFER"
+  paymentMethod  String // "CASH", "CARD", "CHEQUE", "KOKO", "BANK_TRANSFER"
   paymentDetails String?
   notes          String?
   cartItems      CartItem[]
   transactions   LedgerTransaction[]
+
+  @@index([customerId])
+  @@index([cashierId])
+  @@index([locationId])
+  @@index([date])
 }
 
 model CartItem {
@@ -157,6 +180,9 @@ model CartItem {
   serialNumber   String?
   warrantyPeriod String?
   notes          String?
+
+  @@index([invoiceId])
+  @@index([itemId])
 }
 
 model StockTransfer {
@@ -170,6 +196,9 @@ model StockTransfer {
   cashier        User                @relation(fields: [cashierId], references: [id])
   cashierId      Int
   transferItems  StockTransferItem[]
+
+  @@index([fromLocationId])
+  @@index([toLocationId])
 }
 
 model StockTransferItem {
@@ -179,13 +208,16 @@ model StockTransferItem {
   item          Item          @relation(fields: [itemId], references: [id])
   itemId        Int
   quantity      Int
-  serialNumbers String?       // Comma-separated list of serials transferred
+  serialNumbers String? // Comma-separated list of serials transferred
+
+  @@index([transferId])
+  @@index([itemId])
 }
 
 model LedgerAccount {
   id           Int                 @id @default(autoincrement())
   name         String              @unique // "CASH_ACCOUNT", "CARD_ACCOUNT", "CHEQUE_ACCOUNT", "KOKO_ACCOUNT", "BANK_TRANSFER_ACCOUNT"
-  type         String              // "CASH", "CARD", "CHEQUE", "KOKO", "BANK_TRANSFER"
+  type         String // "CASH", "CARD", "CHEQUE", "KOKO", "BANK_TRANSFER"
   balance      Float               @default(0.0)
   transactions LedgerTransaction[]
 }
@@ -196,8 +228,11 @@ model LedgerTransaction {
   ledgerAccount   LedgerAccount @relation(fields: [ledgerAccountId], references: [id])
   ledgerAccountId Int
   amount          Float
-  type            String        // "DEBIT", "CREDIT"
+  type            String // "DEBIT", "CREDIT"
   description     String
   invoice         Invoice?      @relation(fields: [invoiceId], references: [id])
   invoiceId       Int?
+
+  @@index([ledgerAccountId])
+  @@index([invoiceId])
 }
